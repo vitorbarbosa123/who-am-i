@@ -1,4 +1,4 @@
-# Who I am?
+# Who am I?
 
 ## Descrição do projeto
 Cara a cara é um jogo onde o jogador deve adivinhar qual é o personagem do seu oponente com base em caracteristicas e personas. 
