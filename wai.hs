@@ -52,7 +52,7 @@ jogo rodada =
 
 -- Inicia uma partida de WaI?; cada jogo contém um máximo de 5 partidas,
 partida::IO()
-partida =
+partida = do
     let listaPartidaIA = listaPersonagens
     let listaPartidaJogador = listaPersonagens
     let listasCaracteristicasPartida = listasCaracteristicasIA
@@ -373,7 +373,7 @@ alteraListaCaracteristicas operador caracteristica indice= do
     if operador == True
         then
             let listasCaracteristicasPartida !! 0 = [caracteristica]
-        else do
+        else
             removePorIndice indice listasCaracteristicasPartida
 
 -- Incrementa a pontuação do jogador em 1
@@ -401,7 +401,7 @@ esperaIA inicio,totalReticencias =
 
 -- Exibe uma representação textual de um personagem
 exibePersonagem::[] -> Integer -> ()
-exibePersonagem lista, indice = 
+exibePersonagem lista, indice = do
     putStr("[")
     print(lista !! 0)
     putStr("] ")
