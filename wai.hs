@@ -234,7 +234,7 @@ menuOlhos = do
                     removePersonagens listaPartidaJogador 0 "Azuis"
                 else do
                     putStrLn("Meus olhos não são azuis.")
-                    -alteraListaCaracteristicas False "Azuis" 3
+                    alteraListaCaracteristicas False "Azuis" 3
                     removePersonagens listaPartidaJogador 0 "Azuis"
         | escolhaOlhos <= "2" = verificacaoPersonagem "Castanhos" (idPersonagemIA-1)
             if True
