@@ -1,6 +1,8 @@
 --interface principal do "Who am i?"
 
-menuPrincipal :: Int -> IO()
+-- Menu principal que irá interagir com o usuário
+-- O mesmo precisa selecionar opções entre 1 a 4, sendo a opção 1 de iniciar um novo jogo.
+menuPrincipal :: IO()
 menuPrincipal = do
     putStr ("\n##############################\n")
     putStr ("Bem vindo ao 'Who am i?'!\n\n")
@@ -11,50 +13,48 @@ menuPrincipal = do
 
     opcaoEscolhidaMP <- getLine
 
-    if opcaoEscolhida == 1 then do 
+    if opcaoEscolhidaMP == 1 then do 
         menuNovoJogo
         else if 
-            opcaoEscolhida == 2 then 
+            opcaoEscolhidaMP == 2 then 
                 menuComoJogar
         else if 
-            opcaoEscolhida == 3 then 
+            opcaoEscolhidaMP == 3 then 
                 menuRanking
         else if 
-            opcaoEscolhida == 4 then 
+            opcaoEscolhidaMP == 4 then 
                 sairPrograma
         else do 
             putStr ("Opção inválida")
-            menuPrincipal
+            menuPrincipal --para que o programa não termine, e retorne ao mesmo menu.
+
 
 
 -- Menu 1, novo jogo
-menuNovoJogo :: int -> IO()
+-- Função mais importante, irá popular o savefile de usuários já cadastrados e
+-- irá iniciar novo jogo, nas regras de negócio
+menuNovoJogo :: IO()
 menuNovoJogo : do
-    putStr ("[1] Novo perfil\n")
-    putStr ("[2] Já possuo um perfil\n")
-    putStr ("[3] Voltar ao menu principal\n\n")
+    putStr ("[1] Comecar novo jogo\n")
+    putStr ("[2] Voltar ao menu principal\n\n")
 
     opcaoEscolhidaNJ <- getLine
 
     if opcaoEscolhidaNJ == 1 then do
-        putStr ("Digite o nome de usuário a ser criado:\n")
-        novoUsuario <- getLine
-        -- TODO
-        -- Implementar adição a base de usuários criados
-        -- Após adicionar o usuário na base, inicia novo jogo (novoJogo)
-        else if opcaoEscolhidaNJ == 2 then do
-            novoJogo -- chamada a função novo jogo do wai.hs
-        else if opcaoEscolhidaNJ == 3 then do
+        putStr("Insira seu nome de usuário\n")
+        nome <- getLine -- verificar se, já existe o usuário. Se existir, a pontuacao da partida será somada, do contrário, novo usuário precisa ser criado
+        novoJogo -- chamada a funcao do main.hs, iniciando novo jogo e suas respectivas partidas
+        else if opcaoEscolhidaNJ == 2 then
             menuPrincipal
-        else
-            putStr ("Opção inválida!")
-            menuNovoJogo
+        else do
+            putStr ("Opção Inválida")
+            go to menuNovoJogo --para que o programa não termine, e retorne ao mesmo menu.
 
-    
 
 
 -- Menu 2, como jogar
-menuComoJogar :: Int -> IO()
+-- Imprime apenas orientações da regra geral de negócio.
+menuComoJogar :: IO()
 menuComoJogar = do
     putStr ("“Who am i?” é um jogo de turnos, você escolhe um personagem e o Bot irá receber outro personagem aleatoriamente.\n")
     putStr ("A lista de personagens é mesma para ambos.\n" ++ "O objetivo do jogo é adivinhar o personagem do adversário, a cada rodada você pode:\n")
@@ -62,29 +62,36 @@ menuComoJogar = do
     putStr ("Informações importantes:\n" ++ "Você e o bot podem escolher o mesmo personagem.\nSe você escolher chutar e errar, você perde.\n\n")
     putStr ("[1] Retornar ao Menu Principal\n")
 
-    opcaoEscolhidaMJ <- getLine
+    opcaoEscolhidaCJ <- getLine
 
-    if opcaoEscolhidaMJ == 1 then do 
+    if opcaoEscolhidaCJ == 1 then do 
         menuPrincipal
         else do 
             putStr("Opção inválida")
-            menuComoJogar
+            menuComoJogar --para que o programa não termine, e retorne ao mesmo menu.
+
+
 
 -- Menu 3, ranking de jogadores
-menuRanking :: Int -> IO()
+-- imprime o save file, ordenado, dos usuários cadastrados. -> USUARIO, Vitorias: X
+menuRanking :: IO()
 menuRanking = do
     putStr ("Imprime aqui ranking dos top 10 jogadores cadastrados.\n\n") --Falta implementar
+    
     putStr ("[1] Retornar ao menu Principal")
     opcaoEscolhidaMR <- getLine
 
-    if opcaoEscolhida == 1 then do 
+    if opcaoEscolhidaMR == 1 then do 
         menuPrincipal
         else do
             putStr ("Opção inválida")
-            menuRanking
+            menuRanking --para que o programa não termine, e retorne ao mesmo menu.
+
+
 
 -- Menu 4 Sair do programa
-sairPrograma :: Int -> IO()
+-- encerra a execucao do programa na opção 1, retorna ao menu principal na posicao 0
+sairPrograma :: IO()
 sairPrograma = do
     putStr ("Tem certeza que deseja sair?\n")
     putStr ("[1] Sim")
@@ -98,4 +105,4 @@ sairPrograma = do
             menuPrincipal
         else do
             putStr ("Opção inválida")
-            sairPrograma
+            sairPrograma --para que o programa não termine, e retorne ao mesmo menu.
