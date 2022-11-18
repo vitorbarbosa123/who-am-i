@@ -74,7 +74,6 @@ menuComoJogar = do
 menuRanking :: Int -> IO()
 menuRanking = do
     putStr ("Imprime aqui ranking dos top 10 jogadores cadastrados.\n\n") --Falta implementar
-
     putStr ("[1] Retornar ao menu Principal")
     opcaoEscolhidaMR <- getLine
 
