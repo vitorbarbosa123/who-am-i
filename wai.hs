@@ -425,3 +425,5 @@ exibePersonagens lista, lenLista =
         then do exibePersonagem lista lenLista
                 exibePersonagens lenLista+1
         else putStrLn("---")
+
+
