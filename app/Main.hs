@@ -1,4 +1,7 @@
-module Main where
+import Repo.Usuarios
 
 main :: IO ()
-main = putStrLn "Hello, Haskell!"
+main = do
+    u:xs <- criaUsuarioSeNaoExistir "davi"
+
+    print u
