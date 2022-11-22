@@ -1,7 +1,7 @@
 import Repo.Usuarios
+import Repo.Personas
 
 main :: IO ()
 main = do
-    u:xs <- criaUsuarioSeNaoExistir "davi"
-
-    print u
+    p <- listPersonas
+    print (map parseToStringArray p)
