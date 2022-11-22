@@ -1,39 +1,71 @@
 import System.Random
 import Data.List
 
+let sex = ["Feminino","Masculino"],
+let hair = ["Castanho","Louro","Preto","Ruivo"],
+let skin = ["Branca","Indígena","Negra","Parda"],
+let eyes = ["Azuis","Castanhos","Pretos","Verdes"],
+let props = ["Brinco","Chapéu","Óculos","Piercing"]
+
+
 -- Todo: criar uma função que recebe uma lista e retorna o tamanho da lista
 getLength:: [T]->Int
-getLength = length T
+getLength list = length list
 
 -- Todo: criar uma função que gera um número aleatório entre 0 e o tamanho de uma
 -- lista genérica
 renderRandom:: Int -> Int
-getLength arrayLength
-renderRandom =
+renderRandom arrayLength =
+   getLength arrayLength
    randomIO (1, arrayLength)
 
 -- Todo: criar uma função que usa o número aleatório anterior como indice para buscar
 -- um elemento em algum array
-getElemByIndex:: [T] -> Int -> String
+getElemByIndex:: [T] -> String
 getElemByIndex list index result =
+    renderRandom index
     result <- list!!index 
+    where index <- getLength list
 
 
 -- Todo: criar funções que usa a anterior(deve-se passar o array específico)
 -- e retorna o elemento em um indice:
 
 -- Todo: função que busca o sexo
+    getSex:: [String]->String
+    getSex sex result =
+        result <- getElemByIndex sex 
+
 
 -- Todo: função que busca a cor dos olhos
+    getEyes:: [String]->String
+    getEyes eyes result =
+        result <- getElemByIndex eyes 
 
 -- Todo: função que busca a cor da pele
+    getSkin:: [String]->String
+    getSkin skin result =
+        result <- getElemByIndex skin 
 
 -- Todo: função que busca a cor do cabelo
+    getHair:: [String]->String
+    getHair hair result =
+        result <- getElemByIndex hair 
 
 -- Todo: função que busca o acessório
-
+    getProps:: [String]->String
+    getProps props result =
+        result <- getElemByIndex props 
 
 -- Todo: uma função que salva a decisão feita em um novo array
+    saveChoices:: [String] -> [String] -> [String] -> [String] -> [String] -> [String]
+    saveChoices sex hair skin eyes props = 
+        choice <- getSex sex
+        choice <- getHair hair
+        choice <- getSkin skin
+        choice <- getEyes eyes
+        choice <- getProps props
+        where choice [] = []
 
 -- Todo: uma função que verifica se a persona "montada" é a mesma que a escolhida
 
