@@ -1,8 +1,22 @@
+import System.Random
+import Data.List
+
+-- Todo: criar uma função que recebe uma lista e retorna o tamanho da lista
+getLength:: [T]->Int
+getLength = length T
+
 -- Todo: criar uma função que gera um número aleatório entre 0 e o tamanho de uma
 -- lista genérica
+renderRandom:: Int -> Int
+getLength arrayLength
+renderRandom =
+   randomIO (1, arrayLength)
 
 -- Todo: criar uma função que usa o número aleatório anterior como indice para buscar
 -- um elemento em algum array
+getElemByIndex:: [T] -> Int -> String
+getElemByIndex list index result =
+    result <- list!!index 
 
 
 -- Todo: criar funções que usa a anterior(deve-se passar o array específico)
@@ -29,20 +43,16 @@
 -- se for, a função vai "rodar" novamente
 
 
-
-
-
-
 -- Imprime reticências na tela para humanizar a tomada de decisão da IA. Perguntar ao professor ou monitor se a definição do método 
 -- pode utilizar um valor concreto ao invés de um tipo
 
-esperaIA::Integer -> () -- Sempre iniciar com 0
-esperaIA inicio,totalReticencias = 
-    if inicio < 3
-        then do threadDelay 300000 -- Aprox. 0.3 segundos
-                threadDelay 300000 putStr(". ") 
-                threadDelay 300000 putStr(". ")
-                threadDelay 300000 putStrLn(".")
-                threadDelay 300000
-                esperaIA inicio+1 totalReticencias
-        else putStrLn("!")
+-- esperaIA::Integer -> () -- Sempre iniciar com 0
+-- esperaIA inicio,totalReticencias = 
+--     if inicio < 3
+--         then do threadDelay 300000 -- Aprox. 0.3 segundos
+--                 threadDelay 300000 putStr(". ") 
+--                 threadDelay 300000 putStr(". ")
+--                 threadDelay 300000 putStrLn(".")
+--                 threadDelay 300000
+--                 esperaIA inicio+1 totalReticencias
+--         else putStrLn("!")
