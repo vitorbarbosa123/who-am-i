@@ -3,5 +3,4 @@ import Repo.Personas
 
 main :: IO ()
 main = do
-    p <- listPersonas
-    print (map parseToStringArray p)
+    print "Hello Haskell!"
