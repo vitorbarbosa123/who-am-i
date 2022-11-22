@@ -4,10 +4,10 @@
 module Repo.Personas (listPersonas, parseToStringArray) where
 
 import           Control.Applicative ()
-import           Database.SQLite.Simple (execute, open, query_, field
-                                       , Only(Only), NamedParam((:=))
-                                       , FromRow(..))
-import           Database.SQLite.Simple.FromRow (RowParser)
+import Database.SQLite.Simple (execute, open, query_, field
+  , Only(Only), NamedParam((:=))
+  , FromRow(..))
+import Database.SQLite.Simple.FromRow (RowParser)
 
 data PersonaField =
   PersonaField String String String String String String String deriving (Show) 
