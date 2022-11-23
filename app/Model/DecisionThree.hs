@@ -76,33 +76,39 @@ getElemByIndex list index result =
 
 -- Todo: uma função que verifica se a persona "montada" é a mesma que a escolhida
 verificaAcertos::[String]->[String]->Bool
-verificaAcertos persona personaCorreta = personaCorreta == (verificaCaracteristicas persona personaCorreta)
+verificaAcertos persona personaCorreta =
+    personaCorreta == (verificaCaracteristicas persona personaCorreta 0)
 
--- Funcao que retorna uma nova lista com as caracteristicas da persona "montada"
--- que estao na persona correta: ou seja as caracterísicas que foram acertadas
--- Todo: ajustar para funcionar corretamente junto a funcao 'funcoesRestantes'
-verificaCaracteristicas::[String]->[String]->[String]
-verificaCaracteristicas personaMontada personaCorreta =
-    [ caracteristica | caracteristica <- personaMontada, caracteristica `elem` personaCorreta]
+-- Retorna uma nova lista com as caracteristicas da persona "montada" que estao
+-- na persona correta ou a string "erro" na ordem: (sex, hair, skin, eyes, props)
+
+verificaCaracteristicas::[String]->[String]->Int->[String]
+verificaCaracteristicas personaMontada personaCorreta i =
+    | (null caracteristica) = []  -- fim da lista / condicao de parada
+
+    | otherwise =
+        | (caracteristica  == personaCorreta!!i) =
+            [caracteristica] ++ (verificaCaracteristicas personaMontada personaCorreta i+1)
+
+        | otherwise =
+            ["erro"] ++ (verificaCaracteristicas personaMontada personaCorreta i+1)
+    where caracteristica = personaMontada!!i
 
 -- Todo: uma função que utiliza a da linha 22 e repassa para as funções da linha 11
 -- em diante que: caso o elemento retornado seja igual ao já selecionado anteriormente
 -- validar se o valor booleano do mesmo é false(ou seja, pode ser selecionado de novo)
--- se for, a função vai "rodar" novamente
+-- se for, a função vai "rodar" novamente.
+-- Retorna: uma lista com nomes das funcoes que ainda podem rodar
 
--- recebe uma lista de listas (cada lista interna eh um categoria de caracteristicas),
--- e uma lista de caracteristicas acertadas e uma lista de nomes de funcoes relacionadas.
--- retorna uma lista com as funcoes que ainda podem rodar
 funcoesRestantes::[[String]]->[String]->[String]->[(T,Boolean)]
 funcoesRestantes [categoria:caudaC] [acerto:caudaA] [funcao:caudaF] =
-    | (categoria == []) = []     -- para
+    | (categoria == []) = []     -- fim da lista / condicao de parada
 
     | acerto `elem` categoria =  -- se acertou a categoria:
-        adicionaTupla (funcao, True) (funcoesRestantes caudaC caudaA)  -- adiciona (nomeDaFuncao, True) a resposta
+        adicionaTupla (funcao, True) (funcoesRestantes caudaC caudaA caudaF)  -- adiciona (nomeDaFuncao, True) a resposta
 
     | otherwise =
-        adicionaTupla (caudaF, False) (funcoesRestantes caudaC caudaA) -- adiciona (nomeDaFuncao, False) a resposta
-
+        adicionaTupla (funcao, False) (funcoesRestantes caudaC caudaA caudaF) -- adiciona (nomeDaFuncao, False) a resposta
 
 adicionaTupla::(T,Bool)->[T]->[T]
 adicionaTupla tupla lista = [tupla] ++ lista
