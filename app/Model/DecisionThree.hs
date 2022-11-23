@@ -7,6 +7,13 @@ let skin = ["Branca","Indígena","Negra","Parda"],
 let eyes = ["Azuis","Castanhos","Pretos","Verdes"],
 let props = ["Brinco","Chapéu","Óculos","Piercing"]
 
+-- Guarda as caracteristicas possíveis de cada categoria
+getCaracteristicas::[[String]]
+caracteristicas = [sex, hair, skin, eyes, props]
+
+-- Guarda os nomes das funcoes get
+getFuncao::[String]
+getFuncao = ["getSex", "getHair", "getSkin", "getEyes", "getProps"]
 
 -- Todo: criar uma função que recebe uma lista e retorna o tamanho da lista
 getLength:: [T]->Int
@@ -24,7 +31,7 @@ renderRandom arrayLength =
 getElemByIndex:: [T] -> String
 getElemByIndex list index result =
     renderRandom index
-    result <- list!!index 
+    result <- list!!index
     where index <- getLength list
 
 
@@ -34,28 +41,28 @@ getElemByIndex list index result =
 -- Todo: função que busca o sexo
     getSex:: [String]->String
     getSex sex result =
-        result <- getElemByIndex sex 
+        result <- getElemByIndex sex
 
 
 -- Todo: função que busca a cor dos olhos
     getEyes:: [String]->String
     getEyes eyes result =
-        result <- getElemByIndex eyes 
+        result <- getElemByIndex eyes
 
 -- Todo: função que busca a cor da pele
     getSkin:: [String]->String
     getSkin skin result =
-        result <- getElemByIndex skin 
+        result <- getElemByIndex skin
 
 -- Todo: função que busca a cor do cabelo
     getHair:: [String]->String
     getHair hair result =
-        result <- getElemByIndex hair 
+        result <- getElemByIndex hair
 
 -- Todo: função que busca o acessório
     getProps:: [String]->String
     getProps props result =
-        result <- getElemByIndex props 
+        result <- getElemByIndex props
 
 -- Todo: uma função que salva a decisão feita em um novo array
     saveChoices:: [String] -> [String] -> [String] -> [String] -> [String] -> [String]
@@ -68,28 +75,46 @@ getElemByIndex list index result =
         where choice [] = []
 
 -- Todo: uma função que verifica se a persona "montada" é a mesma que a escolhida
-    verificaAcertos::[String]->[String]->Bool
-    verificaAcertos persona personaCorreta = personaCorreta == (verificaCaracteristicas persona personaCorreta)
+verificaAcertos::[String]->[String]->Bool
+verificaAcertos persona personaCorreta = personaCorreta == (verificaCaracteristicas persona personaCorreta)
 
 -- Funcao que retorna uma nova lista com as caracteristicas da persona "montada"
 -- que estao na persona correta: ou seja as caracterísicas que foram acertadas
-    verificaCaracteristicas::[String]->[String]->[String]
-    verificaCaracteristicas personaMontada personaCorreta =
-        [ caracteristica | caracteristica <- personaMontada, elem personaCorreta]
+-- Todo: ajustar para funcionar corretamente junto a funcao 'funcoesRestantes'
+verificaCaracteristicas::[String]->[String]->[String]
+verificaCaracteristicas personaMontada personaCorreta =
+    [ caracteristica | caracteristica <- personaMontada, caracteristica `elem` personaCorreta]
 
 -- Todo: uma função que utiliza a da linha 22 e repassa para as funções da linha 11
 -- em diante que: caso o elemento retornado seja igual ao já selecionado anteriormente
 -- validar se o valor booleano do mesmo é false(ou seja, pode ser selecionado de novo)
 -- se for, a função vai "rodar" novamente
 
--- Imprime reticências na tela para humanizar a tomada de decisão da IA. Perguntar ao professor ou monitor se a definição do método 
+-- recebe uma lista de listas (cada lista interna eh um categoria de caracteristicas),
+-- e uma lista de caracteristicas acertadas e uma lista de nomes de funcoes relacionadas.
+-- retorna uma lista com as funcoes que ainda podem rodar
+funcoesRestantes::[[String]]->[String]->[String]->[(T,Boolean)]
+funcoesRestantes [categoria:caudaC] [acerto:caudaA] [funcao:caudaF] =
+    | (categoria == []) = []     -- para
+
+    | acerto `elem` categoria =  -- se acertou a categoria:
+        adicionaTupla (funcao, True) (funcoesRestantes caudaC caudaA)  -- adiciona (nomeDaFuncao, True) a resposta
+
+    | otherwise =
+        adicionaTupla (caudaF, False) (funcoesRestantes caudaC caudaA) -- adiciona (nomeDaFuncao, False) a resposta
+
+
+adicionaTupla::(T,Bool)->[T]->[T]
+adicionaTupla tupla lista = [tupla] ++ lista
+
+-- Imprime reticências na tela para humanizar a tomada de decisão da IA. Perguntar ao professor ou monitor se a definição do método
 -- pode utilizar um valor concreto ao invés de um tipo
 
 -- esperaIA::Integer -> () -- Sempre iniciar com 0
--- esperaIA inicio,totalReticencias = 
+-- esperaIA inicio,totalReticencias =
 --     if inicio < 3
 --         then do threadDelay 300000 -- Aprox. 0.3 segundos
---                 threadDelay 300000 putStr(". ") 
+--                 threadDelay 300000 putStr(". ")
 --                 threadDelay 300000 putStr(". ")
 --                 threadDelay 300000 putStrLn(".")
 --                 threadDelay 300000
