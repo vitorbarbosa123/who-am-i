@@ -1,6 +1,7 @@
 import System.Random
 import Control.Concurrent
 
+-- Inicia um novo jogo
 novoJogo::IO()
 novoJogo = do
     putStr("Nome do jogador: ")
@@ -13,7 +14,7 @@ novoJogo = do
 
 -- Inicia uma partida de WaI?; cada jogo contém um máximo de 5 partidas,
 partida::IO()
-partida = do
+partida =
     let listaPartidaIA = listaPersonagens
     let listaPartidaJogador = listaPersonagens
     let listasCaracteristicasPartida = listasCaracteristicasIA

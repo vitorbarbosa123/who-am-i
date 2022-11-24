@@ -35,7 +35,6 @@
 
 -- Imprime reticências na tela para humanizar a tomada de decisão da IA. Perguntar ao professor ou monitor se a definição do método 
 -- pode utilizar um valor concreto ao invés de um tipo
-
 esperaIA::Integer -> () -- Sempre iniciar com 0
 esperaIA inicio,totalReticencias = 
     if inicio < 3

@@ -1,5 +1,6 @@
 -- Início de um jogo e seu "laço" de execução
 
+-- Início de um jogo e seu "laço" de execução
 jogo::Int -> IO() --Sempre vai receber 1 como argumento inicial
 jogo rodada =
     if rodada <= 5 || pontuacaoIA < 3 || pontuacaoJogador < 3
@@ -11,6 +12,7 @@ jogo rodada =
                 --Atualiza o HashMap da leaderboard com o nome do jogador
             else
                 putStrLn("Melhor sorte na próxima vez.")
+
 
 -- Remove um elemento de uma lista de acordo com o índice fornecido
 removePorIndice :: Integer -> [a] -> [a]

@@ -1,3 +1,4 @@
+
 -- Itera sobre uma lista de personagens, eliminando personagens
 removePersonagens::[] -> Integer -> String -> () --Argumentos: lista de personagens a ser iterada, iterador/condição de parada, característica
 removePersonagens lista, iterador, caracteristica = 
