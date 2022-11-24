@@ -49,8 +49,8 @@ menuNovoJogo = do
 
     if opcaoEscolhidaNJ == "1" then do
         putStr("Insira seu nome de usuário: ")
-        nome <- getLine -- verificar se, já existe o usuário. Se existir, a pontuacao da partida será somada, do contrário, novo usuário precisa ser criado
-        putStr("novoJogo") -- chamada a funcao do main.hs, iniciando novo jogo e suas respectivas partidas
+        novoJogo nome <- getLine -- verificar se, já existe o usuário. Se existir, a pontuacao da partida será somada, do contrário, novo usuário precisa ser criado
+        
         else if opcaoEscolhidaNJ == "2" then
             menuPrincipal
         else do

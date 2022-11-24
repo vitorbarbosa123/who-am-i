@@ -1,11 +1,13 @@
+module main where
+
+
 import System.Random
 import Control.Concurrent
 
 -- Inicia um novo jogo
-novoJogo::IO()
-novoJogo = do
-    putStr("Nome do jogador: ")
-    nome <- getLine
+novoJogo::String -> IO()
+novoJogo x
+    nome = x
     let pontuacaoJogador = 0
     let pontuacaoIA = 0
     jogo 1
