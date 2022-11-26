@@ -1,4 +1,6 @@
-module Main where
+import Repo.Usuarios
+import Repo.Personas
 
 main :: IO ()
-main = putStrLn "Hello, Haskell!"
+main = do
+    print "Hello Haskell!"
