@@ -11,3 +11,4 @@ executable whoami
     build-depends:    base ^>=4.14.2.0, random
     hs-source-dirs:   app
     default-language: Haskell2010
+    other-modules: DecisionTree
