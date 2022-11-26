@@ -332,11 +332,11 @@ menuPalpite = do
             if palpiteJogador == escolhaIA
                 then incrementaPontuacaoJogador
                 else incrementaPontuacaoIA
-        else if escolhaJogador == "2"
-            then menuJogador
-            else do
-                putStrLn("Opção inválida!")
-                menuPalpite
+    else if escolhaJogador == "2"
+        then menuJogador
+    else do
+        putStrLn("Opção inválida!")
+        menuPalpite
 
 -- Itera sobre uma lista de personagens, eliminando personagens
 removePersonagens::[] -> Integer -> String -> () --Argumentos: lista de personagens a ser iterada, iterador/condição de parada, característica
@@ -372,7 +372,7 @@ alteraListaCaracteristicas:: Boolean -> String -> Integer -> ()
 alteraListaCaracteristicas operador caracteristica indice= do
     if operador == True
         then
-            let listasCaracteristicasPartida !! 0 = [caracteristica]
+            let listasCaracteristicasPartida !! indice = [caracteristica]
         else
             removePorIndice indice listasCaracteristicasPartida
 
@@ -420,7 +420,7 @@ exibePersonagem lista, indice = do
 
 -- Exibe representações textuais de todos os personagens em uma lista. O argumento lenLista é apenas uma condição de parada para as chamadas recursivas
 exibePersonagens::[] -> Integer -> ()
-exibePersonagens lista, lenLista = 
+exibePersonagens lista, lenLista =
     if lenLista < lista length
         then do exibePersonagem lista lenLista
                 exibePersonagens lenLista+1
