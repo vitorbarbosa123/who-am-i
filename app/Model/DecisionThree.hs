@@ -16,11 +16,11 @@ module DecisionTree(
 import System.Random
 import Data.List
 
-let sex = ["Feminino","Masculino"],
-let hair = ["Castanho","Louro","Preto","Ruivo"],
-let skin = ["Branca","Indígena","Negra","Parda"],
-let eyes = ["Azuis","Castanhos","Pretos","Verdes"],
-let props = ["Brinco","Chapéu","Óculos","Piercing"]
+sex = ["Feminino","Masculino"]
+hair = ["Castanho","Louro","Preto","Ruivo"]
+skin = ["Branca","Indígena","Negra","Parda"]
+eyes = ["Azuis","Castanhos","Pretos","Verdes"]
+props = ["Brinco","Chapéu","Óculos","Piercing"]
 
 -- Guarda as caracteristicas possíveis de cada categoria
 getTraits::[[String]]
@@ -30,52 +30,46 @@ getTraits = [sex, hair, skin, eyes, props]
 getFunction::[String]
 getFunction = ["getSex", "getHair", "getSkin", "getEyes", "getProps"]
 
--- Função que recebe uma lista e retorna o tamanho da lista
-getLength:: [T]->Int
-getLength list = length list
-
 -- Gera um número aleatório entre 0 e o tamanho de uma lista genérica
-renderRandom:: Int -> Int
-renderRandom arrayLength =
-   getLength arrayLength
-   randomIO (1, arrayLength)
+renderRandom:: [T] -> Int
+renderRandom array =
+   randomRIO (1, length array)
 
 -- Usa o número aleatório como indice para buscar um elemento em algum array
 getElemByIndex:: [T] -> String
-getElemByIndex list index result =
-    renderRandom index
-    result <- list!!index
-    where index <- getLength list
+getElemByIndex list result =
+    result list!!index
+    where index = renderRandom list
 
 getSex:: [String]->String
 getSex sex result =
-    result <- getElemByIndex sex
+    result getElemByIndex sex
 
 getEyes:: [String]->String
 getEyes eyes result =
-    result <- getElemByIndex eyes
+    result getElemByIndex eyes
 
 getSkin:: [String]->String
 getSkin skin result =
-    result <- getElemByIndex skin
+    result getElemByIndex skin
 
 getHair:: [String]->String
 getHair hair result =
-    result <- getElemByIndex hair
+    result getElemByIndex hair
 
 getProps:: [String]->String
 getProps props result =
-    result <- getElemByIndex props
+    result getElemByIndex props
 
 -- Salva a decisão feita em um novo array
 saveChoices:: [String] -> [String] -> [String] -> [String] -> [String] -> [String]
 saveChoices sex hair skin eyes props =
-    choice <- getSex sex
-    choice <- getHair hair
-    choice <- getSkin skin
-    choice <- getEyes eyes
-    choice <- getProps props
-    where choice [] = []
+    [getSex sex
+    getHair hair
+    getSkin skin
+    getEyes eyes
+    getProps props]
+    
 
 -- Verifica se a persona "montada" é a mesma que a escolhida
 verifyPersona::[String]->[String]->Bool
