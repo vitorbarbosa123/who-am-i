@@ -8,8 +8,7 @@ extra-source-files:
 
 executable whoami
     main-is:          Main.hs
-    build-depends:    base ^>=4.14.2.0, random
+    build-depends:    base >=4.14.2.0, random, sqlite-simple
     other-modules:    Repo.Usuarios, Repo.Personas, DecisionTree
-    build-depends:    base ^>=4.12.0.0, sqlite-simple
-    hs-source-dirs:   app
+    hs-source-dirs:   app, app/Model
     default-language: Haskell2010
