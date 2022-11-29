@@ -1,4 +1,4 @@
-module Controllers.Persona where
+module Verifiers where
 
 
 -- Itera sobre uma lista de personagens, eliminando personagens

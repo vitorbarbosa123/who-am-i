@@ -1,4 +1,4 @@
-module Controllers.Personas where
+module Personas where
 
 -- Personagens utilizados no jogo, na forma de listas. Cada lista possui, além de um número identificador (índice 0) e nome (índice 1) únicos para cada entidade, um conjunto de características
 -- físicas intrínsecas (em ordem: sexo (índice 2), cor dos cabelos (índice 3), etnia (índice 4), cor dos olhos (índice 5), acessório  (índice 6)), totalizando sete itens por pessoa

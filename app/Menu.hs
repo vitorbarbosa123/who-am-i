@@ -1,4 +1,6 @@
-module View.Menu where
+module Menu where
+
+import Verifiers
 
 menuJogador::IO()
 menuJogador = do

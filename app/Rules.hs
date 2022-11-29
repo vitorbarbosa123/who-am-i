@@ -1,26 +1,26 @@
-module Controllers.Rules where
+module Rules where
 
-import System.Random
-import Control.Concurrent
+--import System.Random
+--import Control.Concurrent -- utlizado em esperaIA
+import Personas
+--import Menu
 
 -- Inicia um novo jogo
 novoJogo:: String -> IO()
 novoJogo x = do
-    nome = x
-    let pontuacaoJogador = 0
-    let pontuacaoIA = 0
-    jogo 1
+    let nome = x
+    jogo 1 0 0
 
 
 
 -- Início de um jogo e seu "laço" de execução
-jogo::Int -> IO() --Sempre vai receber 1 como argumento inicial
-jogo rodada =
-    if rodada <= 5 || pontuacaoIA < 3 || pontuacaoJogador < 3
+jogo:: Int -> Int -> Int -> IO() --Sempre vai receber 1 como argumento inicial, a pontuacao do jogador e a pontuacao da IA.
+jogo rodada pJogador pIa = 
+    if rodada <= 5 || pIa < 3 || pJogador < 3
         then do 
             partida
-            jogo rodada+1 
-        else if pontuacaoJogador > pontuacaoIA
+            jogo (rodada+1) pJogador pIa
+        else if pJogador > pIa
             then
                 putStrLn("Você venceu, parabéns!")
             else
@@ -30,25 +30,25 @@ jogo rodada =
 
 -- Inicia uma partida de WaI?; cada jogo contém um máximo de 5 partidas,
 partida::IO()
-partida =
+partida = do
+
     let listaPartidaIA = listaPersonagens
     let listaPartidaJogador = listaPersonagens
     let listasCaracteristicasPartida = listasCaracteristicasIA
-    chancePalpite = 0
-    let escolhaJogador <- getLine
+    escolhaJogador <- getLine
     let idPersonagemJogador = read escolhaJogador :: Int
-    let (idPersonagemIA, _) = randomR (1,16) gen :: (Int, StdGen)
+    let idPersonagemIA = 3
+    --let (idPersonagemIA, _) = randomR (1,16) gen :: (Int, StdGen)
     let escolhaIA = idPersonagemIA :: String
     menuJogador
 
 
+
 --funções existentes no arquivo score.hs
 -- Incrementa a pontuação do jogador em 1
-incrementaPontuacaoJogador::() -> Integer
-incrementaPontuacaoJogador =
-    pontuacaoJogador = pontuacaoJogador+1
-
+incrementaPontuacaoJogador:: Int -> Int -> Int -> IO()
+incrementaPontuacaoJogador x y z = jogo x (y+1) z
+ 
 -- Incrementa a pontuação da IA em 1
-incrementaPontuacaoIA::() -> Integer
-incrementaPontuacaoIA = 
-    pontuacaoIA = pontuacaoIA+1
+incrementaPontuacaoIa:: Int -> Int -> Int -> IO()
+incrementaPontuacaoIa x y z = jogo x y (z+1)

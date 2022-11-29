@@ -1,6 +1,7 @@
-module View.Interface where
+module Interface where
 
 import System.Exit -- existente na documentacao de haskell, utilizada no menu 4 para encerrar o programa.
+import Rules
 
 -- Menu principal que irá interagir com o usuário
 -- O mesmo precisa selecionar opções entre 1 a 4, sendo a opção 1 de iniciar um novo jogo.
@@ -49,8 +50,8 @@ menuNovoJogo = do
 
     if opcaoEscolhidaNJ == "1" then do
         putStr("Insira seu nome de usuário: ")
-        -- novoJogo = nome <- getLine -- verificar se, já existe o usuário. Se existir, a pontuacao da partida será somada, do contrário, novo usuário precisa ser criado
-        
+        nome <- getLine
+        novoJogo nome
         else if opcaoEscolhidaNJ == "2" then
             menuPrincipal
         else do
