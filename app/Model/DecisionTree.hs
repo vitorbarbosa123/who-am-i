@@ -73,11 +73,11 @@ verifyPersona persona personaCorreta =
 -- Retorna uma lista com as caracteristicas da persona "montada" que estao na
 -- persona correta ou a string "erro" na ordem: (sex, hair, skin, eyes, props)
 verifyTraits::[String]->[String]->Int->[String]
-verifyTraits personaMontada personaCorreta i
-    | (null caracteristica) = []  -- fim da lista / condicao de parada
+verifyTraits personaMontada personaCorreta i =
+| (null caracteristica) = []  -- fim da lista / condicao de parada
 
     | otherwise =
-        if (caracteristica == personaCorreta!!i) then
+          | (caracteristica  == personaCorreta!!i) =
             [caracteristica] ++ (verifyTraits personaMontada personaCorreta i+1)
 
         else
