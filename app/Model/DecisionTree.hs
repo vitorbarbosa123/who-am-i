@@ -67,6 +67,8 @@ getProps props = do
     return result
 
 -- Salva a decisão feita em um novo array
+
+-- como fazer referência aos lets declarados no inicio?
 saveChoices::[String] -> [String] -> [String] -> [String] -> [String] ->  IO [String]
 saveChoices sex hair skin eyes props = do
     sexChoice <- getSex sex
@@ -80,6 +82,7 @@ saveChoices sex hair skin eyes props = do
 verifyPersona::[String]->[String]->Bool
 verifyPersona persona personaCorreta =
     personaCorreta == (verifyTraits persona personaCorreta 0)
+    -- passar ele pra main, para dizer que a IA ganhou
 
 -- Retorna uma lista com as caracteristicas da persona "montada" que estao na
 -- persona correta ou a string "erro" na ordem: (sex, hair, skin, eyes, props)
@@ -95,16 +98,21 @@ verifyTraits personaMontada personaCorreta i
             ["erro"] ++ (verifyTraits personaMontada personaCorreta i+1)
     where caracteristica = personaMontada!!i
 
+-- essa função deve retornar um arrays de função.
 -- Retorna uma lista com nomes das funcoes que ainda podem rodar
-remainingFunctions::[[String]]->[String]->[String]->[(String,Bool)]
+remainingFunctions::[[String]]->[String]->[String]->[String]
 remainingFunctions categorias escolhasJogador funcoes
     | (null caracteristica) = []     -- fim da lista / condicao de parada
 
     | caracteristica `elem` categoria =           -- se acertou a categoria:
-        [((head funcoes), True)] ++ (remainingFunctions (tail categorias) (tail escolhasJogador) (tail funcoes)) -- adiciona (nomeDaFuncao, True) a resposta
+        [head funcoes] ++ (remainingFunctions (tail categorias) (tail escolhasJogador) (tail funcoes)) -- adiciona (nomeDaFuncao, True) a resposta
 
     | otherwise =
-        [((head funcoes), False)] ++ (remainingFunctions (tail categorias) (tail escolhasJogador) (tail funcoes)) -- adiciona (nomeDaFuncao, False) a resposta
+        (remainingFunctions (tail categorias) (tail escolhasJogador) (tail funcoes)) -- adiciona (nomeDaFuncao, False) a resposta
     where
-        categoria = head categorias
-        caracteristica = head escolhasJogador
+        categoria = head categorias -- sex
+        caracteristica = head escolhasJogador -- "M"
+
+        -- [getSex, getSkin]
+        
+
