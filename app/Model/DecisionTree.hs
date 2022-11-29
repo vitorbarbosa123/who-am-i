@@ -31,39 +31,50 @@ getFunction::[String]
 getFunction = ["getSex", "getHair", "getSkin", "getEyes", "getProps"]
 
 -- Gera um número aleatório entre 0 e o tamanho de uma lista genérica
-renderRandom::[String] -> Int
+renderRandom::[String] -> IO Int 
 renderRandom array =
    randomRIO (1, length array)
 
 -- Usa o número aleatório como indice para buscar um elemento em algum array
-getElemByIndex::[String] -> String
-getElemByIndex list =
-    list!!index
-    where index = renderRandom list
+getElemByIndex::[String] -> IO String
+getElemByIndex list = do
+    index <- renderRandom list
+    return $ list!!index
 
-getSex::[String]->String
-getSex sex = getElemByIndex sex
+getSex::[String]-> IO String
+getSex sex = do
+    result <- getElemByIndex sex
+    return result 
 
-getEyes::[String]->String
-getEyes eyes = getElemByIndex eyes
+getEyes::[String]->IO String
+getEyes eyes = do
+    result <- getElemByIndex eyes
+    return result
 
-getSkin::[String]->String
-getSkin skin = getElemByIndex skin
+getSkin::[String]-> IO String
+getSkin skin = do 
+    result <- getElemByIndex skin
+    return result
 
-getHair::[String]->String
-getHair hair = getElemByIndex hair
+getHair::[String]->IO String
+getHair hair = do 
+    result <- getElemByIndex hair
+    return result
 
-getProps::[String]->String
-getProps props = getElemByIndex props
+getProps::[String]->IO String
+getProps props = do
+    result <- getElemByIndex props
+    return result
 
 -- Salva a decisão feita em um novo array
-saveChoices::[String] -> [String] -> [String] -> [String] -> [String] -> [String]
-saveChoices sex hair skin eyes props =
-    [getSex sex,
-    getHair hair,
-    getSkin skin,
-    getEyes eyes,
-    getProps props]
+saveChoices::[String] -> [String] -> [String] -> [String] -> [String] ->  IO [String]
+saveChoices sex hair skin eyes props = do
+    sexChoice <- getSex sex
+    hairChoice <- getHair hair
+    skinChoice <- getSkin skin
+    eyesChoice <- getEyes eyes
+    propsChoice <- getProps props
+    return [sexChoice, hairChoice, skinChoice, eyesChoice, propsChoice]
 
 -- Verifica se a persona "montada" é a mesma que a escolhida
 verifyPersona::[String]->[String]->Bool
