@@ -1,4 +1,4 @@
-module DecisionTree(
+module Model.DecisionTree(
     getTraits,
     getFunction,
     getLength,
