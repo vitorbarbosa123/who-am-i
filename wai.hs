@@ -3,7 +3,7 @@ import Control.Concurrent
 
 -- Personagens utilizados no jogo, na forma de listas. Cada lista possui, além de um número identificador (índice 0) e nome (índice 1) únicos para cada entidade, um conjunto de características
 -- físicas intrínsecas (em ordem: sexo (índice 2), cor dos cabelos (índice 3), etnia (índice 4), cor dos olhos (índice 5), acessório  (índice 6)), totalizando sete itens por pessoa
-p1 = ["1","Luiza","Feminino","Preto","Branca","Pretos","Óculos"]    
+p1 = ["1","Luiza","Feminino","Preto","Branca","Pretos","Óculos"]
 p2 = ["2","Renato","Masculino","Preto","Negra","Verdes","Chapéu"]
 p3 = ["3","Carolina","Feminino","Castanho","Parda","Castanhos","Brinco"]
 p4 = ["4","Antonio","Masculino","Castanho","Indígena","Azuis","Piercing"]
@@ -21,7 +21,7 @@ p15 = ["15","Andréia","Feminino","Ruivo","Negra","Pretos","Chapéu"]
 p16 = ["16","Adriano","Masculino","Ruivo","Parda","Verdes","Óculos"]
 
 {- Uma lista contendo as características, em ordem alfabética: sexo (feminino/masculino), cor do cabelo (castanho,louro,preto,ruivo), etnia (branca,indígena,negra,parda),
-cor dos olhos (azuis,castanhos,pretos,verdes), acessório (brinco,chapéu,Piercing,óculos). O jogador humano tem que confiar na própria memória -} 
+cor dos olhos (azuis,castanhos,pretos,verdes), acessório (brinco,chapéu,Piercing,óculos). O jogador humano tem que confiar na própria memória -}
 listasCaracteristicasIA =[["Feminino","Masculino"],["Castanho","Louro","Preto","Ruivo"],["Branca","Indígena","Negra","Parda"],["Azuis","Castanhos","Pretos","Verdes"],["Brinco","Chapéu","Óculos","Piercing"]]
 
 -- Lista contendo todos os personagens. Jogador e IA recebem uma cópia idêntica ao início de cada partida
@@ -40,14 +40,14 @@ novoJogo = do
 jogo::Int -> IO() --Sempre vai receber 1 como argumento inicial
 jogo rodada =
     if rodada <= 5 || pontuacaoIA < 3 || pontuacaoJogador < 3
-        then do 
+        then do
             partida
-            jogo rodada+1 
-        else if pontuacaoJogador > pontuacaoIA
-            then
-                --Atualiza o HashMap da leaderboard com o nome do jogador
-            else
-                putStrLn("Melhor sorte na próxima vez.")
+            jogo rodada+1
+    else if pontuacaoJogador > pontuacaoIA
+        then
+            --Atualiza o HashMap da leaderboard com o nome do jogador
+        else
+            putStrLn("Melhor sorte na próxima vez.")
 
 -- Inicia uma partida de WaI?; cada jogo contém um máximo de 5 partidas,
 partida::IO()
@@ -107,27 +107,23 @@ menuSexo = do
     putStrLn("[1] Feminino\n[2] Masculino\n[3] Quero escolher outra categoria.")
     escolhaSexo <- getLine
         if escolhaSexo == "1" then do
-            verificacaoPersonagem "Masculino" (idPersonagemIA-1)
-            if True 
-                then do
-                    putStrLn("Meu sexo é masculino")
-                    alteraListaCaracteristicas True "Masculino" 0
-                    removePersonagens listaPartidaJogador 0 "Masculino"
-                else do
-                    putStrLn("Eu não pertenço ao sexo masculino")
-                    alteraListaCaracteristicas False "Masculino" 0
-                    removePersonagens listaPartidaJogador 0 "Masculino"
+            if (verificacaoPersonagem "Masculino" (idPersonagemIA-1) listaPersonagens) then do
+                putStrLn("Meu sexo é masculino")
+                alteraListaCaracteristicas True "Masculino" 0
+                removePersonagens listaPartidaJogador 0 "Masculino"
+            else do
+                putStrLn("Eu não pertenço ao sexo masculino")
+                alteraListaCaracteristicas False "Masculino" 0
+                removePersonagens listaPartidaJogador 0 "Masculino"
         else if escolhaSexo == "2" then do
-            verificacaoPersonagem "Feminino" (idPersonagemIA-1)
-            if True
-                then do
-                    putStrLn("Meu sexo é feminino")
-                    alteraListaCaracteristicas True "Feminino" 0
-                    removePersonagens listaPartidaJogador 0 "Feminino"
-                else do
-                    putStrLn("Eu não pertenço ao sexo feminino")
-                    alteraListaCaracteristicas False "Feminino" 0
-                    removePersonagens listaPartidaJogador 0 "Feminino"
+            if (verificacaoPersonagem "Feminino" (idPersonagemIA-1) listaPersonagens) then do
+                putStrLn("Meu sexo é feminino")
+                alteraListaCaracteristicas True "Feminino" 0
+                removePersonagens listaPartidaJogador 0 "Feminino"
+            else do
+                putStrLn("Eu não pertenço ao sexo feminino")
+                alteraListaCaracteristicas False "Feminino" 0
+                removePersonagens listaPartidaJogador 0 "Feminino"
         else if escolhaSexo == "3" then
             menuCategorias
         else do
@@ -140,49 +136,41 @@ menuCabelo = do
     putStrLn("[1] Castanho\n[2] Louro\n[3] Preto\n[4] Ruivo\n[5] Quero escolher outra categoria.")
     escolhaCabelo <- getLine
         if escolhaCabelo == "1" then do
-            verificacaoPersonagem "Castanho" (idPersonagemIA-1)
-            if True
-                then do
-                    putStrLn("Meu cabelo é castanho.")
-                    alteraListaCaracteristicas True "Castanho" 1
-                    removePersonagens listaPartidaJogador 0 "Castanho"
-                else do
-                    putStrLn("Meu cabelo não é castanho.")
-                    alteraListaCaracteristicas False "Castanho" 1
-                    removePersonagens listaPartidaJogador 0 "Castanho"
+            if (verificacaoPersonagem "Castanho" (idPersonagemIA-1) listaPersonagens) then do
+                putStrLn("Meu cabelo é castanho.")
+                alteraListaCaracteristicas True "Castanho" 1
+                removePersonagens listaPartidaJogador 0 "Castanho"
+            else do
+                putStrLn("Meu cabelo não é castanho.")
+                alteraListaCaracteristicas False "Castanho" 1
+                removePersonagens listaPartidaJogador 0 "Castanho"
         else if escolhaCabelo == "2" then do
-            verificacaoPersonagem "Louro" (idPersonagemIA-1)
-            if True
-                then do
-                    putStrLn("Meu cabelo é louro.")
-                    alteraListaCaracteristicas True "Louro" 1
-                    removePersonagens listaPartidaJogador 0 "Louro"
-                else do
-                    putStrLn("Meu cabelo não é louro.")
-                    alteraListaCaracteristicas False "Louro" 1
-                    removePersonagens listaPartidaJogador 0 "Louro"
+            if (verificacaoPersonagem "Louro" (idPersonagemIA-1) listaPersonagens) then do
+                putStrLn("Meu cabelo é louro.")
+                alteraListaCaracteristicas True "Louro" 1
+                removePersonagens listaPartidaJogador 0 "Louro"
+            else do
+                putStrLn("Meu cabelo não é louro.")
+                alteraListaCaracteristicas False "Louro" 1
+                removePersonagens listaPartidaJogador 0 "Louro"
         else if escolhaCabelo == "3" then do
-            verificacaoPersonagem "Preto" (idPersonagemIA-1)
-            if True
-                then do
-                    putStrLn("Meu cabelo é preto.")
-                    alteraListaCaracteristicas True "Preto" 1
-                    removePersonagens listaPartidaJogador 0 "Preto"
-                else do
-                    putStrLn("Meu cabelo não é preto.")
-                    alteraListaCaracteristicas False "Preto" 1
-                    removePersonagens listaPartidaJogador 0 "Preto"
+            if (verificacaoPersonagem "Preto" (idPersonagemIA-1) listaPersonagens) then do
+                putStrLn("Meu cabelo é preto.")
+                alteraListaCaracteristicas True "Preto" 1
+                removePersonagens listaPartidaJogador 0 "Preto"
+            else do
+                putStrLn("Meu cabelo não é preto.")
+                alteraListaCaracteristicas False "Preto" 1
+                removePersonagens listaPartidaJogador 0 "Preto"
         else if escolhaCabelo == "4" then do 
-            verificacaoPersonagem "Ruivo" (idPersonagemIA-1)
-            if True
-                then do
-                    putStrLn("Meu cabelo é ruivo.")
-                    alteraListaCaracteristicas True "Ruivo" 1
-                    removePersonagens listaPartidaJogador 0 "Ruivo"
-                else do
-                    putStrLn("Meu cabelo não é ruivo.")
-                    alteraListaCaracteristicas False "Ruivo" 1
-                    removePersonagens listaPartidaJogador 0 "Ruivo"
+            if (verificacaoPersonagem "Ruivo" (idPersonagemIA-1) listaPersonagens) then do
+                putStrLn("Meu cabelo é ruivo.")
+                alteraListaCaracteristicas True "Ruivo" 1
+                removePersonagens listaPartidaJogador 0 "Ruivo"
+            else do
+                putStrLn("Meu cabelo não é ruivo.")
+                alteraListaCaracteristicas False "Ruivo" 1
+                removePersonagens listaPartidaJogador 0 "Ruivo"
         else if escolhaCabelo == "5" then
             menuCategorias
         else do
@@ -195,49 +183,41 @@ menuEtnia = do
     putStrLn("[1] Branca\n[2] Indígena\n[3] Negra\n[4] Parda\n[5] Quero escolher outra categoria.")
     escolhaEtnia <- getLine
         if escolhaEtnia == "1" =then do
-            verificacaoPersonagem "Branca" (idPersonagemIA-1)
-            if True
-                then do
-                    putStrLn("Minha etnia é branca.")
-                    alteraListaCaracteristicas True "Branca" 2
-                    removePersonagens listaPartidaJogador 0 "Branca"
-                else do
-                    putStrLn("Minha etnia não é branca.")
-                    alteraListaCaracteristicas False "Branca" 2
-                    removePersonagens listaPartidaJogador 0 "Branca"
+            if (verificacaoPersonagem "Branca" (idPersonagemIA-1) listaPersonagens) then do
+                putStrLn("Minha etnia é branca.")
+                alteraListaCaracteristicas True "Branca" 2
+                removePersonagens listaPartidaJogador 0 "Branca"
+            else do
+                putStrLn("Minha etnia não é branca.")
+                alteraListaCaracteristicas False "Branca" 2
+                removePersonagens listaPartidaJogador 0 "Branca"
         else if escolhaEtnia == "2" then do
-            verificacaoPersonagem "Indígena" (idPersonagemIA-1)
-            if True
-                then do
-                    putStrLn("Minha etnia é indígena.")
-                    alteraListaCaracteristicas True "Indígena" 2
-                    removePersonagens listaPartidaJogador 0 "Indígena"
-                else do
-                    putStrLn("Minha etnia não é indígena")
-                    alteraListaCaracteristicas False "Indígena" 2
-                    removePersonagens listaPartidaJogador 0 "Indígena"
+            if (verificacaoPersonagem "Indígena" (idPersonagemIA-1) listaPersonagens) then do
+                putStrLn("Minha etnia é indígena.")
+                alteraListaCaracteristicas True "Indígena" 2
+                removePersonagens listaPartidaJogador 0 "Indígena"
+            else do
+                putStrLn("Minha etnia não é indígena")
+                alteraListaCaracteristicas False "Indígena" 2
+                removePersonagens listaPartidaJogador 0 "Indígena"
         else if escolhaEtnia == "3" then do
-            verificacaoPersonagem "Negra" (idPersonagemIA-1)
-            if True
-                then do
-                    putStrLn("Minha etnia é negra.")
-                    alteraListaCaracteristicas True "Negra" 2
-                    removePersonagens listaPartidaJogador 0 "Negra"
-                else do
-                    putStrLn("Minha etnia não é negra.")
-                    alteraListaCaracteristicas False "Negra" 2
-                    removePersonagens listaPartidaJogador 0 "Negra"
+            if (verificacaoPersonagem "Negra" (idPersonagemIA-1) listaPersonagens) then do
+                putStrLn("Minha etnia é negra.")
+                alteraListaCaracteristicas True "Negra" 2
+                removePersonagens listaPartidaJogador 0 "Negra"
+            else do
+                putStrLn("Minha etnia não é negra.")
+                alteraListaCaracteristicas False "Negra" 2
+                removePersonagens listaPartidaJogador 0 "Negra"
         else if escolhaEtnia == "4" then do
-            verificacaoPersonagem "Parda" (idPersonagemIA-1)
-            if True
-                then do
-                    putStrLn("Minha etnia é parda.")
-                    alteraListaCaracteristicas True "Parda" 2
-                    removePersonagens listaPartidaJogador 0 "Parda"
-                else do
-                    putStrLn("Minha etnia não é parda.")
-                    alteraListaCaracteristicas False "Parda" 2
-                    removePersonagens listaPartidaJogador 0 "Parda"
+            if (verificacaoPersonagem "Parda" (idPersonagemIA-1) listaPersonagens) then do
+                putStrLn("Minha etnia é parda.")
+                alteraListaCaracteristicas True "Parda" 2
+                removePersonagens listaPartidaJogador 0 "Parda"
+            else do
+                putStrLn("Minha etnia não é parda.")
+                alteraListaCaracteristicas False "Parda" 2
+                removePersonagens listaPartidaJogador 0 "Parda"
         else if escolhaEtnia == "5" then
             menuCategorias
         else do
@@ -250,49 +230,41 @@ menuOlhos = do
     putStrLn("[1] Azuis\n[2] Castanhos\n[3] Pretos\n[4] Verdes\n[5] Quero escolher outra categoria.")
     escolhaOlhos <- getLine
         if escolhaOlhos == "1" then do
-            verificacaoPersonagem "Azuis" (idPersonagemIA-1)
-            if True
-                then do
-                    putStrLn("Meus olhos são azuis.")
-                    alteraListaCaracteristicas True "Azuis" 3
-                    removePersonagens listaPartidaJogador 0 "Azuis"
-                else do
-                    putStrLn("Meus olhos não são azuis.")
-                    -alteraListaCaracteristicas False "Azuis" 3
-                    removePersonagens listaPartidaJogador 0 "Azuis"
+            if (verificacaoPersonagem "Azuis" (idPersonagemIA-1) listaPersonagens) then do
+                putStrLn("Meus olhos são azuis.")
+                alteraListaCaracteristicas True "Azuis" 3
+                removePersonagens listaPartidaJogador 0 "Azuis"
+            else do
+                putStrLn("Meus olhos não são azuis.")
+                alteraListaCaracteristicas False "Azuis" 3
+                removePersonagens listaPartidaJogador 0 "Azuis"
         else if escolhaOlhos == "2" then do
-            verificacaoPersonagem "Castanhos" (idPersonagemIA-1)
-            if True
-                then do
-                    putStrLn("Meus olhos são castanhos.")
-                    alteraListaCaracteristicas True "Castanhos" 3
-                    removePersonagens listaPartidaJogador 0 "Castanhos"
-                else do
-                    putStrLn("Meus olhos não são castanhos.")
-                    alteraListaCaracteristicas False "Castanhos" 3
-                    removePersonagens listaPartidaJogador 0 "Castanhos"
+            if (verificacaoPersonagem "Castanhos" (idPersonagemIA-1) listaPersonagens) then do
+                putStrLn("Meus olhos são castanhos.")
+                alteraListaCaracteristicas True "Castanhos" 3
+                removePersonagens listaPartidaJogador 0 "Castanhos"
+            else do
+                putStrLn("Meus olhos não são castanhos.")
+                alteraListaCaracteristicas False "Castanhos" 3
+                removePersonagens listaPartidaJogador 0 "Castanhos"
         else if escolhaOlhos == "3" then do
-            verificacaoPersonagem "Pretos" (idPersonagemIA-1)
-            if True
-                then do
-                    putStrLn("Meus olhos são pretos.")
-                    alteraListaCaracteristicas True "Pretos" 3
-                    removePersonagens listaPartidaJogador 0 "Pretos"
-                else do
-                    putStrLn("Meus olhos não são pretos.")
-                    alteraListaCaracteristicas False "Pretos" 3
-                    removePersonagens listaPartidaJogador 0 "Pretos"
+            if (verificacaoPersonagem "Pretos" (idPersonagemIA-1) listaPersonagens) then do
+                putStrLn("Meus olhos são pretos.")
+                alteraListaCaracteristicas True "Pretos" 3
+                removePersonagens listaPartidaJogador 0 "Pretos"
+            else do
+                putStrLn("Meus olhos não são pretos.")
+                alteraListaCaracteristicas False "Pretos" 3
+                removePersonagens listaPartidaJogador 0 "Pretos"
         else if escolhaOlhos == "4" then do
-            verificacaoPersonagem "Verdes" (idPersonagemIA-1)
-            if True
-                then do
-                    putStrLn("Meus olhos são verdes.")
-                    alteraListaCaracteristicas True "Verdes" 3
-                    removePersonagens listaPartidaJogador 0 "Verdes"
-                else do
-                    putStrLn("Meus olhos não são verdes.")
-                    alteraListaCaracteristicas False "Verdes" 3
-                    removePersonagens listaPartidaJogador 0 "Verdes"
+            if (verificacaoPersonagem "Verdes" (idPersonagemIA-1) listaPersonagens) then do
+                putStrLn("Meus olhos são verdes.")
+                alteraListaCaracteristicas True "Verdes" 3
+                removePersonagens listaPartidaJogador 0 "Verdes"
+            else do
+                putStrLn("Meus olhos não são verdes.")
+                alteraListaCaracteristicas False "Verdes" 3
+                removePersonagens listaPartidaJogador 0 "Verdes"
         else if escolhaOlhos == "5" then do
             menuCategorias
         else do
@@ -305,49 +277,41 @@ menuAcessorios = do
     putStrLn("[1] Brinco\n[2] Chapéu\n[3] Piercing\n[4] Óculos\n[5] Quero escolher outra categoria.")
     escolhaAcessorios <- getLine
         if escolhaAcessorio == "1" then do
-            verificacaoPersonagem "Brinco" (idPersonagemIA-1)
-            if True
-                then do
-                    putStrLn("Eu uso brinco.")
-                    alteraListaCaracteristicas True "Brinco" 4
-                    removePersonagens listaPartidaJogador 0 "Brinco"
-                else do
-                    putStrLn("Eu não uso brinco.")
-                    alteraListaCaracteristicas False "Brinco" 4
-                    removePersonagens listaPartidaJogador 0 "Brinco"
+            if (verificacaoPersonagem "Brinco" (idPersonagemIA-1) listaPersonagens) then do
+                putStrLn("Eu uso brinco.")
+                alteraListaCaracteristicas True "Brinco" 4
+                removePersonagens listaPartidaJogador 0 "Brinco"
+            else do
+                putStrLn("Eu não uso brinco.")
+                alteraListaCaracteristicas False "Brinco" 4
+                removePersonagens listaPartidaJogador 0 "Brinco"
         else if escolhaAcessorio == "2" then do
-            verificacaoPersonagem "Chapéu" (idPersonagemIA-1)
-            if True
-                then do
-                    putStrLn("Eu uso chapéu.")
-                    alteraListaCaracteristicas True "Chapéu" 4
-                    removePersonagens listaPartidaJogador 0 "Chapéu"
-                else do
-                    putStrLn("Eu não uso chapéu.")
-                    alteraListaCaracteristicas False "Chapéu" 4
-                    removePersonagens listaPartidaJogador 0 "Chapéu"
+            if (verificacaoPersonagem "Chapéu" (idPersonagemIA-1) listaPersonagens) then do
+                putStrLn("Eu uso chapéu.")
+                alteraListaCaracteristicas True "Chapéu" 4
+                removePersonagens listaPartidaJogador 0 "Chapéu"
+            else do
+                putStrLn("Eu não uso chapéu.")
+                alteraListaCaracteristicas False "Chapéu" 4
+                removePersonagens listaPartidaJogador 0 "Chapéu"
         else if escolhaAcessorio == "3" then do
-            verificacaoPersonagem "Piercing" (idPersonagemIA-1)
-            if True
-                then do
-                    putStrLn("Eu uso piercing.")
-                    alteraListaCaracteristicas True "Piercing" 4
-                    removePersonagens listaPartidaJogador 0 "Piercing"
-                else do
-                    putStrLn("Eu não uso piercing.")
-                    alteraListaCaracteristicas False "Piercing" 4
-                    removePersonagens listaPartidaJogador 0 "Piercing"
+            if (verificacaoPersonagem "Piercing" (idPersonagemIA-1) listaPersonagens) then do
+                putStrLn("Eu uso piercing.")
+                alteraListaCaracteristicas True "Piercing" 4
+                removePersonagens listaPartidaJogador 0 "Piercing"
+            else do
+                putStrLn("Eu não uso piercing.")
+                alteraListaCaracteristicas False "Piercing" 4
+                removePersonagens listaPartidaJogador 0 "Piercing"
         else if escolhaAcessorio == "4" then do
-            verificacaoPersonagem "Óculos" (idPersonagemIA-1)
-            if True
-                then do
-                    putStrLn("Eu uso óculos.")
-                    alteraListaCaracteristicas True "Óculos" 4
-                    removePersonagens listaPartidaJogador 0 "Óculos"
-                else do
-                    putStrLn("Eu não uso óculos.")
-                    alteraListaCaracteristicas False "Óculos" 4
-                    removePersonagens listaPartidaJogador 0 "Óculos"
+            if (verificacaoPersonagem "Óculos" (idPersonagemIA-1) listaPersonagens) then do
+                putStrLn("Eu uso óculos.")
+                alteraListaCaracteristicas True "Óculos" 4
+                removePersonagens listaPartidaJogador 0 "Óculos"
+            else do
+                putStrLn("Eu não uso óculos.")
+                alteraListaCaracteristicas False "Óculos" 4
+                removePersonagens listaPartidaJogador 0 "Óculos"
         else if escolhaAcessorio == "5" then
             menuCategorias
         else do
@@ -360,7 +324,7 @@ menuPalpite = do
     putStrLn("[1] Eu acho que você é...\n[2] Não quero me arriscar agora...")
     escolhaJogador <- getLine
     if escolhaJogador == "1"
-        then do 
+        then do
             palpiteJogador <- getLine
             if palpiteJogador == escolhaIA
                 then incrementaPontuacaoJogador
@@ -372,33 +336,33 @@ menuPalpite = do
                 menuPalpite
 
 -- Itera sobre uma lista de personagens, eliminando personagens
-removePersonagens::[] -> Integer -> String -> () --Argumentos: lista de personagens a ser iterada, iterador/condição de parada, característica
-removePersonagens lista, iterador, caracteristica = 
-    if iterador < lista length
-        then if caracteristica `elem` (lista !! iterador)
-            then removePersonagem lista iterador
-            else removePersonagens lista (iterador+1)
-        else alteraListaCaracteristicas (categoria-1) (caracteristica-1)
-    
+-- removePersonagens::[] -> Integer -> String -> () --Argumentos: lista de personagens a ser iterada, iterador/condição de parada, característica
+-- removePersonagens lista, iterador, caracteristica =
+--     if iterador < lista length
+--         then if caracteristica `elem` (lista !! iterador)
+--             then removePersonagem lista iterador
+--             else removePersonagens lista (iterador+1)
+--         else alteraListaCaracteristicas (categoria-1) (caracteristica-1)
+
 -- Verifica se o personagem do adversário possui determinada característica física
-verificacaoPersonagem::String -> Integer -> Boolean
-verificacaoPersonagem caracteristica, indicePersonagem =
-    if caracteristica `elem` listaPersonagens !! indicePersonagem
-        then True
-        else False
+-- verificacaoPersonagem::String -> Integer -> Boolean
+-- verificacaoPersonagem caracteristica, indicePersonagem =
+--     if caracteristica `elem` listaPersonagens !! indicePersonagem
+--         then True
+--         else False
 
 
--- Remove um personagem da lista de uma partida
-removePersonagem::[] -> Integer -> ()
-removePersonagem listaPersonagens indice =
-    removePorIndice indice listaPersonagens
+-- -- Remove um personagem da lista de uma partida
+-- removePersonagem::[] -> Integer -> ()
+-- removePersonagem listaPersonagens indice =
+--     removePorIndice indice listaPersonagens
 
--- Remove um elemento de uma lista de acordo com o índice fornecido
-removePorIndice :: Integer -> [a] -> [a]
-removePorIndice = \n -> \list ->
-    case n of 
-        0 -> tail list
-        otherwise -> head list: removePorIndice (n-1) (tail list)
+-- -- Remove um elemento de uma lista de acordo com o índice fornecido
+-- removePorIndice :: Integer -> [a] -> [a]
+-- removePorIndice = \n -> \list ->
+--     case n of
+--         0 -> tail list
+--         otherwise -> head list: removePorIndice (n-1) (tail list)
 
 --
 alteraListaCaracteristicas:: Boolean -> String -> Integer -> ()
@@ -416,16 +380,16 @@ incrementaPontuacaoJogador =
 
 -- Incrementa a pontuação da IA em 1
 incrementaPontuacaoIA::() -> Integer
-incrementaPontuacaoIA = 
+incrementaPontuacaoIA =
     pontuacaoIA = pontuacaoIA+1
 
--- Imprime reticências na tela para humanizar a tomada de decisão da IA. Perguntar ao professor ou monitor se a definição do método 
+-- Imprime reticências na tela para humanizar a tomada de decisão da IA. Perguntar ao professor ou monitor se a definição do método
 -- pode utilizar um valor concreto ao invés de um tipo
 esperaIA::Integer -> () -- Sempre iniciar com 0
-esperaIA inicio,totalReticencias = 
+esperaIA inicio,totalReticencias =
     if inicio < 3
         then do threadDelay 300000 -- Aprox. 0.3 segundos
-                threadDelay 300000 putStr(". ") 
+                threadDelay 300000 putStr(". ")
                 threadDelay 300000 putStr(". ")
                 threadDelay 300000 putStrLn(".")
                 threadDelay 300000
@@ -434,7 +398,7 @@ esperaIA inicio,totalReticencias =
 
 -- Exibe uma representação textual de um personagem
 exibePersonagem::[] -> Integer -> ()
-exibePersonagem lista, indice = 
+exibePersonagem lista, indice =
     putStr("[")
     print(lista !! 0)
     putStr("] ")
@@ -453,7 +417,7 @@ exibePersonagem lista, indice =
 
 -- Exibe representações textuais de todos os personagens em uma lista. O argumento lenLista é apenas uma condição de parada para as chamadas recursivas
 exibePersonagens::[] -> Integer -> ()
-exibePersonagens lista, lenLista = 
+exibePersonagens lista, lenLista =
     if lenLista < lista length
         then do exibePersonagem lista lenLista
                 exibePersonagens lenLista+1
