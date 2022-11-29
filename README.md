@@ -5,7 +5,7 @@ Cara a cara é um jogo onde o jogador deve adivinhar qual é o personagem do seu
 Aquele que acertar primeiro a persona do outro vence.
 
 ### Modo de jogo
-É possível jogar-lo versus outro usuário ou versus a IA
+É possível jogar-lo versus IA
 
 ### IA
 construída com base em um algoritmo de decisão por eliminação

@@ -1,4 +1,4 @@
---interface principal do "Who am i?"
+module View.Interface where
 
 import System.Exit -- existente na documentacao de haskell, utilizada no menu 4 para encerrar o programa.
 
@@ -49,7 +49,7 @@ menuNovoJogo = do
 
     if opcaoEscolhidaNJ == "1" then do
         putStr("Insira seu nome de usuário: ")
-        novoJogo nome <- getLine -- verificar se, já existe o usuário. Se existir, a pontuacao da partida será somada, do contrário, novo usuário precisa ser criado
+        -- novoJogo = nome <- getLine -- verificar se, já existe o usuário. Se existir, a pontuacao da partida será somada, do contrário, novo usuário precisa ser criado
         
         else if opcaoEscolhidaNJ == "2" then
             menuPrincipal

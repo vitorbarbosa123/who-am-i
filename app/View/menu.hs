@@ -1,3 +1,5 @@
+module View.Menu where
+
 menuJogador::IO()
 menuJogador = do
     putStrLn("Eu quero...\n[1] descobrir quem você é!\n[2] dar meu palpite!")
@@ -130,7 +132,7 @@ menuEtnia::IO()
 menuEtnia = do
     putStrLn("[1] Branca\n[2] Indígena\n[3] Negra\n[4] Parda\n[5] Quero escolher outra categoria.")
     escolhaEtnia <- getLine
-        if escolhaEtnia == "1" =then do
+        if escolhaEtnia == "1" then do
             verificacaoPersonagem "Branca" (idPersonagemIA-1)
             if True
                 then do
@@ -310,7 +312,7 @@ menuPalpite = do
 
 -- Exibe uma representação textual de um personagem
 exibePersonagem::[] -> Integer -> ()
-exibePersonagem lista, indice = 
+exibePersonagem lista indice 
     putStr("[")
     print(lista !! 0)
     putStr("] ")
@@ -329,7 +331,7 @@ exibePersonagem lista, indice =
 
 -- Exibe representações textuais de todos os personagens em uma lista. O argumento lenLista é apenas uma condição de parada para as chamadas recursivas
 exibePersonagens::[] -> Integer -> ()
-exibePersonagens lista, lenLista = 
+exibePersonagens lista lenLista 
     if lenLista < lista length
         then do exibePersonagem lista lenLista
                 exibePersonagens lenLista+1
