@@ -1,1 +1,0 @@
---- funções removidas e enviadas para rules.hs, para simplificar
