@@ -8,6 +8,6 @@ extra-source-files:
 
 executable whoami
     main-is:          Main.hs
-    build-depends:    base ^>=4.12.0.0, View.Interface, 
+    build-depends:    base
     hs-source-dirs:   app
     default-language: Haskell2010

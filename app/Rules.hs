@@ -1,9 +1,9 @@
 module Rules where
 
---import System.Random -- ToDO = verificar o motivo de random, não ser compilado
---import Control.Concurrent -- utlizado em esperaIA
+import System.Random -- ToDO = verificar o motivo de random, não ser compilado
 import Personas
 --import Menu
+
 
 -- Inicia um novo jogo
 novoJogo:: String -> IO()
@@ -21,26 +21,28 @@ jogo rodada pJogador pIa =
             --partida
             jogo (rodada+1) pJogador pIa
         else if pJogador > pIa
-            then
+            then do
                 putStrLn("Você venceu, parabéns!")
-            else
+            else do
                 putStrLn("Melhor sorte na próxima vez.")
 
 
 
 -- Inicia uma partida de WaI?; cada jogo contém um máximo de 5 partidas,
---partida::IO()
---partida = do
+partida::IO()
+partida = do
+    putStr ("Escolha um personagem: entre [1] ate [16] ")
+    personagemJogador <- getLine
 
     --let listaPartidaIA = listaPersonagens
     --let listaPartidaJogador = listaPersonagens
     --let listasCaracteristicasPartida = listasCaracteristicasIA
     --escolhaJogador <- getLine
     --let idPersonagemJogador = read escolhaJogador :: Int
-    --let idPersonagemIA = 3
+    --let idPersonagemIA = 3 
     --let (idPersonagemIA, _) = randomR (1,16) gen :: (Int, StdGen)
     --let escolhaIA = idPersonagemIA :: String
-    --menuJogador
+    menuJogador personagemJogador
 
 
 

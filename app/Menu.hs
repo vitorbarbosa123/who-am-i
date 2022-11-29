@@ -2,8 +2,9 @@ module Menu where
 
 import Verifiers
 
-menuJogador::IO()
-menuJogador = do
+menuJogador:: Int -> IO()
+menuJogador jogadorPersonagem = do
+    let personagemEscolhido = listaPersonagens[jogadorPersonagem]
     putStrLn("Eu quero...\n[1] descobrir quem você é!\n[2] dar meu palpite!")
     escolhaJogador <- getLine
     if escolhaJogador == "1"

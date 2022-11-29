@@ -2,6 +2,7 @@ module Verifiers where
 
 
 -- Itera sobre uma lista de personagens, eliminando personagens
+-- Retornar a lista anterior com os personagens removidos.
 removePersonagens:: [String] -> Int -> String -> () --Argumentos: lista de personagens a ser iterada, iterador/condição de parada, característica
 removePersonagens lista iterador caracteristica = do 
     if iterador < (length lista)
@@ -20,7 +21,8 @@ verificacaoPersonagem listaPersonagens caracteristica indicePersonagem = do
 
 
 -- Remove um personagem da lista de uma partida
-removePersonagem::[String] -> Int -> ()
+-- Retornar a lista anterior com os personagens removidos.
+removePersonagem::[String] -> Int -> IO()
 removePersonagem listaPersonagens indice = do
     removePorIndice indice listaPersonagens
 
