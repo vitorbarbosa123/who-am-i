@@ -1,6 +1,8 @@
-module DecisionTree(
+
+module Model.DecisionTree(
     getTraits,
     getFunction,
+    getLength,
     renderRandom,
     getElemByIndex,
     getSex,
@@ -11,6 +13,7 @@ module DecisionTree(
     saveChoices,
     verifyPersona,
     remainingFunctions
+    verifyPersona
 ) where
 
 import System.Random
@@ -65,6 +68,40 @@ saveChoices sex hair skin eyes props =
     getEyes eyes,
     getProps props]
 
+getElemByIndex:: [T] -> String
+getElemByIndex list result =
+    result list!!index
+    where index = renderRandom list
+
+getSex:: [String]->String
+getSex sex result =
+    result getElemByIndex sex
+
+getEyes:: [String]->String
+getEyes eyes result =
+    result getElemByIndex eyes
+
+getSkin:: [String]->String
+getSkin skin result =
+    result getElemByIndex skin
+
+getHair:: [String]->String
+getHair hair result =
+    result getElemByIndex hair
+
+getProps:: [String]->String
+getProps props result =
+    result getElemByIndex props
+
+-- Salva a decisão feita em um novo array
+saveChoices::[String] -> [String] -> [String] -> [String] -> [String] -> [String]
+saveChoices sex hair skin eyes props =
+    [getSex sex,
+    getHair hair,
+    getSkin skin,
+    getEyes eyes,
+    getProps props]
+    
 -- Verifica se a persona "montada" é a mesma que a escolhida
 verifyPersona::[String]->[String]->Bool
 verifyPersona persona personaCorreta =
@@ -74,6 +111,7 @@ verifyPersona persona personaCorreta =
 -- persona correta ou a string "erro" na ordem: (sex, hair, skin, eyes, props)
 verifyTraits::[String]->[String]->Int->[String]
 verifyTraits personaMontada personaCorreta i =
+
 | (null caracteristica) = []  -- fim da lista / condicao de parada
 
     | otherwise =
@@ -81,6 +119,14 @@ verifyTraits personaMontada personaCorreta i =
             [caracteristica] ++ (verifyTraits personaMontada personaCorreta i+1)
 
         else
+
+    | (null caracteristica) = []  -- fim da lista / condicao de parada
+
+    | otherwise =
+        | (caracteristica  == personaCorreta!!i) =
+            [caracteristica] ++ (verifyTraits personaMontada personaCorreta i+1)
+
+        | otherwise =
             ["erro"] ++ (verifyTraits personaMontada personaCorreta i+1)
     where caracteristica = personaMontada!!i
 
@@ -97,3 +143,6 @@ remainingFunctions categorias escolhasJogador funcoes
     where
         categoria = head categorias
         caracteristica = head escolhasJogador
+
+adicionaTupla::(T,Bool)->[T]->[T]
+adicionaTupla tupla lista = [tupla] ++ lista
