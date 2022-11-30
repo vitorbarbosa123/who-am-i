@@ -2,10 +2,12 @@
 {-# LANGUAGE InstanceSigs #-}
 
 module Repo.Usuarios
-    ( criaUsuarioSeNaoExistir
-    , somaPontosUsuario
-    , getNome
-    , getPontos) where
+    ( criaUsuarioSeNaoExistir,
+      listaUsuarios,
+      somaPontosUsuario,
+      parseUserToStringArray,
+      getNome,
+      getPontos) where
 
 import Control.Applicative ()
 import Database.SQLite.Simple
@@ -13,6 +15,7 @@ import Database.SQLite.Simple
       open,
       queryNamed,
       field,
+      query_,
       Only(Only),
       NamedParam((:=)),
       FromRow(..) )
@@ -47,3 +50,11 @@ getNome (UserField nome _) = nome
 
 getPontos :: UserField -> Int
 getPontos (UserField _ pontos) = pontos
+
+listaUsuarios :: IO [UserField]
+listaUsuarios = do
+  conn <- open "wai.db"
+  query_ conn "SELECT * from usuarios" :: IO [UserField]
+
+parseUserToStringArray :: UserField -> [String]
+parseUserToStringArray (UserField nome pontos)  = [nome, show pontos]
