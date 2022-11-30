@@ -3,8 +3,7 @@ module Main where
 import System.Random
 import Repo.Usuarios
 import Repo.Personas
-
-
+import Control.Concurrent
 
 main :: IO String
 main = do
@@ -238,7 +237,6 @@ partidaPxB jogador personaJogador personaBot possibilidadesJogador possibilidade
     else if userGanhou possibilidadesJogador then do
         vitoriaJogador jogador personaBot
     else do
-        cls
         putStr "|===================================================================================|\n"
         printTable possibilidadesJogador
         putStr "|===================================================================================|\n\n"
@@ -252,8 +250,19 @@ partidaPxB jogador personaJogador personaBot possibilidadesJogador possibilidade
         else do
             palpiteIa <- pegarPalpiteIA possibilidadesBot
             let newPossibilidadesBot = verificarPalpite palpiteIa personaJogador possibilidadesBot
+            putStr "|===================================================================================|\n"
+            putStr "|O Bot chutou que a sua pessoa tem: \n"
+            putStr(". ")
+            threadDelay 2000000 
+            putStr(". ")
+            threadDelay 7000000 
+            putStrLn(".")
+            threadDelay 1000000 
             imprimePalpiteIa palpiteIa
+            threadDelay 1000000
+            cls
             partidaPxB jogador personaJogador personaBot newPossibilidadesJogador newPossibilidadesBot
+        
 
 vitoriaJogador :: [String] -> [String] -> IO()
 vitoriaJogador jogador personaBot = do
