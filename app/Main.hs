@@ -30,19 +30,19 @@ jogo user1 user2 = do
 
     escolha <- getLine
     let index = (read escolha :: Int) -1
-    let personaUsuario = personas!!index
+    let personaUser = personas!!index
 
     print ("Escolha um personagem " ++ user2!!0 ++ ":")
     printTable personas
 
     escolha <- getLine
     let index = (read escolha :: Int) -1
-    let personaIA = personas!!index
+    let personaUser2 = personas!!index
 
     let possibilidadesUser = map parsePersonaToStringArray personasField
-    let possibilidadesIA = map parsePersonaToStringArray personasField
+    let possibilidadesUser2 = map parsePersonaToStringArray personasField
 
-    partida user1 user2 personaUsuario personaIA possibilidadesUser possibilidadesIA "user"
+    partida user1 user2 personaUser personaUser2 possibilidadesUser possibilidadesUser2 "user1"
 
     main
 
@@ -69,26 +69,26 @@ pegarPalpiteUser user = do
         getLine
     else 
         pegarPalpiteUser user
-        
+     
 partida :: [String] -> [String] -> [String] -> [String] -> [[String]] -> [[String]] -> String -> IO()
-partida user user2 personaUsuario personaIA possibilidadesUser possibilidadesIA jogadorDaVez = do
+partida user user2 personaUser personaUser2 possibilidadesUser possibilidadesUser2 jogadorDaVez = do
     if((length possibilidadesUser) <= 1) then do
         somaPontosUsuario (user!!0) 1
         print ("parabens " ++ user!!0 ++ "! voce ganhou!")
-    else if((length possibilidadesIA) <= 1) then do
+    else if((length possibilidadesUser2) <= 1) then do
         somaPontosUsuario (user2!!0) 1
         print ("parabens " ++ user2!!0 ++ "! voce ganhou!")
     else
-        if(jogadorDaVez == "user") then do
+        if(jogadorDaVez == "user1") then do
             printTable possibilidadesUser
             palpite <- pegarPalpiteUser user
-            let newPossibilidades = verificarPalpite palpite personaIA possibilidadesUser
-            partida user user2 personaUsuario personaIA newPossibilidades possibilidadesIA "ia"
+            let newPossibilidades = verificarPalpite palpite personaUser2 possibilidadesUser
+            partida user user2 personaUser personaUser2 newPossibilidades possibilidadesUser2 "user2"
         else do
-            printTable possibilidadesIA
+            printTable possibilidadesUser2
             palpite <- pegarPalpiteUser user2
-            let newPossibilidades = verificarPalpite palpite personaUsuario possibilidadesIA
-            partida user user2 personaUsuario personaIA possibilidadesUser newPossibilidades "user"
+            let newPossibilidades = verificarPalpite palpite personaUser possibilidadesUser2
+            partida user user2 personaUser personaUser2 possibilidadesUser newPossibilidades "user1"
 
 verificarPalpite :: String -> [String] -> [[String]] -> [[String]]
 verificarPalpite palpite persona possibilidades = do
