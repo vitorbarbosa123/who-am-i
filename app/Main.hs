@@ -39,7 +39,7 @@ menunovoJogoGeral = do
     putStr "[3] Retornar ao menu principal\n"
     putStr "Selecione uma opcao: \n"
     escolhaJG <- getLine
-    
+
     if escolhaJG == "1" then
         novoJogoPlayerXBot
         else if escolhaJG == "2" then
@@ -47,7 +47,7 @@ menunovoJogoGeral = do
         else if escolhaJG == "3" then
             main
         else do
-            putStr ("Opcao inválida!\n")
+            putStr "Opcao inválida!\n"
             menunovoJogoGeral
 
 
@@ -72,28 +72,28 @@ showPlacar = do
 -- Imprime apenas orientacoes da regra geral de negocio. -- ToDo: Ajustar as regras de acordo com o projeto atual!
 menuComoJogar :: IO String
 menuComoJogar = do
-    putStr ("\n==============================================\n")
-    putStr ("Who am i? eh um jogo de turnos, você escolhe um personagem e o Bot ira receber outro personagem aleatoriamente. Onde a lista de personagens eh a mesma para ambos.\n\n")
-    putStr ("O objetivo do jogo eh adivinhar o personagem do adversario, a cada rodada voce pode:\n")
-    putStr (". Eliminar uma caracteristica\n")
-    putStr ("Para vencer, eh necessario adivinhar o personagem primeiro do que o Bot.\n\n")
-    putStr ("Modos de jogo:\n")
-    putStr ("JogadorxJogador\n")
-    putStr ("JogadorxIA\n\n")
-    putStr ("Informacoes importantes:\n")
-    putStr ("Voce e o bot podem escolher o mesmo personagem.\n")
-    putStr ("Se voce escolher chutar e errar, voce perde a rodada.\n\n")
+    putStr "\n==============================================\n"
+    putStr "Who am i? eh um jogo de turnos, você escolhe um personagem e o Bot ira receber outro personagem aleatoriamente. Onde a lista de personagens eh a mesma para ambos.\n\n"
+    putStr "O objetivo do jogo eh adivinhar o personagem do adversario, a cada rodada voce pode:\n"
+    putStr ". Eliminar uma caracteristica\n"
+    putStr "Para vencer, eh necessario adivinhar o personagem primeiro do que o Bot.\n\n"
+    putStr "Modos de jogo:\n"
+    putStr "JogadorxJogador\n"
+    putStr "JogadorxIA\n\n"
+    putStr "Informacoes importantes:\n"
+    putStr "Voce e o bot podem escolher o mesmo personagem.\n"
+    putStr "Se voce escolher chutar e errar, voce perde a rodada.\n\n"
 
 
-    putStr ("[1] Retornar ao menu principal\n")
-    putStr("Digite uma opcao: ")
+    putStr "[1] Retornar ao menu principal\n"
+    putStr"Digite uma opcao: "
     opcaoEscolhidaCJ <- getLine
 
-    if opcaoEscolhidaCJ == "1" then do
+    if opcaoEscolhidaCJ == "1" then
         main
         else do
-            putStr ("Opcao invalida! \n")
-            menuComoJogar 
+            putStr "Opcao invalida! \n"
+            menuComoJogar
 
 ---------------
 --PlayerxPlayer:
@@ -149,7 +149,7 @@ jogoPxP user1 user2 = do
 
 
 partidaPxP :: [String] -> [String] -> [String] -> [String] -> [[String]] -> [[String]] -> IO()
-partidaPxP jogadorDaVez oponente personaJogadorDaVez personaOponente possibilidadesJogadorDaVez possibilidadesOponente = do
+partidaPxP jogadorDaVez oponente personaJogadorDaVez personaOponente possibilidadesJogadorDaVez possibilidadesOponente =
     if userGanhou possibilidadesOponente then do
         vitoria oponente jogadorDaVez personaJogadorDaVez
     else do
@@ -203,7 +203,7 @@ novoJogoPlayerXBot = do
         userField <- criaUsuarioSeNaoExistir username1
         let user1 = parseUserToStringArray (head userField)
 
-        jogoPxB user1 
+        jogoPxB user1
 
         main
 
@@ -219,7 +219,7 @@ jogoPxB user1 = do
 
     --Gera um numero randomico, que definirá o personagem do bot
     indexBot <- randomIO :: IO Int
-    let index = indexBot `mod` (length personas)       
+    let index = indexBot `mod` length personas
     let personaBot = personas!!index
 
     let possibilidadesUser = map parsePersonaToStringArray personasField
@@ -232,37 +232,38 @@ jogoPxB user1 = do
 
 partidaPxB :: [String] -> [String] -> [String] -> [[String]] -> [[String]] -> IO()
 partidaPxB jogador personaJogador personaBot possibilidadesJogador possibilidadesBot = do
-    if userGanhou possibilidadesBot then do
-        vitoriaBot personaBot
-    else if userGanhou possibilidadesJogador then do
-        vitoriaJogador jogador personaBot
-    else do
-        putStr "|===================================================================================|\n"
-        printTable possibilidadesJogador
-        putStr "|===================================================================================|\n\n"
+    putStr "|===================================================================================|\n"
+    printTable possibilidadesJogador
+    putStr "|===================================================================================|\n\n"
 
-        palpite <- pegarPalpiteUser jogador
-        let newPossibilidadesJogador = verificarPalpite palpite personaBot possibilidadesJogador
-        if length newPossibilidadesJogador == length possibilidadesJogador then do
-            putStr "OPCAO INVALIDA! Pressione Enter para tentar novamente...\n"
-            getLine
-            partidaPxB jogador personaJogador personaBot possibilidadesJogador possibilidadesBot
+    palpite <- pegarPalpiteUser jogador
+    let newPossibilidadesJogador = verificarPalpite palpite personaBot possibilidadesJogador
+    if length newPossibilidadesJogador == length possibilidadesJogador then do
+        putStr "OPCAO INVALIDA! Pressione Enter para tentar novamente...\n"
+        getLine
+        partidaPxB jogador personaJogador personaBot possibilidadesJogador possibilidadesBot
+    else do
+        if userGanhou newPossibilidadesJogador then
+            vitoriaJogador jogador personaBot
         else do
             palpiteIa <- pegarPalpiteIA possibilidadesBot
             let newPossibilidadesBot = verificarPalpite palpiteIa personaJogador possibilidadesBot
             putStr "|===================================================================================|\n"
             putStr "|O Bot chutou que a sua pessoa tem: \n"
-            putStr(". ")
-            threadDelay 2000000 
-            putStr(". ")
-            threadDelay 7000000 
-            putStrLn(".")
-            threadDelay 1000000 
+            putStr ". "
+            threadDelay 500000
+            putStr ". "
+            threadDelay 1000000
+            putStrLn "."
+            threadDelay 1000000
             imprimePalpiteIa palpiteIa
             threadDelay 1000000
-            cls
-            partidaPxB jogador personaJogador personaBot newPossibilidadesJogador newPossibilidadesBot
-        
+            if userGanhou newPossibilidadesBot then
+                vitoriaBot personaBot
+            else do
+                cls
+                partidaPxB jogador personaJogador personaBot newPossibilidadesJogador newPossibilidadesBot
+
 
 vitoriaJogador :: [String] -> [String] -> IO()
 vitoriaJogador jogador personaBot = do
@@ -272,7 +273,7 @@ vitoriaJogador jogador personaBot = do
     putStr "|=======================================================================================|\n"
     putStr "|======================================| VICTORY! |=====================================|\n"
     putStr "|=======================================================================================|\n\n"
-    putStr ("Você venceu!\n")
+    putStr "Você venceu!\n"
     putStr ("O personagem do bot era: " ++ prepareTableLine personaBot ++ "\n")
     putStr "Pressione Enter para voltar ao menu principal...\n"
     getLine
@@ -285,7 +286,7 @@ vitoriaBot personaBot = do
     putStr "|=======================================================================================|\n"
     putStr "|======================================| DEFEAT! |=====================================|\n"
     putStr "|=======================================================================================|\n\n"
-    putStr ("Você PERDEU!\n")
+    putStr "Você PERDEU!\n"
     putStr ("O personagem do bot era: " ++ prepareTableLine personaBot ++ "\n")
     putStr "Pressione Enter para voltar ao menu principal...\n"
     getLine
@@ -302,7 +303,7 @@ escolhePersonagem user personas = do
     putStr "|===================================================================================|\n"
     printTable personas
     putStr "\n"
-    putStr ("Escolha um personagem, " ++ user!!0 ++ ":\n")
+    putStr ("Escolha um personagem, " ++ head user ++ ":\n")
 
     getLine
 
@@ -338,7 +339,7 @@ pegarPalpiteUser user = do
 
 
 verificarPalpite :: String -> [String] -> [[String]] -> [[String]]
-verificarPalpite palpite persona possibilidades = do
+verificarPalpite palpite persona possibilidades =
     if palpite `elem` persona then
         [personagem | personagem <- possibilidades, palpite `elem` personagem]
     else
@@ -375,8 +376,7 @@ pegarPalpiteIA possibilidades = do
     getElemByIndex (tail (tail p))
 
 imprimePalpiteIa:: String -> IO()
-imprimePalpiteIa result = 
-    print result
+imprimePalpiteIa = print
 
 --Função para limpar o terminal.
 cls :: IO()
