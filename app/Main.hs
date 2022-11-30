@@ -75,9 +75,11 @@ partida user user2 personaUser personaUser2 possibilidadesUser possibilidadesUse
     if((length possibilidadesUser) <= 1) then do
         somaPontosUsuario (user!!0) 1
         print ("parabens " ++ user!!0 ++ "! voce ganhou!")
+        print (prepareTableLine personaUser2)
     else if((length possibilidadesUser2) <= 1) then do
         somaPontosUsuario (user2!!0) 1
         print ("parabens " ++ user2!!0 ++ "! voce ganhou!")
+        print (prepareTableLine personaUser)
     else
         if(jogadorDaVez == "user1") then do
             printTable possibilidadesUser
