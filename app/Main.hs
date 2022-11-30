@@ -147,7 +147,7 @@ showPlacar = do
     printTable users
     putStr "|==================================|\n\n"
 
-    putStr "Pressione Enter para voltar ao menu principal..."
+    putStr "Pressione Enter para voltar ao menu principal...\n"
     getLine
 
     main
