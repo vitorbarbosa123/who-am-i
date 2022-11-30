@@ -50,22 +50,22 @@ jogo user1 user2 = do
 pegarPalpiteUser :: [String] -> IO String
 pegarPalpiteUser user = do
     print ("Qual caracteristica voce deseja escolher " ++ user!!0 ++ "?")
-    print "sexo | cor_cabelo | etnia | cor_olhos | acessorio"
+    print "[0] sexo | [1] cor do cabelo | [2] etnia | [3] cor dos olhos | [4] acessorio"
     caracteristica <- getLine
 
-    if(caracteristica == "sexo") then do
+    if(caracteristica == "0") then do
         print "Qual o sexo?"
         getLine
-    else if(caracteristica == "cor_cabelo") then do
+    else if(caracteristica == "1") then do
         print "Qual a cor do cabelo?"
         getLine
-    else if(caracteristica == "etnia") then do
+    else if(caracteristica == "2") then do
         print "Qual a etnia?"
         getLine
-    else if(caracteristica == "cor_olhos") then do
+    else if(caracteristica == "3") then do
         print "Qual a cor dos olhos?"
         getLine
-    else if(caracteristica == "acessorio") then do
+    else if(caracteristica == "4") then do
         print "Qual o acessorio?"
         getLine
     else 
