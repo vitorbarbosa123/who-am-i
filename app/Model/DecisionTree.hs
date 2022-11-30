@@ -65,10 +65,6 @@ getProps props = do
     result <- getElemByIndex props
     return result
 
--- Salva a decisão feita em um novo array
-
-
--- como fazer referência aos lets declarados no inicio?
 saveChoices::[String] -> [String] -> [String] -> [String] -> [String] -> IO()
 saveChoices sex hair skin eyes props = do             
     sexChoice <- getSex sex
@@ -78,42 +74,38 @@ saveChoices sex hair skin eyes props = do
     propsChoice <- getProps props
     putStrLn $ show [sexChoice, hairChoice, skinChoice, eyesChoice, propsChoice]
 
-
--- -- -- Verifica se a persona "montada" é a mesma que a escolhida
---  verifyPersona::[String]->[String]->Bool
---  verifyPersona persona personaCorreta =
---      personaCorreta == (verifyTraits persona personaCorreta 0)
---      -- passar ele pra main, para dizer que a IA ganhou
+-- Verifica se a persona "montada" é a mesma que a escolhida
+verifyPersona::[String]->[String]->Bool
+verifyPersona persona personaCorreta =
+    personaCorreta == (verifyTraits persona personaCorreta)
+    -- passar ele pra main, para dizer que a IA ganhou
 
 -- -- -- Retorna uma lista com as caracteristicas da persona "montada" que estao na
 -- -- -- persona correta ou a string "erro" na ordem: (sex, hair, skin, eyes, props)
---  verifyTraits::[String]->[String]->Int->[String]
---  verifyTraits personaMontada personaCorreta i
---      | (null caracteristica) = []   -- fim da lista / condicao de parada
+verifyTraits::[String]->[String]->[String]
+verifyTraits personaMontada personaCorreta
+    | (null personaMontada) = []   -- fim da lista / condicao de parada
 
---      | otherwise =
---          if (caracteristica == personaCorreta!!i) then
---              [caracteristica] ++ (verifyTraits personaMontada personaCorreta $ i+1)
+    | otherwise =
+        if (head personaMontada == head personaCorreta) then
+            [head personaMontada] ++ (verifyTraits (tail personaMontada) (tail personaCorreta))
 
---          else
---              ["erro"] ++ (verifyTraits personaMontada personaCorreta $ i+1)
---      where caracteristica = personaMontada!!i
+        else
+            ["erro"] ++ (verifyTraits (tail personaMontada) (tail personaCorreta))
 
--- -- -- essa função deve retornar um arrays de função.
--- -- -- Retorna uma lista com nomes das funcoes que ainda podem rodar
---  remainingFunctions::[[String]]->[String]->[String]->[String]
---  remainingFunctions categorias escolhasJogador funcoes
---      | (null caracteristica) = []     -- fim da lista / condicao de parada
+  -- essa função deve retornar um arrays de função.
+  -- Retorna uma lista com nomes das funcoes que ainda podem rodar
+remainingFunctions::[[String]]->[String]->[String]->[String]
+remainingFunctions categorias escolhasJogador funcoes
+    | (null caracteristica) = []      --fim da lista / condicao de parada
 
---      | caracteristica `elem` categoria =           -- se acertou a categoria:
---          [head funcoes] ++ (remainingFunctions (tail categorias) (tail escolhasJogador) (tail funcoes))
+    | caracteristica `elem` categoria =            --se acertou a categoria:
+        [head funcoes] ++ (remainingFunctions (tail categorias) (tail escolhasJogador) (tail funcoes))
 
---      | otherwise =
---          (remainingFunctions (tail categorias) (tail escolhasJogador) (tail funcoes))
---      where
---          categoria = head categorias  sex
---          caracteristica = head escolhasJogador -- "M"
-
--- --         -- [getSex, getSkin]
+    | otherwise =
+        (remainingFunctions (tail categorias) (tail escolhasJogador) (tail funcoes))
+    where
+        categoria = head categorias
+        caracteristica = head escolhasJogador -- "M"
         
 
