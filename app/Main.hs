@@ -6,7 +6,7 @@ import Repo.Personas
 
 
 
-main :: IO ()
+main :: IO String
 main = do
     escolha <- pegaEscolhaInicial
     if escolha == "1" then
@@ -15,8 +15,7 @@ main = do
         showPlacar
     else if escolha == "3" then
         menuComoJogar
-    else do
-        putStr ("Opcao inválida!\n")
+    else
         main
 
 
@@ -33,7 +32,7 @@ pegaEscolhaInicial = do
     getLine
 
 
-menunovoJogoGeral :: IO()
+menunovoJogoGeral :: IO String
 menunovoJogoGeral = do
     putStr "\n=========================\n"
     putStr "[1] Player VS BOT \n"
@@ -47,14 +46,14 @@ menunovoJogoGeral = do
         else if escolhaJG == "2" then
             novoJogoPlayerXPlayer
         else if escolhaJG == "3" then
-            pegaEscolhaInicial
+            main
         else do
             putStr ("Opcao inválida!\n")
             menunovoJogoGeral
 
 
 --Imprime o placar de pontuacao, dos usuarios do banco
-showPlacar :: IO ()
+showPlacar :: IO String
 showPlacar = do
     cls
     usersFields <- listaUsuarios
@@ -72,14 +71,16 @@ showPlacar = do
 
 
 -- Imprime apenas orientacoes da regra geral de negocio. -- ToDo: Ajustar as regras de acordo com o projeto atual!
-menuComoJogar :: IO()
+menuComoJogar :: IO String
 menuComoJogar = do
     putStr ("\n==============================================\n")
     putStr ("Who am i? eh um jogo de turnos, você escolhe um personagem e o Bot ira receber outro personagem aleatoriamente. Onde a lista de personagens eh a mesma para ambos.\n\n")
     putStr ("O objetivo do jogo eh adivinhar o personagem do adversario, a cada rodada voce pode:\n")
     putStr (". Eliminar uma caracteristica\n")
-    putStr (". Tentar chutar o personagem do Bot.\n\n")
     putStr ("Para vencer, eh necessario adivinhar o personagem primeiro do que o Bot.\n\n")
+    putStr ("Modos de jogo:\n")
+    putStr ("JogadorxJogador\n")
+    putStr ("JogadorxIA\n\n")
     putStr ("Informacoes importantes:\n")
     putStr ("Voce e o bot podem escolher o mesmo personagem.\n")
     putStr ("Se voce escolher chutar e errar, voce perde a rodada.\n\n")
@@ -98,7 +99,7 @@ menuComoJogar = do
 ---------------
 --PlayerxPlayer:
 ----------------
-novoJogoPlayerXPlayer :: IO ()
+novoJogoPlayerXPlayer :: IO String
 novoJogoPlayerXPlayer = do
     cls
     putStr "|================================================================|\n"
@@ -127,7 +128,7 @@ novoJogoPlayerXPlayer = do
         main
 
 
-jogoPxP :: [String] -> [String] -> IO()
+jogoPxP :: [String] -> [String] -> IO String
 jogoPxP user1 user2 = do
     personasField <- listPersonas
     let personas = map parsePersonaToStringArray personasField
@@ -163,9 +164,9 @@ partidaPxP jogadorDaVez oponente personaJogadorDaVez personaOponente possibilida
         if length newPossibilidades == length possibilidadesJogadorDaVez then do
             putStr "OPCAO INVALIDA! Pressione Enter para tentar novamente...\n"
             getLine
-            partida jogadorDaVez oponente personaJogadorDaVez personaOponente possibilidadesJogadorDaVez possibilidadesOponente
+            partidaPxP jogadorDaVez oponente personaJogadorDaVez personaOponente possibilidadesJogadorDaVez possibilidadesOponente
         else
-            partida oponente jogadorDaVez personaOponente personaJogadorDaVez possibilidadesOponente newPossibilidades
+            partidaPxP oponente jogadorDaVez personaOponente personaJogadorDaVez possibilidadesOponente newPossibilidades
 
 
 vitoria :: [String] -> [String] -> [String] -> IO()
@@ -185,7 +186,7 @@ vitoria userGanhador oponente personaOponente = do
 ---------------
 --PlayerxBot:
 ----------------
-novoJogoPlayerXBot :: IO ()
+novoJogoPlayerXBot :: IO String
 novoJogoPlayerXBot = do
     cls
     putStr "|================================================================|\n"
@@ -208,7 +209,7 @@ novoJogoPlayerXBot = do
         main
 
 
-jogoPxB :: [String] -> IO()
+jogoPxB :: [String] -> IO String
 jogoPxB user1 = do
     personasField <- listPersonas
     let personas = map parsePersonaToStringArray personasField
@@ -248,9 +249,10 @@ partidaPxB jogador personaJogador personaBot possibilidadesJogador possibilidade
             putStr "OPCAO INVALIDA! Pressione Enter para tentar novamente...\n"
             getLine
             partidaPxB jogador personaJogador personaBot possibilidadesJogador possibilidadesBot
-        else
+        else do
             palpiteIa <- pegarPalpiteIA possibilidadesBot
             let newPossibilidadesBot = verificarPalpite palpiteIa personaJogador possibilidadesBot
+            imprimePalpiteIa palpiteIa
             partidaPxB jogador personaJogador personaBot newPossibilidadesJogador newPossibilidadesBot
 
 vitoriaJogador :: [String] -> [String] -> IO()
@@ -363,7 +365,10 @@ pegarPalpiteIA possibilidades = do
     p <- getElemByIndex possibilidades
     getElemByIndex (tail (tail p))
 
+imprimePalpiteIa:: String -> IO()
+imprimePalpiteIa result = 
+    print result
 
 --Função para limpar o terminal.
 cls :: IO()
-cls = putStr "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\"
+cls = putStr "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
