@@ -20,22 +20,23 @@ novoJogo = do
 
     main
 
+escolhePersonagem :: [String] -> [[String]] -> IO String
+escolhePersonagem user personas = do
+    print ("Escolha um personagem " ++ user!!0 ++ ":")
+    printTable personas
+
+    getLine
+
 jogo :: [String] -> [String] -> IO()
 jogo user1 user2 = do
     personasField <- listPersonas
     let personas = map parsePersonaToStringArray personasField
 
-    print ("Escolha um personagem " ++ user1!!0 ++ ":")
-    printTable personas
-
-    escolha <- getLine
+    escolha <- escolhePersonagem user1 personas
     let index = (read escolha :: Int) -1
     let personaUser = personas!!index
 
-    print ("Escolha um personagem " ++ user2!!0 ++ ":")
-    printTable personas
-
-    escolha <- getLine
+    escolha <- escolhePersonagem user2 personas
     let index = (read escolha :: Int) -1
     let personaUser2 = personas!!index
 
@@ -69,17 +70,22 @@ pegarPalpiteUser user = do
         getLine
     else 
         pegarPalpiteUser user
-     
+
+vitoria :: [String] -> [String] -> [String] -> IO()
+vitoria userGanhador oponente personaOponente = do
+    somaPontosUsuario (userGanhador!!0) 1
+    print ("parabens " ++ userGanhador!!0 ++ "! voce ganhou!")
+    print ("O personagem de " ++ oponente!!0 ++ " era: " ++ (prepareTableLine personaOponente))
+
+userGanhou :: [[String]] -> Bool
+userGanhou listaPossibilidades = (length listaPossibilidades) <= 1
+
 partida :: [String] -> [String] -> [String] -> [String] -> [[String]] -> [[String]] -> String -> IO()
 partida user user2 personaUser personaUser2 possibilidadesUser possibilidadesUser2 jogadorDaVez = do
-    if((length possibilidadesUser) <= 1) then do
-        somaPontosUsuario (user!!0) 1
-        print ("parabens " ++ user!!0 ++ "! voce ganhou!")
-        print ("O personagem de " ++ user2!!0 ++ " era: " ++ (prepareTableLine personaUser2))
-    else if((length possibilidadesUser2) <= 1) then do
-        somaPontosUsuario (user2!!0) 1
-        print ("parabens " ++ user2!!0 ++ "! voce ganhou!")
-        print ("O personagem de " ++ user!!0 ++ " era: " ++ (prepareTableLine personaUser))
+    if(userGanhou possibilidadesUser) then do
+        vitoria user user2 personaUser2
+    else if(userGanhou possibilidadesUser2) then do
+        vitoria user2 user personaUser
     else
         if(jogadorDaVez == "user1") then do
             printTable possibilidadesUser
