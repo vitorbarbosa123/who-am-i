@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE InstanceSigs #-}
 
-module Repo.Personas (listPersonas, parseToStringArray) where
+module Repo.Personas (listPersonas, parsePersonaToStringArray) where
 
 import           Control.Applicative ()
 import Database.SQLite.Simple (execute, open, query_, field
@@ -27,5 +27,5 @@ listPersonas = do
   conn <- open "wai.db"
   query_ conn "SELECT * from personas" :: IO [PersonaField]
 
-parseToStringArray :: PersonaField -> [String]
-parseToStringArray (PersonaField id nome sexo cor_cabelo etnia cor_olhos acessorio)  = [id, nome, sexo, cor_cabelo, etnia, cor_olhos, acessorio]
+parsePersonaToStringArray :: PersonaField -> [String]
+parsePersonaToStringArray (PersonaField id nome sexo cor_cabelo etnia cor_olhos acessorio)  = [id, nome, sexo, cor_cabelo, etnia, cor_olhos, acessorio]

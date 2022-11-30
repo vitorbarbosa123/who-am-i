@@ -19,9 +19,14 @@ Para rodar o cara a cara, primeiro você deve ter o [ghc](https://www.haskell.or
 
 Primeiro, vamos criar e popular o banco de dados:
 
+Para linux/IOS:
 ```bash
 sqlite3 wai.db < create-db.sql
 ```
+
+Para Windows:
+sqlite3 wai.db -init create-db.sql
+
 
 Após criar o banco de dados, você pode executar o seguinte comando para rodar o jogo:
 
