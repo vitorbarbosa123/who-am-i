@@ -43,7 +43,7 @@ jogo user1 user2 = do
     let possibilidadesUser = map parsePersonaToStringArray personasField
     let possibilidadesUser2 = map parsePersonaToStringArray personasField
 
-    partida user1 user2 personaUser personaUser2 possibilidadesUser possibilidadesUser2 "user1"
+    partida user1 user2 personaUser personaUser2 possibilidadesUser possibilidadesUser2
 
     main
 
@@ -80,23 +80,17 @@ vitoria userGanhador oponente personaOponente = do
 userGanhou :: [[String]] -> Bool
 userGanhou listaPossibilidades = (length listaPossibilidades) <= 1
 
-partida :: [String] -> [String] -> [String] -> [String] -> [[String]] -> [[String]] -> String -> IO()
-partida user user2 personaUser personaUser2 possibilidadesUser possibilidadesUser2 jogadorDaVez = do
-    if(userGanhou possibilidadesUser) then do
-        vitoria user user2 personaUser2
-    else if(userGanhou possibilidadesUser2) then do
-        vitoria user2 user personaUser
-    else
-        if(jogadorDaVez == "user1") then do
-            printTable possibilidadesUser
-            palpite <- pegarPalpiteUser user
-            let newPossibilidades = verificarPalpite palpite personaUser2 possibilidadesUser
-            partida user user2 personaUser personaUser2 newPossibilidades possibilidadesUser2 "user2"
-        else do
-            printTable possibilidadesUser2
-            palpite <- pegarPalpiteUser user2
-            let newPossibilidades = verificarPalpite palpite personaUser possibilidadesUser2
-            partida user user2 personaUser personaUser2 possibilidadesUser newPossibilidades "user1"
+partida :: [String] -> [String] -> [String] -> [String] -> [[String]] -> [[String]] -> IO()
+partida jogadorDaVez oponente personaJogadorDaVez personaOponente possibilidadesJogadorDaVez possibilidadesOponente = do
+    if(userGanhou possibilidadesJogadorDaVez) then do
+        vitoria jogadorDaVez oponente personaOponente
+    else if(userGanhou possibilidadesOponente) then do
+        vitoria oponente jogadorDaVez personaJogadorDaVez
+    else do
+        printTable possibilidadesJogadorDaVez
+        palpite <- pegarPalpiteUser jogadorDaVez
+        let newPossibilidades = verificarPalpite palpite personaOponente possibilidadesJogadorDaVez
+        partida oponente jogadorDaVez personaOponente personaJogadorDaVez possibilidadesOponente newPossibilidades
 
 verificarPalpite :: String -> [String] -> [[String]] -> [[String]]
 verificarPalpite palpite persona possibilidades = do
