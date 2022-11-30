@@ -96,16 +96,15 @@ verifyTraits personaMontada personaCorreta
   -- essa função deve retornar um arrays de função.
   -- Retorna uma lista com nomes das funcoes que ainda podem rodar
 remainingFunctions::[[String]]->[String]->[String]->[String]
-remainingFunctions categorias escolhasJogador funcoes
-    | (null caracteristica) = []      --fim da lista / condicao de parada
-
-    | caracteristica `elem` categoria =            --se acertou a categoria:
-        [head funcoes] ++ (remainingFunctions (tail categorias) (tail escolhasJogador) (tail funcoes))
+remainingFunctions caracteristicasCorretas escolhasJogador funcoes
+    | (null escolhasJogador) = []      --fim da lista / condicao de parada
 
     | otherwise =
-        (remainingFunctions (tail categorias) (tail escolhasJogador) (tail funcoes))
-    where
-        categoria = head categorias
-        caracteristica = head escolhasJogador -- "M"
-        
+        if (head escolhasJogador) `elem` (head caracteristicasCorretas) then do           --se acertou a categoria:
+            [head funcoes] ++ (remainingFunctions (tail caracteristicasCorretas) (tail escolhasJogador) (tail funcoes))
 
+        else 
+            (remainingFunctions (tail caracteristicasCorretas) (tail escolhasJogador) (tail funcoes))
+    
+
+    
