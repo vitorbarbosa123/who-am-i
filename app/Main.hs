@@ -6,43 +6,49 @@ import Repo.Personas
 
 novoJogo :: IO ()
 novoJogo = do
-    print "Digite um nome de usuario"
+    print "Digite um nome de usuario(user1)"
     username <- getLine
     userField <- criaUsuarioSeNaoExistir username
-    let user = parseUserToStringArray (userField!!0)
+    let user1 = parseUserToStringArray (userField!!0)
 
-    jogo user
+    print "Digite um nome de usuario(user2)"
+    username <- getLine
+    userField <- criaUsuarioSeNaoExistir username
+    let user2 = parseUserToStringArray (userField!!0)
+
+    jogo user1 user2
 
     main
 
-jogo :: [String] -> IO()
-jogo user = do
+jogo :: [String] -> [String] -> IO()
+jogo user1 user2 = do
     personasField <- listPersonas
     let personas = map parsePersonaToStringArray personasField
 
-    print "Escolha um personagem: "
+    print ("Escolha um personagem " ++ user1!!0 ++ ":")
     printTable personas
 
     escolha <- getLine
     let index = (read escolha :: Int) -1
     let personaUsuario = personas!!index
 
-    indexIA <- randomIO :: IO Int
-    let index = indexIA `mod` (length personas)
+    print ("Escolha um personagem " ++ user2!!0 ++ ":")
+    printTable personas
+
+    escolha <- getLine
+    let index = (read escolha :: Int) -1
     let personaIA = personas!!index
 
     let possibilidadesUser = map parsePersonaToStringArray personasField
     let possibilidadesIA = map parsePersonaToStringArray personasField
 
-    print personaIA
-
-    partida user personaUsuario personaIA possibilidadesUser possibilidadesIA "user"
+    partida user1 user2 personaUsuario personaIA possibilidadesUser possibilidadesIA "user"
 
     main
 
-pegarPalpiteUser :: IO String
-pegarPalpiteUser = do
-    print "Qual caracteristica voce deseja escolher?"
+pegarPalpiteUser :: [String] -> IO String
+pegarPalpiteUser user = do
+    print ("Qual caracteristica voce deseja escolher " ++ user!!0 ++ "?")
     print "sexo | cor_cabelo | etnia | cor_olhos | acessorio"
     caracteristica <- getLine
 
@@ -62,26 +68,27 @@ pegarPalpiteUser = do
         print "Qual o acessorio?"
         getLine
     else 
-        pegarPalpiteUser
+        pegarPalpiteUser user
         
-partida :: [String] -> [String] -> [String] -> [[String]] -> [[String]] -> String -> IO()
-partida user personaUsuario personaIA possibilidadesUser possibilidadesIA jogadorDaVez = do
+partida :: [String] -> [String] -> [String] -> [String] -> [[String]] -> [[String]] -> String -> IO()
+partida user user2 personaUsuario personaIA possibilidadesUser possibilidadesIA jogadorDaVez = do
     if((length possibilidadesUser) <= 1) then do
         somaPontosUsuario (user!!0) 1
-        print "parabens! voce ganhou!"
-    else if((length possibilidadesIA) <= 1) then
-        print "sinto muito... voce perdeu."
+        print ("parabens " ++ user!!0 ++ "! voce ganhou!")
+    else if((length possibilidadesIA) <= 1) then do
+        somaPontosUsuario (user2!!0) 1
+        print ("parabens " ++ user2!!0 ++ "! voce ganhou!")
     else
         if(jogadorDaVez == "user") then do
             printTable possibilidadesUser
-            palpite <- pegarPalpiteUser
+            palpite <- pegarPalpiteUser user
             let newPossibilidades = verificarPalpite palpite personaIA possibilidadesUser
-            partida user personaUsuario personaIA newPossibilidades possibilidadesIA "ia"
+            partida user user2 personaUsuario personaIA newPossibilidades possibilidadesIA "ia"
         else do
-            -- palpite <- pegarPalpiteUser
-            -- let newPossibilidades = verificarPalpite palpite personaUsuario possibilidadesIA
-            let newPossibilidades = tail possibilidadesIA
-            partida user personaUsuario personaIA possibilidadesUser newPossibilidades "user"
+            printTable possibilidadesIA
+            palpite <- pegarPalpiteUser user2
+            let newPossibilidades = verificarPalpite palpite personaUsuario possibilidadesIA
+            partida user user2 personaUsuario personaIA possibilidadesUser newPossibilidades "user"
 
 verificarPalpite :: String -> [String] -> [[String]] -> [[String]]
 verificarPalpite palpite persona possibilidades = do
