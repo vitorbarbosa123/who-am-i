@@ -4,26 +4,47 @@ import System.Random
 import Repo.Usuarios
 import Repo.Personas
 
+cls :: IO()
+cls = putStr "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+
 novoJogo :: IO ()
 novoJogo = do
-    print "Digite um nome de usuario(user1)"
-    username <- getLine
-    userField <- criaUsuarioSeNaoExistir username
-    let user1 = parseUserToStringArray (userField!!0)
+    cls
+    putStr "|================================================================|\n"
+    putStr "|==========================| NOVO JOGO |=========================|\n"
+    putStr "|================================================================|\n\n"
 
-    print "Digite um nome de usuario(user2)"
-    username <- getLine
-    userField <- criaUsuarioSeNaoExistir username
-    let user2 = parseUserToStringArray (userField!!0)
+    print "Digite o nome do jogador 1"
+    username1 <- getLine
 
-    jogo user1 user2
+    print "Digite o nome do jogador 2"
+    username2 <- getLine
 
-    main
+    if(username1 == username2) then do
+        putStr "ERRO: Nomes nao podem ser iguais. Pressione Enter para continuar...\n"
+        getLine
+        novoJogo
+    else do
+        userField <- criaUsuarioSeNaoExistir username1
+        let user1 = parseUserToStringArray (userField!!0)
+
+        userField <- criaUsuarioSeNaoExistir username2
+        let user2 = parseUserToStringArray (userField!!0)
+
+        jogo user1 user2
+
+        main
+    
 
 escolhePersonagem :: [String] -> [[String]] -> IO String
 escolhePersonagem user personas = do
-    print ("Escolha um personagem " ++ user!!0 ++ ":")
+    cls
+    putStr "|===================================================================================|\n"
+    putStr "|=============================| ESCOLHA SEU PERSONAGEM |============================|\n"
+    putStr "|===================================================================================|\n"
     printTable personas
+    putStr "\n"
+    putStr ("Escolha um personagem, " ++ user!!0 ++ ":\n")
 
     getLine
 
@@ -49,56 +70,64 @@ jogo user1 user2 = do
 
 pegarPalpiteUser :: [String] -> IO String
 pegarPalpiteUser user = do
-    print ("Qual caracteristica voce deseja escolher " ++ user!!0 ++ "?")
-    print "[0] sexo | [1] cor do cabelo | [2] etnia | [3] cor dos olhos | [4] acessorio"
+    putStr ("Qual caracteristica voce deseja escolher " ++ user!!0 ++ "?\n")
+    putStr "[0] sexo | [1] cor do cabelo | [2] etnia | [3] cor dos olhos | [4] acessorio\n"
     caracteristica <- getLine
 
     if(caracteristica == "0") then do
-        print "Qual o sexo?"
+        putStr "Qual o sexo?\n"
         getLine
     else if(caracteristica == "1") then do
-        print "Qual a cor do cabelo?"
+        putStr "Qual a cor do cabelo?\n"
         getLine
     else if(caracteristica == "2") then do
-        print "Qual a etnia?"
+        putStr "Qual a etnia?\n"
         getLine
     else if(caracteristica == "3") then do
-        print "Qual a cor dos olhos?"
+        putStr "Qual a cor dos olhos?\n"
         getLine
     else if(caracteristica == "4") then do
-        print "Qual o acessorio?"
+        putStr "Qual o acessorio?\n"
         getLine
-    else 
+    else do
+        putStr "OPCAO INVALIDA!\n"
         pegarPalpiteUser user
 
 vitoria :: [String] -> [String] -> [String] -> IO()
 vitoria userGanhador oponente personaOponente = do
     somaPontosUsuario (userGanhador!!0) 1
-    print ("parabens " ++ userGanhador!!0 ++ "! voce ganhou!")
-    print ("O personagem de " ++ oponente!!0 ++ " era: " ++ (prepareTableLine personaOponente))
+
+    cls
+    putStr "|=======================================================================================|\n"
+    putStr "|======================================| VICTORY! |=====================================|\n"
+    putStr "|=======================================================================================|\n\n"
+    putStr ("PARABENS " ++ userGanhador!!0 ++ "! VOCE GANHOU!\n")
+    putStr ("O personagem de " ++ oponente!!0 ++ " era: " ++ (prepareTableLine personaOponente) ++ "\n")
+    putStr "Pressione Enter para voltar ao menu principal...\n"
+    getLine
+    putStr ""
 
 userGanhou :: [[String]] -> Bool
 userGanhou listaPossibilidades = (length listaPossibilidades) <= 1
 
 partida :: [String] -> [String] -> [String] -> [String] -> [[String]] -> [[String]] -> IO()
 partida jogadorDaVez oponente personaJogadorDaVez personaOponente possibilidadesJogadorDaVez possibilidadesOponente = do
-    if(userGanhou possibilidadesJogadorDaVez) then do
-        vitoria jogadorDaVez oponente personaOponente
-    else if(userGanhou possibilidadesOponente) then do
+    if(userGanhou possibilidadesOponente) then do
         vitoria oponente jogadorDaVez personaJogadorDaVez
     else do
+        cls
+        putStr "|===================================================================================|\n"
         printTable possibilidadesJogadorDaVez
-        handleJogada jogadorDaVez oponente personaJogadorDaVez personaOponente possibilidadesJogadorDaVez possibilidadesOponente
+        putStr "|===================================================================================|\n\n"
 
-handleJogada :: [String] -> [String] -> [String] -> [String] -> [[String]] -> [[String]] -> IO()
-handleJogada jogadorDaVez oponente personaJogadorDaVez personaOponente possibilidadesJogadorDaVez possibilidadesOponente = do
-    palpite <- pegarPalpiteUser jogadorDaVez
-    let newPossibilidades = verificarPalpite palpite personaOponente possibilidadesJogadorDaVez
-    if((length newPossibilidades) == (length possibilidadesJogadorDaVez)) then do
-        print "OPCAO INVALIDA"
-        handleJogada jogadorDaVez oponente personaJogadorDaVez personaOponente possibilidadesJogadorDaVez possibilidadesOponente
-    else
-        partida oponente jogadorDaVez personaOponente personaJogadorDaVez possibilidadesOponente newPossibilidades
+        palpite <- pegarPalpiteUser jogadorDaVez
+        let newPossibilidades = verificarPalpite palpite personaOponente possibilidadesJogadorDaVez
+        if((length newPossibilidades) == (length possibilidadesJogadorDaVez)) then do
+            putStr "OPCAO INVALIDA! Pressione Enter para tentar novamente...\n"
+            getLine
+            partida jogadorDaVez oponente personaJogadorDaVez personaOponente possibilidadesJogadorDaVez possibilidadesOponente
+        else
+            partida oponente jogadorDaVez personaOponente personaJogadorDaVez possibilidadesOponente newPossibilidades
 
 verificarPalpite :: String -> [String] -> [[String]] -> [[String]]
 verificarPalpite palpite persona possibilidades = do
@@ -109,28 +138,36 @@ verificarPalpite palpite persona possibilidades = do
 
 showPlacar :: IO ()
 showPlacar = do
+    cls
     usersFields <- listaUsuarios
     let users = map parseUserToStringArray usersFields
-    print "---------------------------"
-    print "   nome    |   pontuacao   "
-    print "---------------------------"
+    putStr "|==================================|\n"
+    putStr "     nome       |    pontuacao      \n"
+    putStr "|==================================|\n"
     printTable users
-    print "---------------------------"
+    putStr "|==================================|\n\n"
+
+    putStr "Pressione Enter para voltar ao menu principal..."
+    getLine
+
     main
 
 printTable :: [[String]] -> IO()
-printTable table = mapM_ print (map prepareTableLine table)
+printTable table = mapM_ putStr (map prepareTableLine table)
 
 prepareTableLine :: [String] -> String
-prepareTableLine (head:[]) = head
+prepareTableLine (head:[]) = head ++ "\n"
 prepareTableLine (head:users) = ("   " ++ head ++ "  |  " ++ (prepareTableLine users))
 
 pegaEscolhaInicial :: IO String
 pegaEscolhaInicial = do
-    print "Bem vindo ao `Who Am I?`!"
-    print "O que voce deseja fazer?"
-    print "(1) Iniciar novo jogo"
-    print "(2) Listar pontuacoes"
+    cls
+    putStr "=========================\n"
+    putStr "Bem vindo ao `Who Am I?`!\n"
+    putStr "=========================\n"
+    putStr "O que voce deseja fazer?\n"
+    putStr "(1) Iniciar novo jogo\n"
+    putStr "(2) Listar pontuacoes\n"
     getLine
 
 main :: IO ()
