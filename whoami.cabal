@@ -8,7 +8,6 @@ extra-source-files:
 
 executable whoami
     main-is:          Main.hs
-  
     other-modules:    Repo.Usuarios, Repo.Personas
     build-depends:    base, sqlite-simple, random
     hs-source-dirs:   app
