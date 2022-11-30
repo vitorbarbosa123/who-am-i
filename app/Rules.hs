@@ -8,31 +8,40 @@ import Personas
 -- Inicia um novo jogo
 novoJogo:: String -> IO()
 novoJogo x = do
-    let nome = x
-    jogo 1 0 0
+    let nome = x -- ainda nao utilizado
+    jogo 1
 
 
 
 -- Início de um jogo e seu "laço" de execução
-jogo:: Int -> Int -> Int -> IO() --Sempre vai receber 1 como argumento inicial, a pontuacao do jogador e a pontuacao da IA.
-jogo rodada pJogador pIa = 
+jogo:: Int -> IO() --Sempre vai receber 1 como argumento inicial
+jogo rodada = 
+    let pIa = 0
+    let pJogador = 0
     if rodada <= 5 || pIa < 3 || pJogador < 3
         then do 
-            --partida
-            jogo (rodada+1) pJogador pIa
+            partida "inciar"
+            jogo (rodada+1)
         else if pJogador > pIa
             then do
                 putStrLn("Você venceu, parabéns!")
+                --incrementer no banco a vitória
             else do
                 putStrLn("Melhor sorte na próxima vez.")
 
 
 
 -- Inicia uma partida de WaI?; cada jogo contém um máximo de 5 partidas,
-partida::IO()
+partida:: String -> (Int, Int)
 partida = do
+    printTable listaPersonagens
     putStr ("Escolha um personagem: entre [1] ate [16] ")
     personagemJogador <- getLine
+    menuJogador personagemJogador
+    
+    -- ganhador
+    -- se jogador == ganhador, incrementa pJogador
+    -- else incrementa pIa
 
     --let listaPartidaIA = listaPersonagens
     --let listaPartidaJogador = listaPersonagens
@@ -42,15 +51,16 @@ partida = do
     --let idPersonagemIA = 3 
     --let (idPersonagemIA, _) = randomR (1,16) gen :: (Int, StdGen)
     --let escolhaIA = idPersonagemIA :: String
-    menuJogador personagemJogador
 
 
 
 --funções existentes no arquivo score.hs
 -- Incrementa a pontuação do jogador em 1
-incrementaPontuacaoJogador:: Int -> Int -> Int -> IO()
-incrementaPontuacaoJogador x y z = jogo x (y+1) z
+incrementaPontuacaoJogador:: Int -> Int
+incrementaPotuacaoJogador x = do
+    pJogador = x+1
+
  
 -- Incrementa a pontuação da IA em 1
-incrementaPontuacaoIa:: Int -> Int -> Int -> IO()
-incrementaPontuacaoIa x y z = jogo x y (z+1)
+incrementaPontuacaoIa:: Int -> Int 
+incrementaPotuacaoIa x = x+1
