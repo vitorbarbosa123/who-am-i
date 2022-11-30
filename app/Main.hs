@@ -249,7 +249,7 @@ partidaPxB jogador personaJogador personaBot possibilidadesJogador possibilidade
             palpiteIa <- pegarPalpiteIA possibilidadesBot
             let newPossibilidadesBot = verificarPalpite palpiteIa personaJogador possibilidadesBot
             putStr "|===================================================================================|\n"
-            putStr "|O Bot chutou que a sua pessoa tem: \n"
+            putStr "|O Bot chutou a seguinte característica: \n"
             putStr ". "
             threadDelay 500000
             putStr ". "
