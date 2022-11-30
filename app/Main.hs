@@ -88,8 +88,16 @@ partida jogadorDaVez oponente personaJogadorDaVez personaOponente possibilidades
         vitoria oponente jogadorDaVez personaJogadorDaVez
     else do
         printTable possibilidadesJogadorDaVez
-        palpite <- pegarPalpiteUser jogadorDaVez
-        let newPossibilidades = verificarPalpite palpite personaOponente possibilidadesJogadorDaVez
+        handleJogada jogadorDaVez oponente personaJogadorDaVez personaOponente possibilidadesJogadorDaVez possibilidadesOponente
+
+handleJogada :: [String] -> [String] -> [String] -> [String] -> [[String]] -> [[String]] -> IO()
+handleJogada jogadorDaVez oponente personaJogadorDaVez personaOponente possibilidadesJogadorDaVez possibilidadesOponente = do
+    palpite <- pegarPalpiteUser jogadorDaVez
+    let newPossibilidades = verificarPalpite palpite personaOponente possibilidadesJogadorDaVez
+    if((length newPossibilidades) == (length possibilidadesJogadorDaVez)) then do
+        print "OPCAO INVALIDA"
+        handleJogada jogadorDaVez oponente personaJogadorDaVez personaOponente possibilidadesJogadorDaVez possibilidadesOponente
+    else
         partida oponente jogadorDaVez personaOponente personaJogadorDaVez possibilidadesOponente newPossibilidades
 
 verificarPalpite :: String -> [String] -> [[String]] -> [[String]]
