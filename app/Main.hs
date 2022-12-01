@@ -5,6 +5,7 @@ import Repo.Usuarios
 import Repo.Personas
 import Control.Concurrent
 
+-- Função principal, inicia o Wai?
 main :: IO String
 main = do
     escolha <- pegaEscolhaInicial
@@ -17,7 +18,7 @@ main = do
     else
         main
 
-
+-- Imprime as opções do menu
 pegaEscolhaInicial :: IO String
 pegaEscolhaInicial = do
     cls
@@ -30,7 +31,7 @@ pegaEscolhaInicial = do
     putStr "(3) Como Jogar\n"
     getLine
 
-
+-- Menu (1) Iniciar novo jogo
 menunovoJogoGeral :: IO String
 menunovoJogoGeral = do
     putStr "\n=========================\n"
@@ -51,7 +52,7 @@ menunovoJogoGeral = do
             menunovoJogoGeral
 
 
---Imprime o placar de pontuacao, dos usuarios do banco
+-- Menu (2) Lista o placar de usuarios, salvo pelo banco de dados
 showPlacar :: IO String
 showPlacar = do
     cls
@@ -69,7 +70,7 @@ showPlacar = do
     main
 
 
--- Imprime apenas orientacoes da regra geral de negocio. -- ToDo: Ajustar as regras de acordo com o projeto atual!
+-- Menu (3) Imprime as regras do jogo
 menuComoJogar :: IO String
 menuComoJogar = do
     putStr "\n==============================================\n"
@@ -98,6 +99,9 @@ menuComoJogar = do
 ---------------
 --PlayerxPlayer:
 ----------------
+-- Inicia um novoJogo, entre dois Players
+-- A função irá solicitar que ambos insiram um nome de usuário
+-- Caso o usuário já tenha sido criado, a pontuacao será adicionada no banco de dados, do contrário, um novo usuário é criado
 novoJogoPlayerXPlayer :: IO String
 novoJogoPlayerXPlayer = do
     cls
@@ -126,7 +130,9 @@ novoJogoPlayerXPlayer = do
 
         main
 
-
+-- Inicia o jogo de player contra player
+-- Nessa função, ambos players escolhem o personagem
+-- @Param: player1, player2
 jogoPxP :: [String] -> [String] -> IO String
 jogoPxP user1 user2 = do
     personasField <- listPersonas
@@ -147,7 +153,8 @@ jogoPxP user1 user2 = do
 
     main
 
-
+-- Inicia uma rodada de player contra player
+-- Os  @Param sao: player 1, player 2, personagem escolhido pelo jogador 1, personagem escolhido pelo jogador 2, uma lista com as opções ainda possíveis para chute do user1, uma lista com as opções ainda possíveis para chute do user2
 partidaPxP :: [String] -> [String] -> [String] -> [String] -> [[String]] -> [[String]] -> IO()
 partidaPxP jogadorDaVez oponente personaJogadorDaVez personaOponente possibilidadesJogadorDaVez possibilidadesOponente =
     if userGanhou possibilidadesOponente then do
@@ -167,7 +174,8 @@ partidaPxP jogadorDaVez oponente personaJogadorDaVez personaOponente possibilida
         else
             partidaPxP oponente jogadorDaVez personaOponente personaJogadorDaVez possibilidadesOponente newPossibilidades
 
-
+-- Imprime e pontua o vencedor do jogo PlayerXPlayer
+-- @Param: usuario vencedor, usuario perdedor, personagem escolhido pelo usuario perdedor
 vitoria :: [String] -> [String] -> [String] -> IO()
 vitoria userGanhador oponente personaOponente = do
     somaPontosUsuario (head userGanhador) 1
@@ -185,6 +193,8 @@ vitoria userGanhador oponente personaOponente = do
 ---------------
 --PlayerxBot:
 ----------------
+-- Inicia um novoJogo de player contra bot
+-- Apenas o player vai selecionar o nome de usuario, o bot sera gerado na funcao jogoPxB
 novoJogoPlayerXBot :: IO String
 novoJogoPlayerXBot = do
     cls
@@ -207,7 +217,9 @@ novoJogoPlayerXBot = do
 
         main
 
-
+-- Inicia o jogo de player contra bot
+-- Nessa função, apenas um player escolhe o personagem, o bot é gerado randomicamente entre os 16 personagens disponiveis
+-- @Param: player1
 jogoPxB :: [String] -> IO String
 jogoPxB user1 = do
     personasField <- listPersonas
@@ -229,7 +241,8 @@ jogoPxB user1 = do
 
     main
 
-
+-- Inicia uma rodada de player contra bot
+-- @Param: player 1, personagem escolhido pelo jogador 1, personagem escolhido pelo bot, uma lista com as opções ainda possíveis para chute do player, uma lista com as opções ainda possíveis para chute do bot
 partidaPxB :: [String] -> [String] -> [String] -> [[String]] -> [[String]] -> IO()
 partidaPxB jogador personaJogador personaBot possibilidadesJogador possibilidadesBot = do
     putStr "|===================================================================================|\n"
@@ -264,7 +277,8 @@ partidaPxB jogador personaJogador personaBot possibilidadesJogador possibilidade
                 cls
                 partidaPxB jogador personaJogador personaBot newPossibilidadesJogador newPossibilidadesBot
 
-
+-- Funcao para pontuar no banco de dados, caso o jogador tenha vencido do bot
+-- @Param: jogador, personagem do bot
 vitoriaJogador :: [String] -> [String] -> IO()
 vitoriaJogador jogador personaBot = do
     somaPontosUsuario (head jogador) 1
@@ -279,12 +293,13 @@ vitoriaJogador jogador personaBot = do
     getLine
     putStr ""
 
-
+-- Funcao utilizada quando o bot, vence o jogador
+-- @Param: personagem do bot
 vitoriaBot :: [String] -> IO()
 vitoriaBot personaBot = do
     cls
     putStr "|=======================================================================================|\n"
-    putStr "|======================================| DEFEAT! |=====================================|\n"
+    putStr "|======================================|  DEFEAT! |=====================================|\n"
     putStr "|=======================================================================================|\n\n"
     putStr "Você PERDEU!\n"
     putStr ("O personagem do bot era: " ++ prepareTableLine personaBot ++ "\n")
@@ -292,9 +307,11 @@ vitoriaBot personaBot = do
     getLine
     putStr ""
 
----------------
+----------------
 --Logic:
 ----------------
+-- Funcao para escolher o personagem
+-- @Param: player, lista de personagens disponiveis
 escolhePersonagem :: [String] -> [[String]] -> IO String
 escolhePersonagem user personas = do
     cls
@@ -307,11 +324,14 @@ escolhePersonagem user personas = do
 
     getLine
 
-
+-- Funcao para verificar se o jogador ou bot, venceu a partida
+-- Se não existir nenhum outro personagem disponivel, na lista de personagens possiveis, o referido jogador/bot venceu a partida
+-- @Param: lista de personagens restantes
 userGanhou :: [[String]] -> Bool
 userGanhou listaPossibilidades = length listaPossibilidades <= 1
 
-
+-- Menu que repassa as opcoes de palpites de caracteristicas para o usuario
+-- @Param: player
 pegarPalpiteUser :: [String] -> IO String
 pegarPalpiteUser user = do
     putStr ("Qual caracteristica voce deseja escolher " ++ head user ++ "?\n")
@@ -337,7 +357,8 @@ pegarPalpiteUser user = do
         putStr "OPCAO INVALIDA!\n"
         pegarPalpiteUser user
 
-
+-- Verifica o palpite dado pelo usuario, caso seja correto elimina os personagens que nao possuem a caracteristica escolhida, do contrario, elimina os personagens que possuem a caracteristica escolhida
+-- @Param: caracteristica escolhida, personagem, lista de personagens possiveis
 verificarPalpite :: String -> [String] -> [[String]] -> [[String]]
 verificarPalpite palpite persona possibilidades =
     if palpite `elem` persona then
@@ -345,11 +366,11 @@ verificarPalpite palpite persona possibilidades =
     else
         [personagem | personagem <- possibilidades, palpite `notElem` personagem]
 
-
+-- Funcao para imprimir a matriz de personagens do banco de dados
 printTable :: [[String]] -> IO()
 printTable = mapM_ (putStr . prepareTableLine)
 
-
+-- Funcao para organizar os personagens cadastrados no banco de dados, funcao utilizada em printTable
 prepareTableLine :: [String] -> String
 prepareTableLine [] = ""
 prepareTableLine [head] = head ++ "\n"
@@ -359,25 +380,29 @@ prepareTableLine (head:users) = "   " ++ head ++ "  |  " ++ prepareTableLine use
 -------------------------
 --Algoritmo da IA abaixo:
 -------------------------
+-- Funcao auxiliar a pegarPalpiteIA
 renderRandom::[a] -> IO Int
 renderRandom array =
    randomRIO (0, length array - 1)
 
-
+-- Funcao auxiliar a pegarPalpiteIA
 getElemByIndex :: [a] -> IO a
 getElemByIndex list = do
     index <- renderRandom list
     return $ list!!index
 
-
+-- Funcao que determina aleatoriamente o palpite que sera feito pelo bot, de acordo com as possibilidades restantes. Utiliza as funcoes renderRandom e getElemByIndex
+-- @Param: lista dos personagens disponiveis.
 pegarPalpiteIA :: [[String]] -> IO String
 pegarPalpiteIA possibilidades = do
     p <- getElemByIndex possibilidades
     getElemByIndex (tail (tail p))
 
+-- Funcao que imprime o palpite selecionado pela IA
+-- @Param: palpite selecionado pela ia.
 imprimePalpiteIa:: String -> IO()
 imprimePalpiteIa = print
 
---Função para limpar o terminal.
+-- Função para limpar o terminal.
 cls :: IO()
 cls = putStr "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"

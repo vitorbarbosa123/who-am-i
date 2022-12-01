@@ -2,16 +2,21 @@
 
 ## Descrição do projeto
 Cara a cara é um jogo onde o jogador deve adivinhar qual é o personagem do seu oponente com base em caracteristicas e personas. 
-Aquele que acertar primeiro a persona do outro vence.
+Aquele que acertar primeiro a persona do outro, vence.
 
 ### Modo de jogo
-É possível jogar-lo versus outro usuário ou versus a IA
+É possível jogar PlayerxPlayer ou PlayerxIa
 
 ### IA
-construída com base em um algoritmo de decisão por eliminação
+Construída com base em um algoritmo de decisão por eliminação
 
 ### Ferramentas
-projeto deverá possuir uma versão construída em Haskell e outra em prolog
+```bash
+Versão em haskell = Done!
+```
+```bash
+Versão em Prolog = Loading...
+```
 
 
 ## Rodando o projeto
@@ -25,8 +30,9 @@ sqlite3 wai.db < create-db.sql
 ```
 
 Para Windows:
+```bash
 sqlite3 wai.db -init create-db.sql
-
+```
 
 Após criar o banco de dados, você pode executar o seguinte comando para rodar o jogo:
 
