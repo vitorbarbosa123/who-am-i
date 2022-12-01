@@ -1,3 +1,5 @@
+![image](https://user-images.githubusercontent.com/51303068/205130546-228228d4-d76c-4d89-b64d-49836daba82a.png)
+
 # Who am I?
 
 ## Descrição do projeto
