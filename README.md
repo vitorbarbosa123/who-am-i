@@ -5,19 +5,20 @@ Cara a cara é um jogo onde o jogador deve adivinhar qual é o personagem do seu
 Aquele que acertar primeiro a persona do outro, vence.
 
 ### Modo de jogo
-É possível jogar PlayerxPlayer ou PlayerxIa
+É possível jogar 
+- Jogador x Jogador
+- Jogador x Máquina
 
 ### IA
 Construída com base em um algoritmo de decisão por eliminação
 
-### Ferramentas
+### Versões
 ```bash
 Versão em haskell = Done!
 ```
 ```bash
 Versão em Prolog = Loading...
 ```
-
 
 ## Rodando o projeto
 Para rodar o cara a cara, primeiro você deve ter o [ghc](https://www.haskell.org/ghc/download.html), o [cabal](https://www.haskell.org/cabal/) e o [sqlite3](https://www.sqlite.org/index.html) instalados.
