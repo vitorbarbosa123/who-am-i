@@ -14,7 +14,6 @@ mainMenuSwitcher(3):- tutorial,!.
 mainMenuSwitcher(_):- write('Opção inválida!'), mainMenu.
 
 
-
 newGameMenu:-
   write("\n=========================\n"),
   write("[1] Player VS BOT \n"),
@@ -28,3 +27,18 @@ newGameSwitcher(2):- playerXplayer,!.
 newGameSwitcher(3):- mainMenu,!.
 newGameSwitcher(_):- write('Opção inválida!'), newGameMenu.
 
+
+tutorial:-
+  write("\n==============================================\n"),
+  write("Who am i? eh um jogo de turnos, você escolhe um personagem e o Bot ira receber outro personagem aleatoriamente. Onde a lista de personagens eh a mesma para ambos.\n\n"),
+  write("O objetivo do jogo eh adivinhar o personagem do adversario, a cada rodada voce pode:\n"),
+  write(". Eliminar uma caracteristica\n"),
+  write("Para vencer, eh necessario adivinhar o personagem primeiro do que o Bot.\n\n"),
+  write("Modos de jogo:\n"),
+  write("JogadorxJogador\n"),
+  write("JogadorxIA\n\n"),
+  write("Informacoes importantes:\n"),
+  write("Voce e o bot podem escolher o mesmo personagem.\n"),
+  write("Se voce escolher chutar e errar, voce perde a rodada.\n\n"),
+  write("[1] Retornar ao menu principal\n"),
+  read(Choise), mainMenuSwitcher(Choise).
