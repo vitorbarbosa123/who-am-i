@@ -2,8 +2,7 @@
   renderRandom/2,
   getElemByIndex/2,
   tail/2,
-  pegarPalpiteIA/2,
-  cls/0
+  pegarPalpiteIA/2
 ]).
 
 % -----------------------
@@ -27,6 +26,3 @@ pegarPalpiteIA(ListaPersonagens, Palpite) :-
   tail(T1, T2),
   Palpite = getElemByIndex(T2),
   write(Palpite).
-
-% 'Funcao' que limpa o terminal
-cls :- write('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n').
