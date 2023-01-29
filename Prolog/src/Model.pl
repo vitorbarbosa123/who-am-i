@@ -1,3 +1,11 @@
+:- module(model, [
+  renderRandom/2,
+  getElemByIndex/2,
+  tail/2,
+  pegarPalpiteIA/2,
+  cls/0
+]).
+
 % -----------------------
 % Algoritmo da IA abaixo:
 % -----------------------

@@ -1,3 +1,11 @@
+:- module(interface, [
+  mainMenu/0,
+  mainMenuSwitcher/1,
+  newGameMenu/0,
+  newGameSwitcher/1,
+  tutorial/0
+]).
+
 mainMenu:-
   write("\n=========================\n"),
   write("Bem vindo ao `Who Am I?`!\n"),
