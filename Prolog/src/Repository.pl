@@ -1,7 +1,8 @@
 :- module(repo, [
     connect_repo/0,
     findPersonas/1,
-    findUsuarios/1
+    findUsuarios/1,
+    findOrCreateUser/2
 ]).
 :- ensure_loaded( library(prosqlite) ).
 
@@ -24,3 +25,10 @@ findUsuarios(Usuarios, ID) :-
     -> Next is ID+1,
     findUsuarios(Tail, Next),
     Usuarios = [[Nome, Pontuacao] | Tail] ; Usuarios = [].
+
+findOrCreateUser(Name, User) :- 
+    usuarios(_, Name, Pontuacao)
+    -> User = [Name, Pontuacao];
+    sqlite_format_query(c, 'INSERT INTO usuarios(nome, pontos) VALUES ("~w", 0);'-Name, _),
+    usuarios(_, Name, Pontuacao),
+    User = [Name, Pontuacao].
