@@ -2,7 +2,8 @@
     connect_repo/0,
     findPersonas/1,
     findUsuarios/1,
-    findOrCreateUser/2
+    findOrCreateUser/2,
+    incrementUserScore/1
 ]).
 :- ensure_loaded( library(prosqlite) ).
 
@@ -32,3 +33,7 @@ findOrCreateUser(Name, User) :-
     sqlite_format_query(c, 'INSERT INTO usuarios(nome, pontos) VALUES ("~w", 0);'-Name, _),
     usuarios(_, Name, Pontuacao),
     User = [Name, Pontuacao].
+
+incrementUserScore(Name) :-
+    usuarios(_, Name, _) ->
+    sqlite_format_query(c, 'UPDATE usuarios SET pontos=pontos+1 WHERE nome="~w";'-Name, _).
