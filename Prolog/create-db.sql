@@ -1,4 +1,7 @@
-CREATE TABLE usuarios(nome TEXT PRIMARY KEY, pontos INT);
+CREATE TABLE usuarios(
+    nome TEXT PRIMARY KEY NOT NULL,
+    pontos INT NOT NULL
+);
 
 CREATE TABLE personas(
     id TEXT PRIMARY KEY NOT NULL, 

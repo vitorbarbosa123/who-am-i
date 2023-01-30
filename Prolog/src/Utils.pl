@@ -5,9 +5,8 @@
 ]).
 
 read_input(Atom) :-
-    read_line_to_codes(user_input, X3),
-    string_to_atom(X3, X2),
-    atom_number(X2, Atom).
+    read_line_to_codes(user_input, X),
+    string_to_atom(X, Atom).
 
 write_output(Atom) :-
     write(Atom),
