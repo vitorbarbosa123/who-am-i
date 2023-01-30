@@ -1,5 +1,6 @@
 CREATE TABLE usuarios(
-    nome TEXT PRIMARY KEY NOT NULL,
+    id TEXT PRIMARY KEY NOT NULL,
+    nome TEXT NOT NULL,
     pontos INT NOT NULL
 );
 

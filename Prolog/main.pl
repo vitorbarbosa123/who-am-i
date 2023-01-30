@@ -5,5 +5,5 @@
 
 main :-
     connect_repo,
-    findPersonas(X),
+    findUsuarios(X),
     write_output(X).
