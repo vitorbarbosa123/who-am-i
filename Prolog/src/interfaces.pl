@@ -6,10 +6,11 @@
   tutorial/0
 ]).
 
-:- use_module('./Utils.pl').
+:- use_module('./utils.pl').
+:- use_module('./pvp.pl').
+:- use_module('./errorHandler.pl')
 
 mainMenu:-
- 
   write("\n=========================\n"),
   write("Bem vindo ao `Who Am I?`!\n"),
   write("=========================\n"),
@@ -20,9 +21,9 @@ mainMenu:-
   read(Choise), mainMenuSwitcher(Choise).
 
 mainMenuSwitcher(1):- newGameMenu,!.
-mainMenuSwitcher(2):- scoreboard,!.
+mainMenuSwitcher(2):- showPlacar,!.
 mainMenuSwitcher(3):- tutorial,!.
-mainMenuSwitcher(_):- write('Opção inválida!'), mainMenu.
+mainMenuSwitcher(_):- errorHandler:error(0), mainMenu.
 
 
 newGameMenu:-
@@ -34,11 +35,22 @@ newGameMenu:-
   read(Choise), newGameSwitcher(Choise).
 
 newGameSwitcher(1):- playerXBot,!.
-newGameSwitcher(2):- playerXplayer,!.
+newGameSwitcher(2):- pvp:novoJogoPlayerXPlayer,!.
 newGameSwitcher(3):- mainMenu,!.
-newGameSwitcher(_):- write('Opção inválida!'), newGameMenu.
+newGameSwitcher(_):- errorHandler:error(0), newGameMenu.
 
+showPlacar:-
+  utils:cls,
+  usersFields(listaUsuarios),
+  write('|==================================|\n'),
+  write('|     Nome       |    Pontuacao    |\n'),
+  write('|==================================|\n'),
+  printTable(users),
+  write('|==================================|\n\n'),
 
+  write('Pressione . para voltar ao menu principal...\n'),
+  read(_), mainMenu.
+  
 tutorial:-
   write("\n==============================================\n"),
   write("Who am i? eh um jogo de turnos, você escolhe um personagem e o Bot ira receber outro personagem aleatoriamente. Onde a lista de personagens eh a mesma para ambos.\n\n"),
@@ -53,3 +65,15 @@ tutorial:-
   write("Se voce escolher chutar e errar, voce perde a rodada.\n\n"),
   write("Digite qualquer valor para retornar ao menu principal\n"),
   read(Choise), mainMenu.
+
+newGameHeader:-
+  write('|================================================================|\n'),
+  write('|==========================| NOVO JOGO |=========================|\n'),
+  write('|================================================================|\n\n').
+
+victoryGameHeader:-
+  write('|=======================================================================================|\n'),
+  write('|======================================| VICTORY! |=====================================|\n').
+
+line:-
+  write('|===================================================================================|\n').
