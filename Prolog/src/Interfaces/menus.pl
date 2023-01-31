@@ -44,11 +44,9 @@ newGameSwitcher(_):- errorHandler:error(0), newGameMenu.
 
 showPlacar:-
   utils:cls,
-  usersFields(listaUsuarios),
   write('|==================================|\n'),
   write('|     Nome       |    Pontuacao    |\n'),
   write('|==================================|\n'),
-  repository:findUsuarios(users),
   write('|==================================|\n\n'),
 
   write('Pressione . para voltar ao menu principal...\n'),
