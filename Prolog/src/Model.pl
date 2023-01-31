@@ -1,4 +1,4 @@
-:- module(model, [
+:- module(Model, [
   renderRandom/2,
   getElemByIndex/2,
   tail/2,
@@ -19,7 +19,7 @@ getElemByIndex(Lista, Elem) :- renderRandom(Lista, I), nth0(I, Lista, E, _), Ele
 tail([_|T], T).
 
 /* 'Funcao' que determina aleatoriamente o palpite que sera feito pelo bot, de acordo com as possibilidades restantes. Utiliza as funcoes getElemByIndex e tail.
-   @Param: lista dos personagens disponiveis.*/
+  @Param: lista dos personagens disponiveis.*/
 pegarPalpiteIA(ListaPersonagens, Palpite) :-
   getElemByIndex(ListaPersonagens, P),
   tail(P, T1),
