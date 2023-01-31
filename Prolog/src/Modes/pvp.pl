@@ -1,16 +1,20 @@
 :- module(pvp, [
   novoJogoPlayerXPlayer/0,
-  jogoPxP/1
+  jogoPxP/2,
+  partidaPxP/6,
+  vitoria/3
 ]).
 
-:- use_module('./interfaces.pl').
-:- use_module('./utils.pl').
-:- use_module('./errorHandler.pl')
+:- use_module('./../Interfaces/menus.pl').
+:- use_module('./../Interfaces/headers.pl').
+
+:- use_module('./../Utils/utils.pl').
+:- use_module('./../Utils/errorHandler.pl').
 
 % Inicia um novo jogo entre dois jogadores humanos
 
 novoJogoPlayerXPlayer:-
-  interfaces:newGameHeader,
+  headers:newGameHeader,
   write('Digite o nome do Jogador 1: '),
   read(Username1),
 
@@ -53,9 +57,9 @@ partidaPxP(NomeJogador,NomeOponente,PersonaJogador,PersonaOponente,Possibilidade
   (userGanhou(PossibilidadesOponente), vitoria(NomeOponente,NomeJogador,PersonaJogador);
 
   utils:cls,
-  interfaces:line,
+  headers:line,
   printTable(PossibilidadesJogador),
-  interfaces:line,
+  headers:line,
   read(Palpite),
   pegarPalpiteUser(NomeJogador),
   NewPossibilidades = verificarPalpite(Palpite,PersonaOponente,PossibilidadesJogador),
@@ -69,7 +73,7 @@ partidaPxP(NomeJogador,NomeOponente,PersonaJogador,PersonaOponente,Possibilidade
 vitoria(Vencedor, Vencido, PersonaVencido):-
   somaPontosUsuario(Vencedor),
   utils:cls,
-  interfaces:victoryGameHeader,
+  menus:victoryGameHeader,
   write('PARABENS '),
   write(Vencedor),
   write(' ! VOCE GANHOU!\n'),

@@ -1,14 +1,17 @@
-:- module(interfaces, [
+:- module(menus, [
   mainMenu/0,
   mainMenuSwitcher/1,
   newGameMenu/0,
   newGameSwitcher/1,
+  showPlacar/0,
   tutorial/0
 ]).
 
-:- use_module('./utils.pl').
-:- use_module('./pvp.pl').
-:- use_module('./errorHandler.pl')
+:- use_module('./../Utils/utils.pl').
+:- use_module('./../Modes/pvp.pl').
+:- use_module('./../Modes/pve.pl').
+:- use_module('./../Utils/errorHandler.pl').
+:- use_module('./../Data/repository.pl').
 
 mainMenu:-
   write("\n=========================\n"),
@@ -34,18 +37,16 @@ newGameMenu:-
   write("Selecione uma opcao: \n"),
   read(Choise), newGameSwitcher(Choise).
 
-newGameSwitcher(1):- playerXBot,!.
+newGameSwitcher(1):- pve:novoJogoPlayerxBot,!.
 newGameSwitcher(2):- pvp:novoJogoPlayerXPlayer,!.
 newGameSwitcher(3):- mainMenu,!.
 newGameSwitcher(_):- errorHandler:error(0), newGameMenu.
 
 showPlacar:-
   utils:cls,
-  usersFields(listaUsuarios),
   write('|==================================|\n'),
   write('|     Nome       |    Pontuacao    |\n'),
   write('|==================================|\n'),
-  printTable(users),
   write('|==================================|\n\n'),
 
   write('Pressione . para voltar ao menu principal...\n'),
@@ -64,16 +65,5 @@ tutorial:-
   write("Voce e o bot podem escolher o mesmo personagem.\n"),
   write("Se voce escolher chutar e errar, voce perde a rodada.\n\n"),
   write("Digite qualquer valor para retornar ao menu principal\n"),
-  read(Choise), mainMenu.
+  read(_), mainMenu.
 
-newGameHeader:-
-  write('|================================================================|\n'),
-  write('|==========================| NOVO JOGO |=========================|\n'),
-  write('|================================================================|\n\n').
-
-victoryGameHeader:-
-  write('|=======================================================================================|\n'),
-  write('|======================================| VICTORY! |=====================================|\n').
-
-line:-
-  write('|===================================================================================|\n').

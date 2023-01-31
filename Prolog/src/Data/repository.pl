@@ -1,4 +1,4 @@
-:- module(repo, [
+:- module(repository, [
     connect_repo/0,
     findPersonas/1,
     findUsuarios/1,
