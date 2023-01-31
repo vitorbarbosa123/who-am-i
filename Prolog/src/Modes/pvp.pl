@@ -1,6 +1,8 @@
 :- module(pvp, [
   novoJogoPlayerXPlayer/0,
-  jogoPxP/0
+  jogoPxP/2,
+  partidaPxP/6,
+  vitoria/3
 ]).
 
 :- use_module('./../Interfaces/menus.pl').

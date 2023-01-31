@@ -11,6 +11,7 @@
 :- use_module('./../Modes/pvp.pl').
 :- use_module('./../Modes/pve.pl').
 :- use_module('./../Utils/errorHandler.pl').
+:- use_module('./../Data/repository.pl').
 
 mainMenu:-
   write("\n=========================\n"),
@@ -36,8 +37,8 @@ newGameMenu:-
   write("Selecione uma opcao: \n"),
   read(Choise), newGameSwitcher(Choise).
 
-newGameSwitcher(1):- pve:playerXBot,!.
-newGameSwitcher(2):- pvp:jogoPxB,!.
+newGameSwitcher(1):- pve:novoJogoPlayerxBot,!.
+newGameSwitcher(2):- pvp:novoJogoPlayerXPlayer,!.
 newGameSwitcher(3):- mainMenu,!.
 newGameSwitcher(_):- errorHandler:error(0), newGameMenu.
 
@@ -47,7 +48,7 @@ showPlacar:-
   write('|==================================|\n'),
   write('|     Nome       |    Pontuacao    |\n'),
   write('|==================================|\n'),
-  printTable(users),
+  repository:findUsuarios(users),
   write('|==================================|\n\n'),
 
   write('Pressione . para voltar ao menu principal...\n'),
@@ -66,5 +67,5 @@ tutorial:-
   write("Voce e o bot podem escolher o mesmo personagem.\n"),
   write("Se voce escolher chutar e errar, voce perde a rodada.\n\n"),
   write("Digite qualquer valor para retornar ao menu principal\n"),
-  read(Choise), mainMenu.
+  read(_), mainMenu.
 
