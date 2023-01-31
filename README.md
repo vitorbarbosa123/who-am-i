@@ -23,9 +23,16 @@ Versão em Prolog = Loading...
 ```
 
 ## Rodando o projeto
-Para rodar o cara a cara, primeiro você deve ter o [ghc](https://www.haskell.org/ghc/download.html), o [cabal](https://www.haskell.org/cabal/) e o [sqlite3](https://www.sqlite.org/index.html) instalados.
+Independente da versão, deve ser instalado o [sqlite3](https://www.sqlite.org/index.html) na máquina para popular o banco.
 
-Primeiro, vamos criar e popular o banco de dados:
+### Haskell
+Deve ser instalado também o [ghc](https://www.haskell.org/ghc/download.html) e o [cabal](https://www.haskell.org/cabal/).
+
+### Prolog
+Deve ser instalado o [SWI-Prolog](https://www.swi-prolog.org/Download.html).
+ 
+
+### Popular banco
 
 Para linux/IOS:
 ```bash
@@ -39,7 +46,11 @@ sqlite3 wai.db -init create-db.sql
 
 Após criar o banco de dados, você pode executar o seguinte comando para rodar o jogo:
 
+#### Haskell
+
 ```bash
 cabal build
 cabal run whoami
 ```
+
+#### Prolog
