@@ -27,7 +27,7 @@ novoJogoPlayerxBot:-
 
 % Inicia o jogo de player contra bot
 jogoPlayerxBot(Username):-
-    PersonasField = listPersonas,
+    PersonasField = findPersonas(X),
     Personas = map(parsePersonaToStringArray(PersonasField)),
 
     get(EscolhaJogador),
@@ -48,8 +48,8 @@ partidaPlayerxBot(Username,PersonaJogador,PersonaBot,PossibilidadesUser,Possibil
     printTable(PossibilidadesUser),
     line,
 
-    read(PalpiteJogador),
-    NewPossibilidadesJogador = verificarPalpite(PalpiteJogador,PersonaBot,PossibilidadesUser),
+    read(EscolhaJogador),
+    NewPossibilidadesJogador = verificarPalpite(EscolhaJogador,PersonaBot,PossibilidadesUser),
 
     length(PossibilidadesUser, LengthPossibUser),
     length(NewPossibilidadesJogador, LengthPossibJog),
@@ -65,7 +65,7 @@ partidaPlayerxBot(Username,PersonaJogador,PersonaBot,PossibilidadesUser,Possibil
 
     (PalpiteIA = pegarPalpiteIA(PossibilidadesBot),
     NewPossibilidadesBot = verificarPalpite(PalpiteIA, PersonaJogador, PossibilidadesBot),
-    headers:line,
+    line,
     write('O Bot chutou a seguinte caracteristica: \n'),
     write('. '),
     sleep(5),
@@ -78,11 +78,10 @@ partidaPlayerxBot(Username,PersonaJogador,PersonaBot,PossibilidadesUser,Possibil
     (
         (userGanhou(NewPossibilidadesBot), vitoriaBot(PersonaBot));
         (
-        utils:cls,
+        cls,
         partidaPlayerxBot(Username,PersonaJogador,PersonaBot,NewPossibilidadesJogador,NewPossibilidadesBot))
     ))
     ).
-
 
 % Anuncia a vitória do jogador
 vitoriaJogador(Username,PersonaBot):-
