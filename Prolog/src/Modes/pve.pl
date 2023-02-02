@@ -1,9 +1,11 @@
 :- module(pve, [
-  novoJogoPlayerxBot/0,
-  partidaPlayerxBot/5,
+  novoJogoPlayerxBot/0
+]).
+/*
+partidaPlayerxBot/5,
   vitoriaJogador/2,
   vitoriaBot/1
-]).
+*/
 
 :- use_module('./../Interfaces/menus.pl').
 :- use_module('./../Interfaces/headers.pl').
@@ -14,6 +16,7 @@
 % Inicia um jogo de WaI
 novoJogoPlayerxBot:-
     cls,
+    connect_repo,
     newGameHeader,
     write('Digite o nome do Jogador: '),
     read(Username),
@@ -26,10 +29,16 @@ novoJogoPlayerxBot:-
     jogoPlayerxBot(User).
 
 % Inicia o jogo de player contra bot
-jogoPlayerxBot(Username):-
-    PersonasField = findPersonas(X),
-    Personas = map(parsePersonaToStringArray(PersonasField)),
+jogoPlayerxBot(User):-
+    cls,
+    choosePersonaHeader,
+    findPersonas(X),
+    formatTable(X, 0),
+    menuCharacteristics(EscolhaJogador),
 
+    write(EscolhaJogador).
+
+/*
     get(EscolhaJogador),
     IndiceJogador is (EscolhaJogador-1),
     nth0(IndiceJogador, Personas, PersonaJogador, _),
@@ -108,3 +117,4 @@ vitoriaBot(PersonaBot):-
     read(_),
     mainMenu.
 
+*/
