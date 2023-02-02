@@ -27,38 +27,71 @@ novoJogoPlayerxBot:-
 
     findOrCreateUser(Username, User),
     jogoPlayerxBot(User).
-
+ 
 % Inicia o jogo de player contra bot
 jogoPlayerxBot(User):-
     cls,
+
     choosePersonaHeader,
+
     findPersonas(X),
     formatTable(X, 0),
+
+    write("Digite o número do ID do seu personagem: \n"),
+    read(Id),
+
+    IndiceJogador is Id-1,
+    nth0(IndiceJogador, X, PersonaJogador),
+   
+    random_between(0, 15, R),
+    nth0(R, X, PersonaBot),
+    
+    line,
+
     menuCharacteristics(EscolhaJogador),
 
-    write(EscolhaJogador).
+    PossibilidadesUser = X,
+    PossibilidadesBot = X,
 
-/*
-    get(EscolhaJogador),
-    IndiceJogador is (EscolhaJogador-1),
-    nth0(IndiceJogador, Personas, PersonaJogador, _),
+    partidaPlayerxBot(User, PersonaJogador, PersonaBot, PossibilidadesUser, PossibilidadesBot).
 
-    random_between(0, 15, R),
-    nth0(R, Personas, PersonaBot, _),
+inserir_final([], Y, [Y]).
+inserir_final([I|R], Y, [I|R1]) :- inserir_final(R, Y, R1).
 
-    PossibilidadesUser = map(parsePersonaToStringArray, PersonasField),
-    PossibilidadesBot = map(parsePersonaToStringArray, PersonasField),
+verificarPalpite(Index, Palpite, Persona, Possibilidades, PalpitesCertos):-
+    (
+        member(Palpite, Persona),
+        nth0(Index, Possibilidades, Personagem, Tail),
 
-    partidaPlayerxBot(Username, PersonaJogador, PersonaBot, PossibilidadesUser, PossibilidadesBot).
+        member(Palpite, Personagem),
+        (
+            length(PalpitesCertos, L),
+            (
+                L =:= 0,
+                inserir_final([], Personagem, Lista)
+            );
+            inserir_final(PalpitesCertos, Personagem, Lista)
+        )
+    );
+    I is Index+1,
+    I < 15,
+    verificarPalpite(I, Palpite, Persona, Possibilidades, Lista),
+    write(PalpitesCertos),
+    PalpitesCertos = Lista.
+ 
 
 % Inicia uma rodada de player contra bot
 partidaPlayerxBot(Username,PersonaJogador,PersonaBot,PossibilidadesUser,PossibilidadesBot):-
     line,
-    printTable(PossibilidadesUser),
+    findPersonas(X),
+    formatTable(X, 0),
     line,
 
     read(EscolhaJogador),
-    NewPossibilidadesJogador = verificarPalpite(EscolhaJogador,PersonaBot,PossibilidadesUser),
+    verificarPalpite(0, EscolhaJogador,PersonaBot,PossibilidadesUser, NewPossibilidadesJogador),
+    write(NewPossibilidadesJogador).
+
+/*
 
     length(PossibilidadesUser, LengthPossibUser),
     length(NewPossibilidadesJogador, LengthPossibJog),
@@ -101,7 +134,7 @@ vitoriaJogador(Username,PersonaBot):-
     write('O personagem do bot era: '),
     write(PersonaBot),
     write('\n'),
-    write('Pressione Enter para voltar ao menu principal...\n'),
+    write('Digite qualquer valor para voltar ao menu principal...\n'),
     read(_),
     mainMenu.
 
@@ -113,8 +146,7 @@ vitoriaBot(PersonaBot):-
     write('O personagem do bot era: '),
     write(PersonaBot),
     write('\n'),
-    write('Pressione Enter para voltar ao menu principal...\n'),
+    write('Digite qualquer valor para voltar ao menu principal...\n'),
     read(_),
     mainMenu.
-
 */
