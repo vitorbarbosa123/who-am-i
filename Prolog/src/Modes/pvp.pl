@@ -11,9 +11,12 @@
 :- use_module('./../Utils/utils.pl').
 :- use_module('./../Utils/errorHandler.pl').
 
+:- use_module('./../Data/repository.pl').
+
 % Inicia um novo jogo entre dois jogadores humanos
 
 novoJogoPlayerXPlayer:-
+  connect_repo,
   headers:newGameHeader,
   write('Digite o nome do Jogador 1: '),
   read(Username1),
@@ -21,19 +24,20 @@ novoJogoPlayerXPlayer:-
   write('Digite o nome do Jogador 2: '),
   read(Username2),
 
-  (Username1 = Username2, errorHandler:error(1),
+/*
+  TODO: criar validação de comparação das duas variáveis
+  Username1 =:= Username2 -> errorHandler:error(1),
   read(_),
-  novoJogoPlayerXPlayer).
-
-  User1 = read_line_to_string(Username1)
-  userField(criaUsuarioSeNaoExistir(User1)),
-
-  User2 = read_line_to_string(Username2),
-  userField(criaUsuarioSeNaoExistir(Username2)),
+  novoJogoPlayerXPlayer;
+  
+  obs: o tratamento de erro já funciona
+*/
+  findOrCreateUser(Username1, User1),
+  findOrCreateUser(Username2, User2),
 
   jogoPxP(User1,User2).
 
-jogoPxP(Username1,Username2):-
+jogoPxP(User1,User2):-
   listPersonas(personasField),
   Personas = map(parsePersonaToStringArray,personasField),
 
@@ -71,7 +75,7 @@ partidaPxP(NomeJogador,NomeOponente,PersonaJogador,PersonaOponente,Possibilidade
 
 % Informa e registra o vencedor do jogo PxP
 vitoria(Vencedor, Vencido, PersonaVencido):-
-  somaPontosUsuario(Vencedor),
+  incrementUserScore(Vencedor),
   utils:cls,
   menus:victoryGameHeader,
   write('PARABENS '),
