@@ -21,7 +21,7 @@ mainMenu:-
   write("(1) Iniciar novo jogo\n"),
   write("(2) Listar pontuacoes\n"),
   write("(3) Como Jogar\n"),
-  read(Choise), mainMenuSwitcher(Choise).
+  read(Choice), mainMenuSwitcher(Choice).
 
 mainMenuSwitcher(1):- newGameMenu,!.
 mainMenuSwitcher(2):- showPlacar,!.
@@ -35,7 +35,7 @@ newGameMenu:-
   write("[2] Player VS Player \n"),
   write("[3] Retornar ao menu principal\n"),
   write("Selecione uma opcao: \n"),
-  read(Choise), newGameSwitcher(Choise).
+  read(Choice), newGameSwitcher(Choice).
 
 newGameSwitcher(1):- pve:novoJogoPlayerxBot,!.
 newGameSwitcher(2):- pvp:novoJogoPlayerXPlayer,!.
@@ -51,7 +51,7 @@ showPlacar:-
 
   write('Pressione . para voltar ao menu principal...\n'),
   read(_), mainMenu.
-  
+
 tutorial:-
   write("\n==============================================\n"),
   write("Who am i? eh um jogo de turnos, você escolhe um personagem e o Bot ira receber outro personagem aleatoriamente. Onde a lista de personagens eh a mesma para ambos.\n\n"),

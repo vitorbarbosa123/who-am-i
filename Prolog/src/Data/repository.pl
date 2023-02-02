@@ -9,7 +9,7 @@
 
 connect_repo :- sqlite_connect('wai', c, as_predicates(true)).
 
-findPersonas(Personas) :- 
+findPersonas(Personas) :-
     findPersonas(Personas, 1).
 
 findPersonas(Personas, ID) :-
@@ -18,7 +18,7 @@ findPersonas(Personas, ID) :-
     findPersonas(Tail, Next),
     Personas = [[ID, Nome, Sexo, CorCabelo, Etnia, CorOlhos, Acessorio] | Tail] ; Personas = [].
 
-findUsuarios(Usuarios) :- 
+findUsuarios(Usuarios) :-
     findUsuarios(Usuarios, 1).
 
 findUsuarios(Usuarios, ID) :-
@@ -27,7 +27,7 @@ findUsuarios(Usuarios, ID) :-
     findUsuarios(Tail, Next),
     Usuarios = [[Nome, Pontuacao] | Tail] ; Usuarios = [].
 
-findOrCreateUser(Name, User) :- 
+findOrCreateUser(Name, User) :-
     usuarios(_, Name, Pontuacao)
     -> User = [Name, Pontuacao];
     sqlite_format_query(c, 'INSERT INTO usuarios(nome, pontos) VALUES ("~w", 0);'-Name, _),
