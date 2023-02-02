@@ -1,4 +1,4 @@
-:- module(Model, [
+:- module(model, [
   renderRandom/2,
   getElemByIndex/2,
   tail/2,

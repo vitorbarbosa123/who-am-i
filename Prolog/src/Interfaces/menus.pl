@@ -21,7 +21,7 @@ mainMenu:-
   write("(1) Iniciar novo jogo\n"),
   write("(2) Listar pontuacoes\n"),
   write("(3) Como Jogar\n"),
-  read(Choise), mainMenuSwitcher(Choise).
+  read(Choice), mainMenuSwitcher(Choice).
 
 mainMenuSwitcher(1):- newGameMenu,!.
 mainMenuSwitcher(2):- showPlacar,!.
@@ -35,7 +35,7 @@ newGameMenu:-
   write("[2] Player VS Player \n"),
   write("[3] Retornar ao menu principal\n"),
   write("Selecione uma opcao: \n"),
-  read(Choise), newGameSwitcher(Choise).
+  read(Choice), newGameSwitcher(Choice).
 
 newGameSwitcher(1):- novoJogoPlayerxBot,!.
 newGameSwitcher(2):- novoJogoPlayerXPlayer,!.
@@ -43,7 +43,7 @@ newGameSwitcher(3):- mainMenu,!.
 newGameSwitcher(_):- errorHandler:error(0), newGameMenu.
 
 showPlacar:-
-  utils:cls,
+  connect_repo,
   write('|==================================|\n'),
   write('|     Nome       |    Pontuacao    |\n'),
   findUsuarios(X),

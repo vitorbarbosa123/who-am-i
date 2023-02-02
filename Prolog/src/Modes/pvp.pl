@@ -38,46 +38,51 @@ novoJogoPlayerXPlayer:-
   jogoPxP(User1,User2).
 
 jogoPxP(User1,User2):-
-  listPersonas(personasField),
-  Personas = map(parsePersonaToStringArray,personasField),
+  PersonasField = findPersonas(X),
+  Personas = map(parsePersonaToStringArray(PersonasField)),
 
   get(EscolhaP1),
   IndiceP1 is (EscolhaP1-1),
-  PersonaP1 = nth0(IndiceP1,Personas),
+  nth0(IndiceP1,Personas, PersonaP1, _),
 
   get(EscolhaP2),
   IndiceP2 is (EscolhaP2-1),
-  PersonaP2 = nth0(IndiceP2,Personas),
+  nth0(IndiceP2,Personas, PersonaP2, _),
 
-  PossibilidadesUser1 = map(parsePersonaToStringArray,personasField),
-  PossibilidadesUser2 = map(parsePersonaToStringArray,personasField),
+  PossibilidadesUser1 = map(parsePersonaToStringArray(PersonasField)),
+  PossibilidadesUser2 = map(parsePersonaToStringArray(PersonasField)),
 
-  partidaPxP(User1,User2,PersonaP1,PersonaP2,PossibilidadesUser1,PossibilidadesUser2).
-
-
+  partidaPxP(Username1, Username2, PersonaP1, PersonaP2, PossibilidadesUser1, PossibilidadesUser2).
 
 % Inicia uma rodada de jogo PxP
-partidaPxP(NomeJogador,NomeOponente,PersonaJogador,PersonaOponente,PossibilidadesJogador,PossibilidadesOponente):-
-  (userGanhou(PossibilidadesOponente), vitoria(NomeOponente,NomeJogador,PersonaJogador);
+partidaPxP(Username1, Username2, PersonaJogador, PersonaOponente, PossibilidadesJogador, PossibilidadesOponente):-
+
+  (userGanhou(PossibilidadesOponente),
+  vitoria(Username2, Username1, PersonaJogador);
 
   utils:cls,
   headers:line,
   printTable(PossibilidadesJogador),
   headers:line,
   read(Palpite),
-  pegarPalpiteUser(NomeJogador),
-  NewPossibilidades = verificarPalpite(Palpite,PersonaOponente,PossibilidadesJogador),
-  (length(PossibilidadesJogador) is length(NewPossibilidades), errorHandler:error(1),
+  pegarPalpiteUser(Username1),
+  NewPossibilidades = verificarPalpite(Palpite, PersonaOponente, PossibilidadesJogador),
+  length(PossibilidadesJogador, L1),
+  length(NewPossibilidades, L2),
+
+  (L1 == L2,
+  errorHandler:error(1),
   read(_),
-  partidaPxP(NomeJogador,NomeOponente,PersonaJogador,PersonaOponente,PossibilidadesJogador,PossibilidadesOponente);
-  partidaPxP(NomeOponente,NomeJogador,PersonaOponente,PersonaJogador,PossibilidadesOponente,NewPossibilidades))
+  partidaPxP(Username1, Username2, PersonaJogador, PersonaOponente, PossibilidadesJogador, PossibilidadesOponente));
+
+  partidaPxP(Username2, Username1, PersonaOponente, PersonaJogador, PossibilidadesOponente, NewPossibilidades)
   ).
 
 % Informa e registra o vencedor do jogo PxP
 vitoria(Vencedor, Vencido, PersonaVencido):-
   incrementUserScore(Vencedor),
-  utils:cls,
-  menus:victoryGameHeader,
+  cls,
+  victoryGameHeader,
   write('PARABENS '),
   write(Vencedor),
   write(' ! VOCE GANHOU!\n'),

@@ -1,6 +1,6 @@
 :- module(pve, [
   novoJogoPlayerxBot/0,
-  partidaPlayerxBot/6,
+  partidaPlayerxBot/5,
   vitoriaJogador/2,
   vitoriaBot/1
 ]).
@@ -13,82 +13,99 @@
 
 % Inicia um jogo de WaI
 novoJogoPlayerxBot:-
-    connect_repo,
-    headers:newGameHeader,
+    cls,
+    newGameHeader,
     write('Digite o nome do Jogador: '),
     read(Username),
-    findOrCreateUser(Username, User),
 
-    findPersonas(X),
-    write(X),
+    (Username == "",
+    errorHandler:error(4),
+    novoJogoPlayerxBot);
+
+    findOrCreateUser(Username, User),
+    jogoPlayerxBot(User).
+
+% Inicia o jogo de player contra bot
+jogoPlayerxBot(Username):-
+    PersonasField = listPersonas,
+    Personas = map(parsePersonaToStringArray(PersonasField)),
 
     get(EscolhaJogador),
     IndiceJogador is (EscolhaJogador-1),
-    PersonaJogador = nth0(IndiceJogador,personas),
+    nth0(IndiceJogador, Personas, PersonaJogador, _),
 
-    N is random_between(0,15,R),
-    PersonaBot = nth0(N,personas),
+    random_between(0, 15, R),
+    nth0(R, Personas, PersonaBot, _),
 
-    PossibilidadesUser = map(parsePersonaToStringArray,personasField),
-    PossibilidadesBot = map(parsePersonaToStringArray,personasField),
+    PossibilidadesUser = map(parsePersonaToStringArray, PersonasField),
+    PossibilidadesBot = map(parsePersonaToStringArray, PersonasField),
 
-    partidaPlayerxBot(Username,PersonaJogador,PersonaBot,PossibilidadesUser,PossibilidadesBot).
+    partidaPlayerxBot(Username, PersonaJogador, PersonaBot, PossibilidadesUser, PossibilidadesBot).
 
-
-% Inicia uma partida de WaI
-partidaPlayerxBot(Username,PersonaJogador,PersonaBot,PossibilidadesUser,PossibilidadesBot,V):-
-    headers:line,
+% Inicia uma rodada de player contra bot
+partidaPlayerxBot(Username,PersonaJogador,PersonaBot,PossibilidadesUser,PossibilidadesBot):-
+    line,
     printTable(PossibilidadesUser),
-    headers:line,
+    line,
 
     read(PalpiteJogador),
-    newPossibilidadesJogador = verificarPalpite(PalpiteJogador,PersonaBot,PossibilidadesUser),
+    NewPossibilidadesJogador = verificarPalpite(PalpiteJogador,PersonaBot,PossibilidadesUser),
 
-    ((length(PossibilidadesUser) is length(newPossibilidadesJogador)) -> errorHandler:error(2),
+    length(PossibilidadesUser, LengthPossibUser),
+    length(NewPossibilidadesJogador, LengthPossibJog),
+
+    (LengthPossibUser == LengthPossibJog,
+    errorHandler:error(2),
     read(_),
-    partidaPlayerxBot(Username,PersonaJogador,PersonaBot,PossibilidadesUser,PossibilidadesBot);
+    partidaPlayerxBot(Username, PersonaJogador, PersonaBot, PossibilidadesUser, PossibilidadesBot)
+    );
 
-    (userGanhou(newPossibilidadesJogador) = True -> vitoriaJogador(Username,PersonaBot);
-    PalpiteIA = pegarPalpiteIA(PossibilidadesBot),
-    newPossibilidadesBot = verificarPalpite(PalpiteIA,PersonaJogador,PossibilidadesBot),
+    (
+    (userGanhou(NewPossibilidadesJogador), vitoriaJogador(Username, PersonaBot));
+
+    (PalpiteIA = pegarPalpiteIA(PossibilidadesBot),
+    NewPossibilidadesBot = verificarPalpite(PalpiteIA, PersonaJogador, PossibilidadesBot),
     headers:line,
     write('O Bot chutou a seguinte caracteristica: \n'),
+    write('. '),
+    sleep(5),
     write('.'),
-    sleep(0.1),
+    sleep(1),
     write('.'),
-    sleep(0.1),
-    write('.'),
-    sleep(0.1),
+    sleep(1),
     write(PalpiteIA),
-    sleep(0.3),
-    ((userGanhou(newPossibilidadesBot) -> vitoriaBot(PersonaBot));
-    utils:cls,
-    partidaPlayerxBot(Username,PersonaJogador,PersonaBot,newPossibilidadesJogador,newPossibilidadesBot)
-    ))).
+    sleep(3),
+    (
+        (userGanhou(NewPossibilidadesBot), vitoriaBot(PersonaBot));
+        (
+        utils:cls,
+        partidaPlayerxBot(Username,PersonaJogador,PersonaBot,NewPossibilidadesJogador,NewPossibilidadesBot))
+    ))
+    ).
 
 
 % Anuncia a vitória do jogador
 vitoriaJogador(Username,PersonaBot):-
     incrementUserScore(Username),
-    utils:cls,
-    menus:victoryGameHeader,
+    cls,
+    victoryGameHeader,
     write('Você venceu!\n'),
     write('O personagem do bot era: '),
     write(PersonaBot),
     write('\n'),
     write('Pressione Enter para voltar ao menu principal...\n'),
     read(_),
-    menuPrincipal.
+    mainMenu.
 
 % Anuncia a vitória do bot
 vitoriaBot(PersonaBot):-
-    utils:cls,
-    menus:defeatGameHeader,
+    cls,
+    defeatGameHeader,
     write('Você perdeu!\n'),
     write('O personagem do bot era: '),
     write(PersonaBot),
     write('\n'),
     write('Pressione Enter para voltar ao menu principal...\n'),
     read(_),
-    menuPrincipal.
+    mainMenu.
 
