@@ -4,7 +4,8 @@
   newGameMenu/0,
   newGameSwitcher/1,
   showPlacar/0,
-  tutorial/0
+  tutorial/0,
+  menuCharacteristics/1
 ]).
 
 :- use_module('./../Utils/utils.pl').
@@ -69,3 +70,27 @@ tutorial:-
   write("Digite qualquer valor para retornar ao menu principal\n"),
   read(_), mainMenu.
 
+
+menuCharacteristics(OptionChoose):-
+  write("\n Qual caracteristica voce deseja escolher? \n"),
+  write("[0] sexo | [1] cor do cabelo | [2] etnia | [3] cor dos olhos | [4] acessorio\n"),
+  read(Choice),
+  (
+  Choice == 0 -> 
+    write("Qual o sexo?\n"),
+    read(OptionChoose);
+  Choice == 1 ->
+    write("Qual a cor do cabelo?\n"),
+    read(OptionChoose);
+  Choice == 2 ->
+    write("Qual a etnia?\n"),
+    read(OptionChoose);
+  Choice == 3 ->
+    write("Qual a cor dos olhos?\n"),
+    read(OptionChoose);
+  Choice == 4 ->
+    write("Qual a Qual o acessório?\n"),
+    read(OptionChoose);
+
+    error(0)
+  ).
