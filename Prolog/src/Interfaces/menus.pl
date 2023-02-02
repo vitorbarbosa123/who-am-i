@@ -37,8 +37,8 @@ newGameMenu:-
   write("Selecione uma opcao: \n"),
   read(Choise), newGameSwitcher(Choise).
 
-newGameSwitcher(1):- pve:novoJogoPlayerxBot,!.
-newGameSwitcher(2):- pvp:novoJogoPlayerXPlayer,!.
+newGameSwitcher(1):- novoJogoPlayerxBot,!.
+newGameSwitcher(2):- novoJogoPlayerXPlayer,!.
 newGameSwitcher(3):- mainMenu,!.
 newGameSwitcher(_):- errorHandler:error(0), newGameMenu.
 
@@ -46,10 +46,12 @@ showPlacar:-
   utils:cls,
   write('|==================================|\n'),
   write('|     Nome       |    Pontuacao    |\n'),
+  findUsuarios(X),
+  write_output(X),
   write('|==================================|\n'),
   write('|==================================|\n\n'),
 
-  write('Pressione . para voltar ao menu principal...\n'),
+  write('Pressione E para voltar ao menu principal...\n'),
   read(_), mainMenu.
   
 tutorial:-
