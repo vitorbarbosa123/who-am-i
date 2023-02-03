@@ -1,16 +1,15 @@
+/* <module> pve
+*  Módulo respectivo ao modo de jogo: Jogador Vs Bot
+*/
 :- module(pve, [
   novoJogoPlayerxBot/0
 ]).
-/*
-partidaPlayerxBot/5,
-  vitoriaJogador/2,
-  vitoriaBot/1
-*/
 
 :- use_module('./../Interfaces/menus.pl').
 :- use_module('./../Interfaces/headers.pl').
 :- use_module('./../Utils/utils.pl').
 :- use_module('./../Utils/errorHandler.pl').
+:- use_module('./../Utils/helpers.pl').
 :- use_module('./../Data/repository.pl').
 :- use_module('./../Model/model.pl').
 
@@ -29,7 +28,10 @@ novoJogoPlayerxBot:-
     findOrCreateUser(Username, User),
     jogoPlayerxBot(Username).
  
-% Inicia o jogo de player contra bot
+/*
+*  Inicia o jogo de player contra bot
+    @param User, Usuário criado ou recuperado do banco de dados
+*/ 
 jogoPlayerxBot(User):-
     cls,
 
@@ -49,30 +51,27 @@ jogoPlayerxBot(User):-
     
     line,
 
-    write(PersonaBot),
-
     menuCharacteristics(Palpite),
   
     partidaPlayerxBot(User, Palpite, PersonaJogador, PersonaBot, ListPersonas).
 
-verificarPalpite([], _, _, Aux, Result):- Result = Aux.
 
-verificarPalpite([H|T], Palpite, PersonaBot, PalpitesCertos, Result):-
-        member(Palpite, PersonaBot),
-        (member(Palpite, H),
-        append(PalpitesCertos, [H], Aux),
-        verificarPalpite(T, Palpite, PersonaBot, Aux, Result),!;
-        verificarPalpite(T, Palpite, PersonaBot, PalpitesCertos, Result)).
-    
-verificarPalpite([H|T], Palpite, PersonaBot, PalpitesCertos, Result):-
-        member(Palpite, H),
-        verificarPalpite(T, Palpite, PersonaBot, PalpitesCertos, Result),!;
-        append(PalpitesCertos, [H], Aux),
-        verificarPalpite(T, Palpite, PersonaBot, Aux, Result).
 
-% Inicia uma rodada de player contra bot
+
+/*
+* Inicia uma rodada de player contra bot
+* @param User, jogador
+  @param Palpite, palpite dado pelo jogador
+  @param PersonaJogador, personagem escolhido pelo jogador
+  @param PersonaBot, personagem escolhido pelo bot
+  @param ListPersonas, lista com todos os personagens possíveis
+*/ 
 partidaPlayerxBot(User, Palpite, PersonaJogador, PersonaBot, ListPersonas):-
+    cls,
     verificarPalpite(ListPersonas, Palpite, PersonaBot,[], Result),
+    writeln("Filtrando escolha..."),
+    sleep(3),
+    line,
     formatFilterTable(Result, 0),
     length(Result, R),
     (
@@ -80,10 +79,13 @@ partidaPlayerxBot(User, Palpite, PersonaJogador, PersonaBot, ListPersonas):-
 
     pegarPalpiteIA(PalpiteIA),
     write('O Bot chutou a seguinte caracteristica: \n'),
-   
+
     writeln(PalpiteIA),
-   
+    sleep(3),
+    cls,
+      
     verificarPalpite(ListPersonas, PalpiteIA ,PersonaJogador, [], NewResult),
+    line,
     formatFilterTable(NewResult, 0),
     length(NewResult, R1),   
     (

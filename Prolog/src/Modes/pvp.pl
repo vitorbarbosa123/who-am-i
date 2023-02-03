@@ -1,3 +1,6 @@
+/* <module> pvp
+*  Módulo respectivo ao modo de jogo: Jogador vs Jogador
+*/
 :- module(pvp, [
   novoJogoPlayerXPlayer/0,
   jogoPxP/2,
@@ -9,12 +12,12 @@
 :- use_module('./../Interfaces/headers.pl').
 
 :- use_module('./../Utils/utils.pl').
+:- use_module('./../Utils/helpers.pl').
 :- use_module('./../Utils/errorHandler.pl').
 
 :- use_module('./../Data/repository.pl').
 
 % Inicia um novo jogo entre dois jogadores humanos
-
 novoJogoPlayerXPlayer:-
   connect_repo,
   headers:newGameHeader,
@@ -24,14 +27,6 @@ novoJogoPlayerXPlayer:-
   write('Digite o nome do Jogador 2: '),
   read(Username2),
 
-/*
-  TODO: criar validação de comparação das duas variáveis
-  Username1 =:= Username2 -> errorHandler:error(1),
-  read(_),
-  novoJogoPlayerXPlayer;
-  
-  obs: o tratamento de erro já funciona
-*/
   findOrCreateUser(Username1, User1),
   findOrCreateUser(Username2, User2),
 
@@ -43,41 +38,35 @@ jogoPxP(Username1,Username2):-
   findPersonas(ListPersonas),
   formatTable(ListPersonas, 0),
 
-  write("Digite o número do ID do seu personagem do jogador 1: \n"),
+  write("Digite o número do ID do seu personagem, "), writeln(Username1),
   read(IdUser1),
   IndiceJogador1 is IdUser1-1,
   nth0(IndiceJogador1, ListPersonas, PersonaJogador1),
   
   line,
   formatTable(ListPersonas, 0),
-  write("Digite o número do ID do seu personagem do jogador 2: \n"),
+  write("Agora digite o número do ID do seu personagem, "), writeln(Username2),
   read(IdUser2),
   IndiceJogador2 is IdUser2-1,
   nth0(IndiceJogador2, ListPersonas, PersonaJogador2),
   line,
 
-  menuCharacteristics(PalpiteJogador1),
-  menuCharacteristics(PalpiteJogador2),
-
+  menuCharacteristicsPxP(Username1, PalpiteJogador1),
+  menuCharacteristicsPxP(Username2, PalpiteJogador2),
 
   partidaPxP(Username1, Username2, PalpiteJogador1, PalpiteJogador2, PersonaJogador1, PersonaJogador2, ListPersonas, ListPersonas).
 
-verificarPalpite([], _, _, Aux, Result):- Result = Aux.
-
-verificarPalpite([H|T], Palpite, PersonaBot, PalpitesCertos, Result):-
-          member(Palpite, PersonaBot),
-          (member(Palpite, H),
-          append(PalpitesCertos, [H], Aux),
-          verificarPalpite(T, Palpite, PersonaBot, Aux, Result),!;
-          verificarPalpite(T, Palpite, PersonaBot, PalpitesCertos, Result)).
-      
-verificarPalpite([H|T], Palpite, PersonaBot, PalpitesCertos, Result):-
-          member(Palpite, H),
-          verificarPalpite(T, Palpite, PersonaBot, PalpitesCertos, Result),!;
-          append(PalpitesCertos, [H], Aux),
-          verificarPalpite(T, Palpite, PersonaBot, Aux, Result).
-  
-% Inicia uma rodada de jogo PxP
+/*
+* Inicia uma rodada de jogo PxP
+  @param Username1, nome do jogador1
+  @param Username2, nome do jogador2
+  @param PalpiteJogador1, palpite do jogador1
+  @param PalpiteJogador2, palpite do jogador2
+  @param PersonaJogador1, personagem selecionado pelo jogador1
+  @param PersonaJogador2, personagem selecionado pelo jogador2
+  @param ListPersonas1, lista com todos os personagens possíveis para o jogador1
+  @param ListPersonas2, lista com todos os personagens possíveis para o jogador2
+ */ 
 partidaPxP(Username1, Username2, PalpiteJogador1, PalpiteJogador2, PersonaJogador1, PersonaJogador2, ListPersonas1, ListPersonas2):-
   cls,
   verificarPalpite(ListPersonas1, PalpiteJogador1, PersonaJogador2,[], Result),
@@ -93,8 +82,8 @@ partidaPxP(Username1, Username2, PalpiteJogador1, PalpiteJogador2, PersonaJogado
     formatFilterTable(NewResult, 0),
     (
       1 >= R -> vitoria(Username2, Username1, PersonaJogador1);
-      menuCharacteristics(NovoPalpiteJogador1),
-      menuCharacteristics(NovoPalpiteJogador2),
+      menuCharacteristicsPxP(Username1, NovoPalpiteJogador1),
+      menuCharacteristicsPxP(Username2, NovoPalpiteJogador2),
       partidaPxP(Username1, Username2, NovoPalpiteJogador1, NovoPalpiteJogador2, PersonaJogador1, PersonaJogador2, Result, NewResult)
     )
     ).
