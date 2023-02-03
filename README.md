@@ -19,38 +19,5 @@ Construída com base em um algoritmo de decisão por eliminação
 Versão em haskell = Done!
 ```
 ```bash
-Versão em Prolog = Loading...
+Versão em Prolog = Done!
 ```
-
-## Rodando o projeto
-Independente da versão, deve ser instalado o [sqlite3](https://www.sqlite.org/index.html) na máquina para popular o banco.
-
-### Haskell
-Deve ser instalado também o [ghc](https://www.haskell.org/ghc/download.html) e o [cabal](https://www.haskell.org/cabal/).
-
-### Prolog
-Deve ser instalado o [SWI-Prolog](https://www.swi-prolog.org/Download.html).
- 
-
-### Popular banco
-
-Para linux/IOS:
-```bash
-sqlite3 wai.db < create-db.sql
-```
-
-Para Windows:
-```bash
-sqlite3 wai.db -init create-db.sql
-```
-
-Após criar o banco de dados, você pode executar o seguinte comando para rodar o jogo:
-
-#### Haskell
-
-```bash
-cabal build
-cabal run whoami
-```
-
-#### Prolog
