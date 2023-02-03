@@ -26,7 +26,7 @@ novoJogoPlayerxBot:-
     novoJogoPlayerxBot);
 
     findOrCreateUser(Username, User),
-    jogoPlayerxBot(["vitor", 0]).
+    jogoPlayerxBot(Username).
  
 % Inicia o jogo de player contra bot
 jogoPlayerxBot(User):-
@@ -72,11 +72,15 @@ verificarPalpite([H|T], Palpite, PersonaBot, PalpitesCertos, Result):-
 % Inicia uma rodada de player contra bot
 partidaPlayerxBot(User, Palpite, PersonaJogador, PersonaBot, ListPersonas):-
     verificarPalpite(ListPersonas, Palpite, PersonaBot,[], Result),
+    length(Result, R),
+    (
+    1 >= R -> vitoriaJogador(User, PersonaBot);
     cls,
     line,
     formatFilterTable(Result, 0),
     menuCharacteristics(NovoPalpite),
-    partidaPlayerxBot(User, NovoPalpite, PersonaJogador, PersonaBot, Result).
+    partidaPlayerxBot(User, NovoPalpite, PersonaJogador, PersonaBot, Result)).
+        
 
 /*
 
@@ -111,10 +115,10 @@ partidaPlayerxBot(User, Palpite, PersonaJogador, PersonaBot, ListPersonas):-
         partidaPlayerxBot(Username,PersonaJogador,PersonaBot,NewPossibilidadesJogador,NewPossibilidadesBot))
     ))
     ).
-
+*/
 % Anuncia a vitória do jogador
 vitoriaJogador(Username,PersonaBot):-
-    incrementUserScore(Username),
+    /*incrementUserScore(Username),*/
     cls,
     victoryGameHeader,
     write('Você venceu!\n'),
@@ -125,6 +129,7 @@ vitoriaJogador(Username,PersonaBot):-
     read(_),
     mainMenu.
 
+/*
 % Anuncia a vitória do bot
 vitoriaBot(PersonaBot):-
     cls,
