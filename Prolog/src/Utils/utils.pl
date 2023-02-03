@@ -3,6 +3,7 @@
     write_output/1,
     formatTable/2,
     formatScore/2,
+    formatFilterTable/2,
     cls/0
 ]).
 
@@ -17,7 +18,7 @@ write_output(Atom) :-
     halt.
 
 formatTable(List, Index):-
-    nth0(Index, List, Head, Result),
+    nth0(Index, List, Head),
     format("|~t~a~t~8||~t~a~t~8+|~t~a~t~8+|~t~a~t~8+|~t~a~t~8+|~t~a~t~8+|~t~a~t~8+|~n", Head),
     I is Index+1,
     (
@@ -34,6 +35,17 @@ formatScore(List, Index):-
     (
         I < L1 - 1 -> formatScore(List, I);
         write('|==============|\n\n')
+    ).
+
+formatFilterTable(List, Index):-
+    nth0(Index, List, Head),
+    format("|~t~a~t~8||~t~a~t~8+|~t~a~t~8+|~t~a~t~8+|~t~a~t~8+|~t~a~t~8+|~t~a~t~8+|~n", Head),
+    I is Index+1,
+    length(List, L1),
+    (
+        I < L1 -> formatFilterTable(List, I);
+        line
+
     ).
 
 cls :- write('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n').
