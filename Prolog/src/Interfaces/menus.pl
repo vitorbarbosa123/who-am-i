@@ -14,6 +14,7 @@
 ]).
 
 :- use_module('./../Utils/utils.pl').
+:- use_module('./../Interfaces/headers.pl').
 :- use_module('./../Modes/pvp.pl').
 :- use_module('./../Modes/pve.pl').
 :- use_module('./../Utils/errorHandler.pl').
@@ -25,8 +26,9 @@
 */
 mainMenu:-
   cls,
+  logo,
   write("\n=========================\n"),
-  write("Bem vindo ao `Who Am I?`!\n"),
+  write("       Bem vindo!        \n"),
   write("=========================\n"),
   write("O que voce deseja fazer?\n"),
   write("(1) Iniciar novo jogo\n"),
@@ -55,7 +57,6 @@ newGameSwitcher(3):- mainMenu,!.
 newGameSwitcher(_):- errorHandler:error(0), newGameMenu.
 
 showPlacar:-
-  connect_repo,
   cls,
   write('|==============|\n'),
   write('|Nome|Pontuacao|\n'),
