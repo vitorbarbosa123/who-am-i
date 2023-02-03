@@ -12,6 +12,7 @@ partidaPlayerxBot/5,
 :- use_module('./../Utils/utils.pl').
 :- use_module('./../Utils/errorHandler.pl').
 :- use_module('./../Data/repository.pl').
+:- use_module('./../Model/model.pl').
 
 % Inicia um jogo de WaI
 novoJogoPlayerxBot:-
@@ -19,7 +20,7 @@ novoJogoPlayerxBot:-
     connect_repo,
     newGameHeader,
     write('Digite o nome do Jogador: '),
-    read_line_to_string(user_input, Username),
+    read(Username),
 
     (Username == "",
     errorHandler:error(4),
@@ -72,53 +73,30 @@ verificarPalpite([H|T], Palpite, PersonaBot, PalpitesCertos, Result):-
 % Inicia uma rodada de player contra bot
 partidaPlayerxBot(User, Palpite, PersonaJogador, PersonaBot, ListPersonas):-
     verificarPalpite(ListPersonas, Palpite, PersonaBot,[], Result),
+    formatFilterTable(Result, 0),
     length(Result, R),
     (
     1 >= R -> vitoriaJogador(User, PersonaBot);
-    cls,
-    line,
-    formatFilterTable(Result, 0),
-    menuCharacteristics(NovoPalpite),
-    partidaPlayerxBot(User, NovoPalpite, PersonaJogador, PersonaBot, Result)).
-        
 
-/*
-
-    length(PossibilidadesUser, LengthPossibUser),
-    length(NewPossibilidadesJogador, LengthPossibJog),
-
-    (LengthPossibUser == LengthPossibJog,
-    errorHandler:error(2),
-    read(_),
-    partidaPlayerxBot(Username, PersonaJogador, PersonaBot, PossibilidadesUser, PossibilidadesBot)
-    );
-
-    (
-    (userGanhou(NewPossibilidadesJogador), vitoriaJogador(Username, PersonaBot));
-
-    (PalpiteIA = pegarPalpiteIA(PossibilidadesBot),
-    NewPossibilidadesBot = verificarPalpite(PalpiteIA, PersonaJogador, PossibilidadesBot),
-    line,
+    pegarPalpiteIA(PalpiteIA),
     write('O Bot chutou a seguinte caracteristica: \n'),
-    write('. '),
-    sleep(5),
-    write('.'),
-    sleep(1),
-    write('.'),
-    sleep(1),
-    write(PalpiteIA),
-    sleep(3),
+   
+    writeln(PalpiteIA),
+   
+    verificarPalpite(ListPersonas, PalpiteIA ,PersonaJogador, [], NewResult),
+    formatFilterTable(NewResult, 0),
+    length(NewResult, R1),   
     (
-        (userGanhou(NewPossibilidadesBot), vitoriaBot(PersonaBot));
-        (
-        cls,
-        partidaPlayerxBot(Username,PersonaJogador,PersonaBot,NewPossibilidadesJogador,NewPossibilidadesBot))
-    ))
+    1 >= R1 -> vitoriaBot(PersonaBot);
+    menuCharacteristics(NovoPalpite),
+    partidaPlayerxBot(User, NovoPalpite, PersonaJogador, PersonaBot, Result)
+    )
     ).
-*/
+    
+
 % Anuncia a vitória do jogador
 vitoriaJogador(Username,PersonaBot):-
-    /*incrementUserScore(Username),*/
+    incrementUserScore(Username),
     cls,
     victoryGameHeader,
     write('Você venceu!\n'),
@@ -129,7 +107,7 @@ vitoriaJogador(Username,PersonaBot):-
     read(_),
     mainMenu.
 
-/*
+
 % Anuncia a vitória do bot
 vitoriaBot(PersonaBot):-
     cls,
@@ -141,4 +119,3 @@ vitoriaBot(PersonaBot):-
     write('Digite qualquer valor para voltar ao menu principal...\n'),
     read(_),
     mainMenu.
-*/
