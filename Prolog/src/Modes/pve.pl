@@ -15,6 +15,7 @@
 
 % Inicia um jogo de WaI
 novoJogoPlayerxBot:-
+    connect_repo,
     cls,
     newGameHeader,
     write('Digite o nome do Jogador: '),
