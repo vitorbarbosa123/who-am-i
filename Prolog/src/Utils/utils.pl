@@ -1,6 +1,7 @@
+/* <module> utils
+*  Módulo contento alguns algoritmos reutilizados em formatações pela aplicação
+*/
 :- module(utils,[ 
-    read_input/1,
-    write_output/1,
     formatTable/2,
     formatScore/2,
     formatFilterTable/2,
@@ -9,14 +10,12 @@
 
 :- use_module('./../Interfaces/headers.pl').
 
-read_input(Atom) :-
-    read_line_to_codes(user_input, X),
-    string_to_atom(X, Atom).
 
-write_output(Atom) :-
-    write(Atom),
-    halt.
-
+/*
+* Aplica formatação específica para a tabela de personagens
+* @param List, lista de personagens
+* @param indice inicial para printar personagens
+*/
 formatTable(List, Index):-
     nth0(Index, List, Head),
     format("|~t~a~t~8||~t~a~t~8+|~t~a~t~8+|~t~a~t~8+|~t~a~t~8+|~t~a~t~8+|~t~a~t~8+|~n", Head),
@@ -27,6 +26,11 @@ formatTable(List, Index):-
 
     ).
 
+/*
+* Aplica formatação específica para a tabela de pontuação
+* @param List, lista de jogadores
+* @param indice inicial para printar jogadores
+*/
 formatScore(List, Index):-
     nth0(Index, List,Head),
     format("|~t~a~t~4||~t~a~t~4+|~n", Head),
@@ -37,6 +41,11 @@ formatScore(List, Index):-
         write('|==============|\n\n')
     ).
 
+/*
+* Aplica formatação específica para a tabela de personagens após filtragem
+* @param List, lista de personagens filtrados
+* @param indice inicial para printar personagens
+*/
 formatFilterTable(List, Index):-
     nth0(Index, List, Head),
     format("|~t~a~t~8||~t~a~t~8+|~t~a~t~8+|~t~a~t~8+|~t~a~t~8+|~t~a~t~8+|~t~a~t~8+|~n", Head),
@@ -48,4 +57,7 @@ formatFilterTable(List, Index):-
 
     ).
 
+/*
+ * Realiza limpeza no terminal  
+ */
 cls :- write('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n').
