@@ -3,8 +3,7 @@
 */
 :- module(pvp, [
   novoJogoPlayerXPlayer/0,
-  jogoPxP/2,
-  partidaPxP/8,
+  partidaPxP/10,
   vitoria/3
 ]).
 
@@ -30,9 +29,9 @@ novoJogoPlayerXPlayer:-
   findOrCreateUser(Username1, User1),
   findOrCreateUser(Username2, User2),
 
-  jogoPxP(User1,User2).
+  jogoPxP(Username1,Username2, User1,User2).
 
-jogoPxP(Username1,Username2):-
+jogoPxP(Username1,Username2, User1,User2):-
   cls,
   line,
   findPersonas(ListPersonas),
@@ -54,7 +53,7 @@ jogoPxP(Username1,Username2):-
   menuCharacteristicsPxP(Username1, PalpiteJogador1),
   menuCharacteristicsPxP(Username2, PalpiteJogador2),
 
-  partidaPxP(Username1, Username2, PalpiteJogador1, PalpiteJogador2, PersonaJogador1, PersonaJogador2, ListPersonas, ListPersonas).
+  partidaPxP(Username1,Username2, User1,User2, PalpiteJogador1, PalpiteJogador2, PersonaJogador1, PersonaJogador2, ListPersonas, ListPersonas).
 
 /*
 * Inicia uma rodada de jogo PxP
@@ -67,7 +66,7 @@ jogoPxP(Username1,Username2):-
   @param ListPersonas1, lista com todos os personagens possíveis para o jogador1
   @param ListPersonas2, lista com todos os personagens possíveis para o jogador2
  */ 
-partidaPxP(Username1, Username2, PalpiteJogador1, PalpiteJogador2, PersonaJogador1, PersonaJogador2, ListPersonas1, ListPersonas2):-
+partidaPxP(Username1,Username2, User1,User2, PalpiteJogador1, PalpiteJogador2, PersonaJogador1, PersonaJogador2, ListPersonas1, ListPersonas2):-
   cls,
   verificarPalpite(ListPersonas1, PalpiteJogador1, PersonaJogador2,[], Result),
   writeln("Lista Jogador 1 "),
@@ -85,7 +84,7 @@ partidaPxP(Username1, Username2, PalpiteJogador1, PalpiteJogador2, PersonaJogado
       1 >= R1 -> vitoria(Username2, Username1, PersonaJogador1);
       menuCharacteristicsPxP(Username1, NovoPalpiteJogador1),
       menuCharacteristicsPxP(Username2, NovoPalpiteJogador2),
-      partidaPxP(Username1, Username2, NovoPalpiteJogador1, NovoPalpiteJogador2, PersonaJogador1, PersonaJogador2, Result, NewResult)
+      partidaPxP(Username1, Username2, User1,User2, NovoPalpiteJogador1, NovoPalpiteJogador2, PersonaJogador1, PersonaJogador2, Result, NewResult)
     )
     ).
 
@@ -102,6 +101,6 @@ vitoria(Vencedor, Vencido, PersonaVencido):-
   write(' era: '),
   write(PersonaVencido),
   write('.\n'),
-  write('Pressione . para voltar ao menu principal...\n'),
+  write('Pressione qualquer tecla para voltar ao menu principal...\n'),
   read(_),
-  write('\n').
+  mainMenu.
