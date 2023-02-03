@@ -19,7 +19,6 @@
 
 % Inicia um novo jogo entre dois jogadores humanos
 novoJogoPlayerXPlayer:-
-  connect_repo,
   headers:newGameHeader,
   write('Digite o nome do Jogador 1: '),
   read(Username1),

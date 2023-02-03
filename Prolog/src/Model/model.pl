@@ -27,7 +27,6 @@ tail([_|T], T).
 *  Utiliza as funcoes getElemByIndex e tail.
   @Param: lista dos personagens disponiveis.*/
 pegarPalpiteIA(Palpite) :-
-  connect_repo,
   findPersonas(ListaPersonagens),
   getElemByIndex(ListaPersonagens, P),
   tail(P, T1),
