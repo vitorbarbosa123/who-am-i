@@ -7,15 +7,23 @@
 ]).
 
 :- use_module('./../Interfaces/headers.pl').
-
+/*
+    Clausula para leitura do teclado.
+*/
 read_input(Atom) :-
     read_line_to_codes(user_input, X),
     string_to_atom(X, Atom).
 
+/*
+    Clausula para impressao.
+*/
 write_output(Atom) :-
     write(Atom),
     halt.
 
+/*
+    Clausula para formatar a impressao dos personagens e caracteristicas
+*/
 formatTable(List, Index):-
     nth0(Index, List, Head, Result),
     format("|~t~a~t~8||~t~a~t~8+|~t~a~t~8+|~t~a~t~8+|~t~a~t~8+|~t~a~t~8+|~t~a~t~8+|~n", Head),
@@ -26,6 +34,9 @@ formatTable(List, Index):-
 
     ).
 
+/*
+    Clausula que formata a pontuacao
+*/
 formatScore(List, Index):-
     nth0(Index, List,Head),
     format("|~t~a~t~4||~t~a~t~4+|~n", Head),
@@ -36,4 +47,7 @@ formatScore(List, Index):-
         write('|==============|\n\n')
     ).
 
+/*
+    Clausula que limpa a tela
+*/
 cls :- write('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n').

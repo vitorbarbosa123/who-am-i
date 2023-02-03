@@ -5,7 +5,9 @@
   defeatGameHeader/0,
   choosePersonaHeader/0
 ]).
-
+/*
+    Clausulas para imprimir mensagens visuais no terminal
+*/
 line:-
   write('|=======================================================================================|\n').
 

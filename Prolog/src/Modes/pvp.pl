@@ -13,8 +13,9 @@
 
 :- use_module('./../Data/repository.pl').
 
-% Inicia um novo jogo entre dois jogadores humanos
-
+/*
+    Clausula que incia um jogo player contra player
+*/
 novoJogoPlayerXPlayer:-
   connect_repo,
   headers:newGameHeader,
@@ -54,7 +55,10 @@ jogoPxP(User1,User2):-
 
   partidaPxP(Username1, Username2, PersonaP1, PersonaP2, PossibilidadesUser1, PossibilidadesUser2).
 
-% Inicia uma rodada de jogo PxP
+
+/*
+    Clausula que incia uma rodada de player contra player
+*/
 partidaPxP(Username1, Username2, PersonaJogador, PersonaOponente, PossibilidadesJogador, PossibilidadesOponente):-
 
   (userGanhou(PossibilidadesOponente),
@@ -78,7 +82,10 @@ partidaPxP(Username1, Username2, PersonaJogador, PersonaOponente, Possibilidades
   partidaPxP(Username2, Username1, PersonaOponente, PersonaJogador, PossibilidadesOponente, NewPossibilidades)
   ).
 
-% Informa e registra o vencedor do jogo PxP
+
+/*
+    Clausula que imprime e registra o vencedor do jogo PxP
+*/
 vitoria(Vencedor, Vencido, PersonaVencido):-
   incrementUserScore(Vencedor),
   cls,

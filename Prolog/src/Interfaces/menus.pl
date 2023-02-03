@@ -14,6 +14,9 @@
 :- use_module('./../Utils/errorHandler.pl').
 :- use_module('./../Data/repository.pl').
 
+/*
+    Clausula do menu principal do jogo.
+*/
 mainMenu:-
   cls,
   write("\n=========================\n"),
@@ -30,7 +33,9 @@ mainMenuSwitcher(2):- showPlacar,!.
 mainMenuSwitcher(3):- tutorial,!.
 mainMenuSwitcher(_):- errorHandler:error(0), mainMenu.
 
-
+/*
+    Clausula do menu do novo jogo, nesse momento eh feita a selecao do modo PVE ou PVP.
+*/
 newGameMenu:-
   cls,
   write("\n=========================\n"),
@@ -45,6 +50,9 @@ newGameSwitcher(2):- novoJogoPlayerXPlayer,!.
 newGameSwitcher(3):- mainMenu,!.
 newGameSwitcher(_):- errorHandler:error(0), newGameMenu.
 
+/*
+    Clausula que mostra a pontuacao dos jogadores cadastrados no banco de dados.
+*/
 showPlacar:-
   connect_repo,
   cls,
@@ -55,7 +63,10 @@ showPlacar:-
 
   write('Digite qualquer valor para retornar ao menu principal\n'),
   read(_), mainMenu.
-  
+
+/*
+    Clausula que imprime as orientacoes gerais para jogar o WaI.
+*/
 tutorial:-
   cls,
   write("\n==============================================\n"),
@@ -72,6 +83,9 @@ tutorial:-
   write("Digite qualquer valor para retornar ao menu principal\n"),
   read(_), mainMenu.
 
+/*
+    Clausulas impressas a cada turno de partida, para selecao das caracteristicas.
+*/
 menuCharacteristics(EscolhaJogador):-
   write("\n Qual caracteristica voce deseja escolher? \n"),
   write("[0] sexo | [1] cor do cabelo | [2] etnia | [3] cor dos olhos | [4] acessorio\n"),

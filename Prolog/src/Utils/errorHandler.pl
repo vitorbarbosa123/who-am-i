@@ -1,6 +1,9 @@
 
 :- module(errorHandler, [error/1]).
 
+/*
+    Clausulas para tratar erros de entrada.
+*/
 error(0):- write("Opção inválida!"),!.
 
 error(1):- write("Nomes nao podem ser iguais. Digite . para continuar...\n"),!.

@@ -13,7 +13,9 @@ partidaPlayerxBot/5,
 :- use_module('./../Utils/errorHandler.pl').
 :- use_module('./../Data/repository.pl').
 
-% Inicia um jogo de WaI
+/*
+    Clausula que inicia um jogo de WaI
+*/
 novoJogoPlayerxBot:-
     cls,
     connect_repo,
@@ -28,7 +30,11 @@ novoJogoPlayerxBot:-
     findOrCreateUser(Username, User),
     jogoPlayerxBot(["vitor", 0]).
  
-% Inicia o jogo de player contra bot
+
+
+/*
+    Clausula que inicia um jogo de player contra bot
+*/
 jogoPlayerxBot(User):-
     cls,
 
@@ -54,6 +60,9 @@ jogoPlayerxBot(User):-
   
     partidaPlayerxBot(User, Palpite, PersonaJogador, PersonaBot, ListPersonas).
 
+/*
+    Clausulas que verificam se o palpite da caracteristica esta correto.
+*/
 verificarPalpite([], _, _, Aux, Result):- Result = Aux.
 
 verificarPalpite([H|T], Palpite, PersonaBot, PalpitesCertos, Result):-
@@ -69,7 +78,10 @@ verificarPalpite([H|T], Palpite, PersonaBot, PalpitesCertos, Result):-
         append(PalpitesCertos, [H], Aux),
         verificarPalpite(T, Palpite, PersonaBot, Aux, Result).
 
-% Inicia uma rodada de player contra bot
+
+/*
+    Clausula que incia a rodada de player contra bot.
+*/
 partidaPlayerxBot(User, Palpite, PersonaJogador, PersonaBot, ListPersonas):-
     verificarPalpite(ListPersonas, Palpite, PersonaBot,[], Result),
     cls,

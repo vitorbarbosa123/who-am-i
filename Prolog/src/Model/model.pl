@@ -7,28 +7,35 @@
 
 :- use_module('./../Data/repository.pl').
 
-% -----------------------
-% Algoritmo da IA abaixo:
-% -----------------------
+/*
+  Algoritmo de decisao da IA abaixo.
+*/
 
 /*
-O método findPersonas(X) já está retornando as personas
+  Clausula para gerar um numero aleatorio dentro do range da lista.
 */
-% Gera um número aleatório dentro do range de Lista
 renderRandom(Lista, R) :- 
   connect_repo,
   length(Lista, L), Limit is L-1, random(0, Limit, X), R is X.
 
-% Retorna um elemento aleatório de Lista
+/*
+  Clausula que retorna um elemento aleatorio da lista.
+*/
 getElemByIndex(Lista, Elem) :- 
   connect_repo,
   renderRandom(Lista, I), nth0(I, Lista, E, _), Elem = E.
 
-% Retorna uma lista sem o primeiro elemento
+
+/*
+  Clausula que retorna a lista sem o primeiro elemento.
+*/
 tail([_|T], T).
 
-/* 'Funcao' que determina aleatoriamente o palpite que sera feito pelo bot, de acordo com as possibilidades restantes. Utiliza as funcoes getElemByIndex e tail.
-  @Param: lista dos personagens disponiveis.*/
+/*
+  Clausula que determina aleatoriamente o palpite do bot,
+  de acordo com as possibilidades restantes.
+  @Param: lista dos personagens disponveis
+*/
 pegarPalpiteIA(ListaPersonagens, Palpite) :-
   connect_repo,
   findPersonas(ListaPersonagens),
