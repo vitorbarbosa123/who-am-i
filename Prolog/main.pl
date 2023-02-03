@@ -6,5 +6,4 @@
 main :-
     connect_repo,
     mainMenu,
-    findUsuarios(X),
-    write_output(X).
+    findUsuarios(X).
