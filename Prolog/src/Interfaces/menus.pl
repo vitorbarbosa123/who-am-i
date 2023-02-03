@@ -57,6 +57,7 @@ newGameSwitcher(3):- mainMenu,!.
 newGameSwitcher(_):- errorHandler:error(0), newGameMenu.
 
 showPlacar:-
+  connect_repo,
   cls,
   write('|==============|\n'),
   write('|Nome|Pontuacao|\n'),
