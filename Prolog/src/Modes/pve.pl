@@ -48,6 +48,8 @@ jogoPlayerxBot(User):-
     
     line,
 
+    write(PersonaBot),
+
     menuCharacteristics(Palpite),
   
     partidaPlayerxBot(User, Palpite, PersonaJogador, PersonaBot, ListPersonas).
@@ -70,7 +72,11 @@ verificarPalpite([H|T], Palpite, PersonaBot, PalpitesCertos, Result):-
 % Inicia uma rodada de player contra bot
 partidaPlayerxBot(User, Palpite, PersonaJogador, PersonaBot, ListPersonas):-
     verificarPalpite(ListPersonas, Palpite, PersonaBot,[], Result),
-    write(Result).
+    cls,
+    line,
+    formatFilterTable(Result, 0),
+    menuCharacteristics(NovoPalpite),
+    partidaPlayerxBot(User, NovoPalpite, PersonaJogador, PersonaBot, Result).
 
 /*
 
