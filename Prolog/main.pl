@@ -5,5 +5,5 @@
 
 main :-
     connect_repo,
-    mainMenu,
-    findUsuarios(X).
+    findUsuarios(X),
+    mainMenu.
