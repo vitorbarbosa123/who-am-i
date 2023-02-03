@@ -1,3 +1,6 @@
+/* <module> headers
+*  Módulo contento os displays que são usados pela aplicação  
+*/
 :- module(headers, [
   line/0,
   newGameHeader/0,
