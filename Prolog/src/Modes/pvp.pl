@@ -19,6 +19,7 @@
 
 % Inicia um novo jogo entre dois jogadores humanos
 novoJogoPlayerXPlayer:-
+  connect_repo,
   headers:newGameHeader,
   write('Digite o nome do Jogador 1: '),
   read(Username1),
@@ -29,7 +30,7 @@ novoJogoPlayerXPlayer:-
   findOrCreateUser(Username1, User1),
   findOrCreateUser(Username2, User2),
 
-  jogoPxP(Username1,Username2).
+  jogoPxP(User1,User2).
 
 jogoPxP(Username1,Username2):-
   cls,
@@ -37,14 +38,14 @@ jogoPxP(Username1,Username2):-
   findPersonas(ListPersonas),
   formatTable(ListPersonas, 0),
 
-  write("Digite o número do ID do seu personagem, "), writeln(Username1),
+  write("Digite o número do ID do seu personagem jogador 1 "),
   read(IdUser1),
   IndiceJogador1 is IdUser1-1,
   nth0(IndiceJogador1, ListPersonas, PersonaJogador1),
   
   line,
   formatTable(ListPersonas, 0),
-  write("Agora digite o número do ID do seu personagem, "), writeln(Username2),
+  write("Agora digite o número do ID do seu personagem jogador 2 "),
   read(IdUser2),
   IndiceJogador2 is IdUser2-1,
   nth0(IndiceJogador2, ListPersonas, PersonaJogador2),
@@ -79,8 +80,9 @@ partidaPxP(Username1, Username2, PalpiteJogador1, PalpiteJogador2, PersonaJogado
     writeln("Lista Jogador 2 "),
     line,
     formatFilterTable(NewResult, 0),
+    length(NewResult, R1),
     (
-      1 >= R -> vitoria(Username2, Username1, PersonaJogador1);
+      1 >= R1 -> vitoria(Username2, Username1, PersonaJogador1);
       menuCharacteristicsPxP(Username1, NovoPalpiteJogador1),
       menuCharacteristicsPxP(Username2, NovoPalpiteJogador2),
       partidaPxP(Username1, Username2, NovoPalpiteJogador1, NovoPalpiteJogador2, PersonaJogador1, PersonaJogador2, Result, NewResult)
