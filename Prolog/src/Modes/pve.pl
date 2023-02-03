@@ -19,14 +19,14 @@ novoJogoPlayerxBot:-
     connect_repo,
     newGameHeader,
     write('Digite o nome do Jogador: '),
-    read(Username),
+    read_line_to_string(user_input, Username),
 
     (Username == "",
     errorHandler:error(4),
     novoJogoPlayerxBot);
 
     findOrCreateUser(Username, User),
-    jogoPlayerxBot(User).
+    jogoPlayerxBot(["vitor", 0]).
  
 % Inicia o jogo de player contra bot
 jogoPlayerxBot(User):-
@@ -34,62 +34,43 @@ jogoPlayerxBot(User):-
 
     choosePersonaHeader,
 
-    findPersonas(X),
-    formatTable(X, 0),
+    findPersonas(ListPersonas),
+    formatTable(ListPersonas, 0),
 
     write("Digite o número do ID do seu personagem: \n"),
     read(Id),
 
     IndiceJogador is Id-1,
-    nth0(IndiceJogador, X, PersonaJogador),
+    nth0(IndiceJogador, ListPersonas, PersonaJogador),
    
     random_between(0, 15, R),
-    nth0(R, X, PersonaBot),
+    nth0(R, ListPersonas, PersonaBot),
     
     line,
 
-    menuCharacteristics(EscolhaJogador),
+    menuCharacteristics(Palpite),
+  
+    partidaPlayerxBot(User, Palpite, PersonaJogador, PersonaBot, ListPersonas).
 
-    PossibilidadesUser = X,
-    PossibilidadesBot = X,
+verificarPalpite([], _, _, Aux, Result):- Result = Aux.
 
-    partidaPlayerxBot(User, PersonaJogador, PersonaBot, PossibilidadesUser, PossibilidadesBot).
-
-inserir_final([], Y, [Y]).
-inserir_final([I|R], Y, [I|R1]) :- inserir_final(R, Y, R1).
-
-verificarPalpite(Index, Palpite, Persona, Possibilidades, PalpitesCertos):-
-    (
-        member(Palpite, Persona),
-        nth0(Index, Possibilidades, Personagem, Tail),
-
-        member(Palpite, Personagem),
-        (
-            length(PalpitesCertos, L),
-            (
-                L =:= 0,
-                inserir_final([], Personagem, Lista)
-            );
-            inserir_final(PalpitesCertos, Personagem, Lista)
-        )
-    );
-    I is Index+1,
-    I < 15,
-    verificarPalpite(I, Palpite, Persona, Possibilidades, Lista),
-    write(PalpitesCertos),
-    PalpitesCertos = Lista.
- 
+verificarPalpite([H|T], Palpite, PersonaBot, PalpitesCertos, Result):-
+        member(Palpite, PersonaBot),
+        (member(Palpite, H),
+        append(PalpitesCertos, [H], Aux),
+        verificarPalpite(T, Palpite, PersonaBot, Aux, Result),!;
+        verificarPalpite(T, Palpite, PersonaBot, PalpitesCertos, Result)).
+    
+verificarPalpite([H|T], Palpite, PersonaBot, PalpitesCertos, Result):-
+        member(Palpite, H),
+        verificarPalpite(T, Palpite, PersonaBot, PalpitesCertos, Result),!;
+        append(PalpitesCertos, [H], Aux),
+        verificarPalpite(T, Palpite, PersonaBot, Aux, Result).
 
 % Inicia uma rodada de player contra bot
-partidaPlayerxBot(Username,PersonaJogador,PersonaBot,PossibilidadesUser,PossibilidadesBot):-
-    line,
-    findPersonas(X),
-    formatTable(X, 0),
-    line,
-
-    read(EscolhaJogador),
-    verificarPalpite(0, EscolhaJogador,PersonaBot,PossibilidadesUser, NewPossibilidadesJogador),
-    write(NewPossibilidadesJogador).
+partidaPlayerxBot(User, Palpite, PersonaJogador, PersonaBot, ListPersonas):-
+    verificarPalpite(ListPersonas, Palpite, PersonaBot,[], Result),
+    write(Result).
 
 /*
 
