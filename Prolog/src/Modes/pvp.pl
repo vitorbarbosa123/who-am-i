@@ -1,7 +1,7 @@
 :- module(pvp, [
   novoJogoPlayerXPlayer/0,
   jogoPxP/2,
-  partidaPxP/6,
+  partidaPxP/8,
   vitoria/3
 ]).
 
@@ -35,48 +35,69 @@ novoJogoPlayerXPlayer:-
   findOrCreateUser(Username1, User1),
   findOrCreateUser(Username2, User2),
 
-  jogoPxP(User1,User2).
+  jogoPxP(Username1,Username2).
 
-jogoPxP(User1,User2):-
-  PersonasField = findPersonas(X),
-  Personas = map(parsePersonaToStringArray(PersonasField)),
+jogoPxP(Username1,Username2):-
+  cls,
+  line,
+  findPersonas(ListPersonas),
+  formatTable(ListPersonas, 0),
 
-  get(EscolhaP1),
-  IndiceP1 is (EscolhaP1-1),
-  nth0(IndiceP1,Personas, PersonaP1, _),
+  write("Digite o número do ID do seu personagem do jogador 1: \n"),
+  read(IdUser1),
+  IndiceJogador1 is IdUser1-1,
+  nth0(IndiceJogador1, ListPersonas, PersonaJogador1),
+  
+  line,
+  formatTable(ListPersonas, 0),
+  write("Digite o número do ID do seu personagem do jogador 2: \n"),
+  read(IdUser2),
+  IndiceJogador2 is IdUser2-1,
+  nth0(IndiceJogador2, ListPersonas, PersonaJogador2),
+  line,
 
-  get(EscolhaP2),
-  IndiceP2 is (EscolhaP2-1),
-  nth0(IndiceP2,Personas, PersonaP2, _),
+  menuCharacteristics(PalpiteJogador1),
+  menuCharacteristics(PalpiteJogador2),
 
-  PossibilidadesUser1 = map(parsePersonaToStringArray(PersonasField)),
-  PossibilidadesUser2 = map(parsePersonaToStringArray(PersonasField)),
 
-  partidaPxP(Username1, Username2, PersonaP1, PersonaP2, PossibilidadesUser1, PossibilidadesUser2).
+  partidaPxP(Username1, Username2, PalpiteJogador1, PalpiteJogador2, PersonaJogador1, PersonaJogador2, ListPersonas, ListPersonas).
 
+verificarPalpite([], _, _, Aux, Result):- Result = Aux.
+
+verificarPalpite([H|T], Palpite, PersonaBot, PalpitesCertos, Result):-
+          member(Palpite, PersonaBot),
+          (member(Palpite, H),
+          append(PalpitesCertos, [H], Aux),
+          verificarPalpite(T, Palpite, PersonaBot, Aux, Result),!;
+          verificarPalpite(T, Palpite, PersonaBot, PalpitesCertos, Result)).
+      
+verificarPalpite([H|T], Palpite, PersonaBot, PalpitesCertos, Result):-
+          member(Palpite, H),
+          verificarPalpite(T, Palpite, PersonaBot, PalpitesCertos, Result),!;
+          append(PalpitesCertos, [H], Aux),
+          verificarPalpite(T, Palpite, PersonaBot, Aux, Result).
+  
 % Inicia uma rodada de jogo PxP
-partidaPxP(Username1, Username2, PersonaJogador, PersonaOponente, PossibilidadesJogador, PossibilidadesOponente):-
-
-  (userGanhou(PossibilidadesOponente),
-  vitoria(Username2, Username1, PersonaJogador);
-
-  utils:cls,
-  headers:line,
-  printTable(PossibilidadesJogador),
-  headers:line,
-  read(Palpite),
-  pegarPalpiteUser(Username1),
-  NewPossibilidades = verificarPalpite(Palpite, PersonaOponente, PossibilidadesJogador),
-  length(PossibilidadesJogador, L1),
-  length(NewPossibilidades, L2),
-
-  (L1 == L2,
-  errorHandler:error(1),
-  read(_),
-  partidaPxP(Username1, Username2, PersonaJogador, PersonaOponente, PossibilidadesJogador, PossibilidadesOponente));
-
-  partidaPxP(Username2, Username1, PersonaOponente, PersonaJogador, PossibilidadesOponente, NewPossibilidades)
-  ).
+partidaPxP(Username1, Username2, PalpiteJogador1, PalpiteJogador2, PersonaJogador1, PersonaJogador2, ListPersonas1, ListPersonas2):-
+  cls,
+  verificarPalpite(ListPersonas1, PalpiteJogador1, PersonaJogador2,[], Result),
+  writeln("Lista Jogador 1 "),
+  line,
+  formatFilterTable(Result, 0),
+  length(Result, R),
+  (
+    1 >= R -> vitoria(Username1, Username2, PersonaJogador2);
+    verificarPalpite(ListPersonas2, PalpiteJogador2, PersonaJogador1,[], NewResult),
+    writeln("Lista Jogador 2 "),
+    line,
+    formatFilterTable(NewResult, 0),
+    (
+      1 >= R -> vitoria(Username2, Username1, PersonaJogador1);
+      menuCharacteristics(NovoPalpiteJogador1),
+      menuCharacteristics(NovoPalpiteJogador2),
+      partidaPxP(Username1, Username2, NovoPalpiteJogador1, NovoPalpiteJogador2, PersonaJogador1, PersonaJogador2, Result, NewResult)
+    )
+    ).
 
 % Informa e registra o vencedor do jogo PxP
 vitoria(Vencedor, Vencido, PersonaVencido):-
@@ -89,8 +110,7 @@ vitoria(Vencedor, Vencido, PersonaVencido):-
   write('O personagem de '),
   write(Vencido),
   write(' era: '),
-  P = prepareTableLine(PersonaVencido),
-  write(P),
+  write(PersonaVencido),
   write('.\n'),
   write('Pressione . para voltar ao menu principal...\n'),
   read(_),
