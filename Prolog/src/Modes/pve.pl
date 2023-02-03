@@ -16,7 +16,6 @@
 % Inicia um jogo de WaI
 novoJogoPlayerxBot:-
     cls,
-    connect_repo,
     newGameHeader,
     write('Digite o nome do Jogador: '),
     read(Username),
@@ -24,7 +23,6 @@ novoJogoPlayerxBot:-
     (Username == "",
     errorHandler:error(4),
     novoJogoPlayerxBot);
-
     findOrCreateUser(Username, User),
     jogoPlayerxBot(Username).
  
@@ -53,7 +51,7 @@ jogoPlayerxBot(User):-
 
     menuCharacteristics(Palpite),
   
-    partidaPlayerxBot(User, Palpite, PersonaJogador, PersonaBot, ListPersonas).
+    partidaPlayerxBot(User, Palpite, PersonaJogador, PersonaBot, ListPersonas, ListPersonas).
 
 
 
@@ -66,11 +64,12 @@ jogoPlayerxBot(User):-
   @param PersonaBot, personagem escolhido pelo bot
   @param ListPersonas, lista com todos os personagens possíveis
 */ 
-partidaPlayerxBot(User, Palpite, PersonaJogador, PersonaBot, ListPersonas):-
+partidaPlayerxBot(User, Palpite, PersonaJogador, PersonaBot, ListPersonasJogador, ListPersonasBot):-
     cls,
-    verificarPalpite(ListPersonas, Palpite, PersonaBot,[], Result),
+    verificarPalpite(ListPersonasJogador, Palpite, PersonaBot,[], Result),
     writeln("Filtrando escolha..."),
     sleep(3),
+    writeln("Personagens restantes para Jogador"),
     line,
     formatFilterTable(Result, 0),
     length(Result, R),
@@ -78,20 +77,19 @@ partidaPlayerxBot(User, Palpite, PersonaJogador, PersonaBot, ListPersonas):-
     1 >= R -> vitoriaJogador(User, PersonaBot);
 
     pegarPalpiteIA(PalpiteIA),
-    write('O Bot chutou a seguinte caracteristica: \n'),
-
-    writeln(PalpiteIA),
+    write('O Bot chutou a seguinte caracteristica: '), writeln(PalpiteIA),
     sleep(3),
-    cls,
       
-    verificarPalpite(ListPersonas, PalpiteIA ,PersonaJogador, [], NewResult),
+    verificarPalpite(ListPersonasBot, PalpiteIA ,PersonaJogador, [], NewResult),
+    writeln("Personagens restantes para Bot"),
+
     line,
     formatFilterTable(NewResult, 0),
     length(NewResult, R1),   
     (
     1 >= R1 -> vitoriaBot(PersonaBot);
     menuCharacteristics(NovoPalpite),
-    partidaPlayerxBot(User, NovoPalpite, PersonaJogador, PersonaBot, Result)
+    partidaPlayerxBot(User, NovoPalpite, PersonaJogador, PersonaBot, Result, NewResult)
     )
     ).
     
