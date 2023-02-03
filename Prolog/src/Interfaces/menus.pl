@@ -1,3 +1,7 @@
+/* <module> menus
+*  Módulo que estabelece os menus usados pela aplicação.
+*/
+
 :- module(menus, [
   mainMenu/0,
   mainMenuSwitcher/1,
@@ -5,7 +9,8 @@
   newGameSwitcher/1,
   showPlacar/0,
   tutorial/0,
-  menuCharacteristics/1
+  menuCharacteristics/1,
+  menuCharacteristicsPxP/2
 ]).
 
 :- use_module('./../Utils/utils.pl').
@@ -14,6 +19,10 @@
 :- use_module('./../Utils/errorHandler.pl').
 :- use_module('./../Data/repository.pl').
 
+/*
+* Cada menu funciona com a sua definição e o seu switcher. 
+* Menu representa o texto e o switcher as opções que o usuário pode escolher
+*/
 mainMenu:-
   cls,
   write("\n=========================\n"),
@@ -97,5 +106,29 @@ characteristicsSwitcher(4, E):-
   read(X),
   E = X.
 
+menuCharacteristicsPxP(Usuario, EscolhaJogador):-
+  write("\n Qual caracteristica voce deseja escolher "), writeln(Usuario),
+  write("[0] sexo | [1] cor do cabelo | [2] etnia | [3] cor dos olhos | [4] acessorio\n"),
+  read(Choice), characteristicsPxPSwitcher(Choice, EscolhaJogador).
+
+  characteristicsPxPSwitcher(0, X):-
+  write("Qual o sexo?\n"),
+  read(X).
+characteristicsPxPSwitcher(1, E):-
+  write("Qual a cor do cabelo?\n"),
+  read(X),
+  E = X.
+characteristicsPxPSwitcher(2, E):-
+  write("Qual a etnia?\n"),
+  read(X),
+  E = X.
+characteristicsPxPSwitcher(3, E):-
+  write("Qual a cor dos olhos?\n"),
+  read(X),
+  E = X.
+characteristicsPxPSwitcher(4, E):-
+  write("Qual a Qual o acessório?\n"),
+  read(X),
+  E = X.
 
   
