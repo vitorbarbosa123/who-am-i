@@ -72,17 +72,14 @@ tutorial:-
   write("Digite qualquer valor para retornar ao menu principal\n"),
   read(_), mainMenu.
 
-
 menuCharacteristics(EscolhaJogador):-
   write("\n Qual caracteristica voce deseja escolher? \n"),
   write("[0] sexo | [1] cor do cabelo | [2] etnia | [3] cor dos olhos | [4] acessorio\n"),
-  read(Choice), characteristicsSwitcher(Choice, Escolha),
-  EscolhaJogador = Escolha.
- 
-characteristicsSwitcher(0, E):-
+  read(Choice), characteristicsSwitcher(Choice, EscolhaJogador).
+
+characteristicsSwitcher(0, X):-
   write("Qual o sexo?\n"),
-  read(X),
-  E = X.
+  read(X).
 characteristicsSwitcher(1, E):-
   write("Qual a cor do cabelo?\n"),
   read(X),
@@ -99,3 +96,6 @@ characteristicsSwitcher(4, E):-
   write("Qual a Qual o acessório?\n"),
   read(X),
   E = X.
+
+
+  
